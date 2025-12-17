@@ -35,19 +35,12 @@
 
                             <div class="row">
                             <div class='form-group col-12 mb-4'>
-                                <label for='sel1'>{{ trans('blogpost.select_category') }}</label>
-                                <select class='form-select' name='category_ids[]' id='category_select' multiple required>
 
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}"
-                                            {{ isset($blogpost) && $blogpost->categories->contains($category->id) ? 'selected' : '' }}>
-                                            {{ $category->name }}</option>
-                                    @endforeach
+                                <category-selector :label="'{{ trans('blogpost.select_category') }}'" :blogpost_categories='@json(isset($blogpost)? $blogpost->categories : [])'></category-selector>
 
-                                </select>
                             </div>
 
-
+                            
 
                             </div>
                             <div class="row">

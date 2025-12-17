@@ -3,37 +3,40 @@
  * for JavaScript based Bootstrap features such as modals and tabs. This
  * code may be modified to fit the specific needs of your application.
  */
-import * as $ from "jquery";
-import * as bootstrap from "bootstrap";
-import "bootstrap-fileinput";
-import "select2";
+import * as $ from 'jquery';
+import * as bootstrap from 'bootstrap';
+import 'bootstrap-fileinput';
+import 'select2';
+import './dragndrop.ts';
+import './pages.ts';
+import lang from './lang';
 
 import CKEditor from 'ckeditor4-vue';
+import VueI18n from 'vue-i18n';
+import VueCompositionAPI from '@vue/composition-api';
 import TextEditor from './components/text-editor/TextEditor.vue';
 import LockScreen from './components/lock-screen/LockScreen.vue';
 import FileManager from './components/file-manager/FileManager.vue';
+import CategorySelector from './components/category-selector/CategorySelector.vue';
 
 window.vue.use(CKEditor);
+window.vue.use(VueCompositionAPI);
+window.vue.use(VueI18n);
 
-/*const i18n = createI18n({
-    locale:  window.navigator.language.split('-')[0],
-    fallbackLocale: 'en', // set fallback locale
-    messages: {
-    }
-});*/
+const i18n = new VueI18n({
+    locale: window.navigator.language.split('-')[0] || 'en',
+    fallbackLocale: 'en',
+    messages: lang
+});
+
 
 const hcms = new window.vue({
     name: 'HorizontCMS',
     el: '#hcms',
-   // i18n,
+    i18n,
     data: {
 
     },
-  /*  setup() {
-        return {
-        ...useI18n()
-        }
-    }, */
     provide() {
         return {
           bootstrap: bootstrap
@@ -42,15 +45,24 @@ const hcms = new window.vue({
     components: {
         TextEditor,
         LockScreen,
-        FileManager
+        FileManager,
+        CategorySelector
     },
     created: function(){
-        console.log("HorizontCMS started");
+        console.info("HorizontCMS started");
+        console.log("Available locales:", this.$i18n.availableLocales );
     },
     methods: {
         lock: function(){
             this.$refs.lockscreen.lock();
         },
+        setLocale: function(lang: string) {
+
+            if(this.$i18n.availableLocales.includes(lang)){
+                this.$i18n.locale = lang;
+            }
+            console.log("Current locale:", this.$i18n.locale);
+        }
     }
 
 });

@@ -69,6 +69,15 @@ class SettingsController extends Controller
         return $this->{$id}();
     }
 
+    public function update(Request $request, $id)
+    {
+
+        if (\App\Model\Settings::where("setting", $request->input("setting"))->update(['value' => $id])) {
+            return redirect()->back()->withMessage(['success' => trans('message.successfully_set_homepage')]);
+        } 
+
+        return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong')]);
+    }
 
     /**
      * Display the specified resource.

@@ -1,0 +1,31 @@
+<?php 
+
+return [
+	'th_action' => 'Aktion',
+	'save' => 'Speichern',
+	'publish' => 'Veröffentlichen',
+	'draft' => 'Entwurf',
+	'save_draft' => 'Als Entwurf speichern',
+	'add' => 'Hinzufügen',
+	'edit' => 'Bearbeiten',
+	'options' => 'Optionen',
+	'create' => 'Erstellen',
+	'update' => 'Aktualisieren',
+	'delete' => 'Löschen',
+	'remove' => 'Entfernen',
+	'cancel' => 'Abbrechen',
+	'set' => 'Setzen',
+	'yes' => 'Ja',
+	'no' => 'Nein',
+	'close' => 'Schließen', 
+	'next' => 'Weiter',
+	'previous' => 'Zurück',
+	'back' => 'Zurück',
+	'upload' => 'Hochladen',
+	'unlock' => 'Entsperren',
+	'are_you_sure' => 'Bist du sicher?',
+	'delete_this' => 'Dieses :content_type löschen',
+	'upload_image' => 'Bild hochladen',
+	'deactivate' => 'Deaktivieren',
+	'select' => 'Auswählen'
+];

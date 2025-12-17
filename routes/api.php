@@ -119,6 +119,10 @@ Route::get('/plugins',function(Request $request){
 
 })->middleware('auth:api');
 
+################################################
+
+Route::put('pages/reorder', [\App\Controllers\PageController::class, 'reorder'])
+                ->middleware('auth:api');
 
 Route::post('lock-up',function(Request $request){
 
@@ -136,6 +140,6 @@ Route::post('lock-up',function(Request $request){
 /**
  * @deprecated deprecated since version 1.3.0
  */
-Route::get('get-page-slug/{title}',function($title){
+Route::get('slug/generate/{title}',function($title){
 	 return response()->json(str_slug($title));
-});
+})->middleware('auth:api');

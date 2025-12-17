@@ -1,4 +1,4 @@
-@extends('layout', ['title' => isset($page)? trans('page.edit_page') : trans('page.new_page'), 'js' => array_merge($js, ['resources/js/pages.js'])])
+@extends('layout', ['title' => isset($page)? trans('page.edit_page') : trans('page.new_page')])
 
 @section('content')
     <div class='container main-container'>
@@ -23,13 +23,13 @@
                         <div class="col-xs-12 col-8">
                             <div class='form-group pull-left col-xs-12 col-md-12'>
                                 <label for='title'>{{ trans('page.menu_name') }}</label>
-                                <input type='text' class='form-control' id='menu-title' name='name'
-                                    onkeyup="ajaxGetSlug();" value="{{ old('name', isset($page) ? $page->name : '') }}"
+                                <input type='text' class='form-control form-control-lg' id='menu-title' name='name'
+                                    onkeyup="generateSlug(this.value)" value="{{ old('name', isset($page) ? $page->name : '') }}"
                                     required>
                                 <div class="form-text">
                                     <b>{{ trans('page.semantic_url') }}:</b>&nbsp&nbsp&nbsp{{ rtrim(config('app.url'), '/') }}<a
                                         class='text-muted'
-                                        id='ajaxSlug'>{{ isset($page) ? UrlManager::seo_url($page->name) : '' }}</a>
+                                        id='generatedSlug'>{{ isset($page) ? UrlManager::seo_url($page->name) : '' }}</a>
                                 </div>
                             </div>
 

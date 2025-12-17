@@ -42,6 +42,7 @@ return [
 
 	'languages' => [ //available languages
 				'en' => 'English',
+				'de' => 'Deutsch',
 				'hu' => 'Magyar',
 			],
 	
