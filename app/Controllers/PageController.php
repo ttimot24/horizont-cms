@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\Trait\UploadsImage;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use App\Model\Page;
 
 class PageController extends Controller
@@ -174,18 +175,33 @@ class PageController extends Controller
     public function reorder(Request $request)
     {
 
+        $request->validate([
+            'order' => 'required|array',
+            'order.*' => 'integer|exists:pages,id'
+        ]);
+
+        $order = $request->input('order');
+
         try {
 
-            $order = $request->input("order");
+            DB::transaction(function () use ($order) {
+                foreach ($order as $index => $pageId) {
+                    $page = Page::findOrFail($pageId);
+                    $page->queue = $index;
+                    $page->save();
+                }
+            });
 
-            for ($i = 0; $i < count($order); $i++) {
-                $page = \App\Model\Page::find($order[$i]);
-                $page->queue = $i;
+            return response()->json([
+                'message' => 'Pages reordered successfully.',
+                'data' => $order
+            ]);
 
-                $page->save();
-            }
         } catch (\Exception $e) {
-            echo $e->getMessage();
+            return response()->json([
+                'error' => 'Failed to reorder pages.',
+                'details' => $e->getMessage()
+            ], 500);
         }
     }
 }

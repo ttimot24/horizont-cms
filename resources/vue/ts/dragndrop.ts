@@ -38,7 +38,7 @@ function dragndrop(): void {
             })
         )
         .subscribe((response: any) => {
-            console.log("Data: ", response.data);
+            console.log(response);
         });
 
     }

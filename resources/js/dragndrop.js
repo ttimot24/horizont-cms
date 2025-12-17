@@ -226,7 +226,7 @@ function dragndrop() {
       console.error(error);
       return (0,rxjs__WEBPACK_IMPORTED_MODULE_5__.throwError)(error);
     })).subscribe(function (response) {
-      console.log("Data: ", response.data);
+      console.log(response);
     });
   }
   var tbody = document.querySelector('#page-list-table tbody');
