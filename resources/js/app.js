@@ -4158,6 +4158,34 @@ var environment = {
 
 /***/ }),
 
+/***/ "./resources/vue/ts/lang.ts":
+/*!**********************************!*\
+  !*** ./resources/vue/ts/lang.ts ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _lang_php_en_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../lang/php_en.json */ "./resources/lang/php_en.json");
+/* harmony import */ var _lang_php_de_json__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../lang/php_de.json */ "./resources/lang/php_de.json");
+/* harmony import */ var _lang_php_hu_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../lang/php_hu.json */ "./resources/lang/php_hu.json");
+/**
+ * Build time generated language files
+ */
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  en: _lang_php_en_json__WEBPACK_IMPORTED_MODULE_0__,
+  de: _lang_php_de_json__WEBPACK_IMPORTED_MODULE_1__,
+  hu: _lang_php_hu_json__WEBPACK_IMPORTED_MODULE_2__
+});
+
+/***/ }),
+
 /***/ "./resources/vue/ts/pages.ts":
 /*!***********************************!*\
   !*** ./resources/vue/ts/pages.ts ***!
@@ -61281,6 +61309,17 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 /***/ }),
 
+/***/ "./resources/lang/php_de.json":
+/*!************************************!*\
+  !*** ./resources/lang/php_de.json ***!
+  \************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse('{"actions.th_action":"Aktion","actions.save":"Speichern","actions.publish":"Veröffentlichen","actions.draft":"Entwurf","actions.save_draft":"Als Entwurf speichern","actions.add":"Hinzufügen","actions.edit":"Bearbeiten","actions.options":"Optionen","actions.create":"Erstellen","actions.update":"Aktualisieren","actions.delete":"Löschen","actions.remove":"Entfernen","actions.cancel":"Abbrechen","actions.set":"Setzen","actions.yes":"Ja","actions.no":"Nein","actions.close":"Schließen","actions.next":"Weiter","actions.previous":"Zurück","actions.back":"Zurück","actions.upload":"Hochladen","actions.unlock":"Entsperren","actions.are_you_sure":"Bist du sicher?","actions.delete_this":"Dieses :content_type löschen","actions.upload_image":"Bild hochladen","actions.deactivate":"Deaktivieren","actions.select":"Auswählen","auth.failed":"Ungültige E-Mail/Benutzername oder Passwort.","auth.throttle":"Zu viele Anmeldeversuche. Bitte versuche es in :seconds Sekunden erneut.","auth.acces_denied":"Zugriff verweigert","auth.access_denied_message":"Du darfst diese Aktion nicht ausführen. Bitte kontaktiere den Administrator, wenn du denkst, dass dies ein Fehler ist.","blogpost.blogposts":"Blogbeiträge","blogpost.post":"Beitrag","blogpost.new_post_button":"Neuer Beitrag","blogpost.new_blogpost":"Neuer Blogbeitrag","blogpost.edit_blogpost":"Blogbeitrag bearbeiten","blogpost.title":"Titel","blogpost.view_blogpost":"Blogbeitrag ansehen","blogpost.summary":"Zusammenfassung","blogpost.all":"Alle","blogpost.select_category":"Kategorie auswählen","blogpost.primary":"Primär","blogpost.comments":"Kommentare","blogpost.th_id":"ID","blogpost.th_image":"Bild","blogpost.th_title":"Titel","blogpost.th_comment":"Kommentar","blogpost.th_comments":"Kommentare","blogpost.th_date":"Datum","blogpost.th_author":"Autor","blogpost.th_category":"Kategorie","blogpost.th_action":"Aktion","blogpost.author":"Autor","blogpost.slug":"Slug","blogpost.published_on":"Veröffentlicht am","blogpost.last_updated_at":"Zuletzt aktualisiert am","blogpost.category":"Kategorie","blogpost.characters":"Zeichen","blogpost.words":"Wörter","blogpost.reading_time":"Lesezeit","blogpost.removed_user":"Entfernter Benutzer","category.category":"Blogbeitragskategorien","category.add_category":"Kategorie hinzufügen","category.edit_category":"Kategorie bearbeiten","category.th_id":"ID","category.th_image":"Bild","category.th_category":"Kategorie","category.th_posts":"Beiträge","category.view_category_blogposts":"Blogbeiträge in dieser Kategorie","comment.moderator":"Moderator","comment.comments_not_enabled":"<strong>Achtung!</strong> Kommentare sind für diesen Beitrag nicht aktiviert!","comment.enable_comments_button":"Kommentare aktivieren","comment.disable_comments_button":"Kommentare deaktivieren","comment.write_comment_button":"Kommentar schreiben","comment.all_comments":"Alle Kommentare","comment.send":"Senden","comment.write_as":"Schreiben als","comment.th_image":"Bild","comment.th_name":"Benutzername","comment.th_comment":"Kommentar","comment.th_date":"Datum","dashboard.content":"Inhalt","dashboard.title":"Dashboard","dashboard.server_ip":"Server-IP: ","dashboard.client_ip":"Deine IP: ","dashboard.disk_usage":"Festplattennutzung","dashboard.search_bar":"Blogbeiträge, Benutzer, Dateien suchen …","dashboard.welcome_message":"Willkommen bei HorizontCMS!","dashboard.posted_news_count":"Veröffentlichte News","dashboard.registered_users_count":"Registrierte Benutzer","dashboard.visits_count":"Besuche","dashboard.update_available":"Update verfügbar!","dashboard.update_message":"Es ist eine neue Version von HorizontCMS verfügbar!","dashboard.update_now":"Jetzt aktualisieren","file.files":"Dateien","file.filemanager":"Dateimanager","login.email":"E-Mail","login.enter_email":"E-Mail-Adresse eingeben","login.username":"Benutzername","login.enter_username":"Benutzernamen eingeben","login.password":"Passwort","login.enter_password":"Passwort eingeben","login.remember_me":"Angemeldet bleiben","login.forgot_password":"Passwort vergessen?","login.login":"Anmelden","message.something_went_wrong":"Etwas ist schiefgelaufen!","message.validation_failed":"Validierung fehlgeschlagen!","message.successfully_created_blogpost":"Blogbeitrag erfolgreich erstellt!","message.successfully_updated_blogpost":"Blogbeitrag erfolgreich aktualisiert!","message.successfully_deleted_blogpost":"Blogbeitrag erfolgreich gelöscht!","message.successfully_created_blogpost_category":"Blogbeitragskategorie erfolgreich erstellt!","message.successfully_updated_blogpost_category":"Blogbeitragskategorie erfolgreich aktualisiert!","message.successfully_deleted_blogpost_category":"Blogbeitragskategorie erfolgreich gelöscht!","message.successfully_created_blogpost_comment":"Kommentar erfolgreich hinzugefügt!","message.successfully_updated_blogpost_comment":"Kommentar erfolgreich aktualisiert!","message.successfully_deleted_blogpost_comment":"Kommentar erfolgreich gelöscht!","message.successfully_created_user":"Benutzer erfolgreich erstellt!","message.successfully_updated_user":"Benutzer erfolgreich aktualisiert!","message.successfully_deleted_user":"Benutzer erfolgreich gelöscht!","message.successfully_created_page":"Seite erfolgreich erstellt!","message.successfully_updated_page":"Seite erfolgreich aktualisiert!","message.successfully_deleted_page":"Seite erfolgreich gelöscht!","message.successfully_saved_settings":"Einstellungen erfolgreich gespeichert!","message.successfully_changed_theme":"Theme erfolgreich geändert!","message.successfully_enabled_blogpost":"Kommentare erfolgreich aktiviert!","message.successfully_disabled_blogpost":"Kommentare erfolgreich deaktiviert!","message.successfully_set_homepage":"Startseite wurde erfolgreich geändert!","message.successfully_added_headerimage":"Headerbild erfolgreich hinzugefügt!","message.successfully_logged_in":"Erfolgreich angemeldet!","navbar.dashboard":"Übersicht","navbar.news":"Blog","navbar.users":"Benutzer","navbar.pages":"Seiten","navbar.media":"Medien","navbar.themes_apps":"Themes & Apps","navbar.posted_news":"Blogbeiträge","navbar.create_post":"Beitrag erstellen","navbar.categories":"Kategorien","navbar.user_list":"Benutzerliste","navbar.user_add":"Benutzer hinzufügen","navbar.user_groups":"Benutzergruppen","navbar.page_list":"Seitenliste","navbar.page_add":"Seite hinzufügen","navbar.header_images":"Header-Bilder","navbar.filemanager":"Dateien","navbar.gallery":"Galerie","navbar.theme":"Themes","navbar.plugin":"Plugins","navbar.develop":"Entwickeln","navbar.profile_view":"Profil ansehen","navbar.profile_settings":"Profileinstellungen","navbar.lock_screen":"Sperrbildschirm","navbar.visit_site":":site_name besuchen","navbar.logout":"Abmelden","navbar.about":"Über uns","page.pages":"Seiten","page.new_page":"Neue Seite","page.create_page_button":"Seite erstellen","page.edit_page":"Seite bearbeiten","page.view_page":"Seite ansehen","page.all":"Alle","page.visible":"Sichtbar","page.invisible":"Unsichtbar","page.order":"Reihenfolge","page.change_homepage":"Startseite ändern","page.are_you_sure_to_set":"Willst du wirklich <b>:page_name</b> als Startseite setzen?","page.menu_type1":"Hauptmenü","page.menu_type2":"Untermenü <i>von</i></br><b>:parent_menu</b>","page.add_new_page_title":"Neue Seite hinzufügen","page.menu_name":"Menü","page.semantic_url":"Semantische URL","page.page_template":"Seitentemplate","page.default_template":"Standard","page.page_level":"Ebene","page.main_menu":"Hauptmenü","page.submenu":"Untermenü","page.parent_menu":"Übergeordnetes Menü","page.none":"Keine","page.visibility":"Sichtbarkeit","page.page_content":"Seiteninhalt","page.th_id":"ID","page.th_image":"Bild","page.th_name":"Name","page.th_template":"Template","page.th_visibility":"Sichtbarkeit","page.th_type":"Typ","page.th_child_links":"Unterlinks","pagination.previous":"&laquo; Zurück","pagination.next":"Weiter &raquo;","passwords.password":"Passwörter müssen mindestens sechs Zeichen lang sein und mit der Bestätigung übereinstimmen.","passwords.reset":"Dein Passwort wurde zurückgesetzt!","passwords.sent":"Wir haben dir den Link zum Zurücksetzen des Passworts per E-Mail geschickt!","passwords.token":"Dieses Passwort-Zurücksetz-Token ist ungültig.","passwords.user":"Wir konnten keinen Benutzer mit dieser E-Mail-Adresse finden.","plugin.not_compatible_with_core":"Dieses Plugin ist nicht mit dem Core kompatibel! Die minimal erforderliche Core-Version ist :min_core_ver","schedules.th_id":"ID","schedules.th_name":"Name","schedules.th_command":"Befehl","schedules.th_arguments":"Argumente","schedules.th_frequency":"Häufigkeit","schedules.th_ping_before":"Vor dem Ping","schedules.th_ping_after":"Nach dem Ping","schedules.th_action":"Aktionen","search.title":"Suchergebnisse","search.found_matches":"Wir haben <a> :quantity </a> Treffer für das Stichwort \'<a>:search_word</a>\' gefunden","settings.settings":"Einstellungen","settings.website":"Website","settings.admin_area":"Admin-Bereich","settings.update_center":"Update-Center","settings.server":"Server","settings.email":"E-Mail","settings.social_media":"Soziale Medien","settings.database":"Datenbank","settings.scheduler":"Scheduler","settings.spread":"Verbreitung","settings.uninstall":"Deinstallieren","settings.adminarea_settings":"Adminbereich-Einstellungen","settings.adminarea_theme":"Admin-Theme","settings.adminarea_dashboard_logo":"Dashboard-Logo","settings.adminarea_language":"Sprache","settings.adminarea_date_format":"Datumsformat","settings.adminarea_auto_update_check":"Automatisch nach Updates suchen","settings.adminarea_broadcast_message":"Durchsagen","settings.adminarea_select_logo":"Logo auswählen","settings.adminarea_save_settings":"Einstellungen speichern","theme.options":"Optionen","theme.active":"Aktiv","theme.activate":"Aktivieren","theme.deactivate":"Deaktivieren","theme.current_theme":"Aktuelles Theme","theme.no_themes":"Keine Themes gefunden","theme.upload_theme":"Theme hochladen","theme.download_themes":"Theme herunterladen","theme.themes":"Themes","theme.upload_theme_button":"Theme hochladen","theme.version":"Version","theme.is_the_current_theme":"ist das aktuell aktive Theme","theme.author":"Autor","theme.website":"Website","theme.all":"Alle","theme.supported_lang":"Unterstützte Sprachen","user.users":"Benutzer","user.view_user":"Benutzer ansehen","user.edit_user":"Benutzer bearbeiten","user.create_user":"Benutzer erstellen","user.registered_users":"Registrierte Benutzer","user.all":"Alle","user.active":"Aktiv","user.inactive":"Inaktiv","user.new_user_button":"Neuer Benutzer","user.logins":"Anmeldungen","user.pws_not_equal":"Passwörter stimmen nicht überein!","user.inactive_about":"Dieser Benutzer ist seit :day_count Tagen inaktiv!","user.th_id":"ID","user.th_image":"Bild","user.th_name":"Name","user.th_username":"Benutzername","user.th_email":"E-Mail","user.th_rank":"Rang","user.th_session":"Sitzung","user.create_name":"Name","user.create_upload_image":"Bild hochladen","user.create_username":"Benutzername","user.create_password":"Passwort","user.create_password_again":"Passwort wiederholen","user.create_email":"E-Mail","user.create_phone":"Telefon","user.create_emailnotify":"Über Registrierung benachrichtigen","user.create_select_rank":"Rang auswählen","user.create_add_user_button":"Benutzer hinzufügen","user.view_full_name":"Vollständiger Name","user.view_user_name":"Benutzername","user.view_rank":"Rang","user.view_email":"E-Mail","user.view_phone":"Telefon","user.view_registered_on":"Registriert am","user.view_logins":"Anmeldungen","validation.accepted":"Das :attribute muss akzeptiert werden.","validation.active_url":"Das :attribute ist keine gültige URL.","validation.after":"Das :attribute muss ein Datum nach :date sein.","validation.alpha":"Das :attribute darf nur Buchstaben enthalten.","validation.alpha_dash":"Das :attribute darf nur Buchstaben, Zahlen und Bindestriche enthalten.","validation.alpha_num":"Das :attribute darf nur Buchstaben und Zahlen enthalten.","validation.array":"Das :attribute muss ein Array sein.","validation.before":"Das :attribute muss ein Datum vor :date sein.","validation.between.numeric":"Das :attribute muss zwischen :min und :max liegen.","validation.between.file":"Das :attribute muss zwischen :min und :max Kilobytes groß sein.","validation.between.string":"Das :attribute muss zwischen :min und :max Zeichen haben.","validation.between.array":"Das :attribute muss zwischen :min und :max Elemente haben.","validation.boolean":"Das :attribute Feld muss true oder false sein.","validation.confirmed":"Die :attribute Bestätigung stimmt nicht überein.","validation.date":"Das :attribute ist kein gültiges Datum.","validation.date_format":"Das :attribute entspricht nicht dem Format :format.","validation.different":"Das :attribute und :other müssen unterschiedlich sein.","validation.digits":"Das :attribute muss :digits Ziffern haben.","validation.digits_between":"Das :attribute muss zwischen :min und :max Ziffern haben.","validation.dimensions":"Das :attribute hat ungültige Bilddimensionen.","validation.distinct":"Das :attribute Feld hat einen doppelten Wert.","validation.email":"Das :attribute muss eine gültige E-Mail-Adresse sein.","validation.exists":"Das ausgewählte :attribute ist ungültig.","validation.file":"Das :attribute muss eine Datei sein.","validation.filled":"Das :attribute Feld ist erforderlich.","validation.image":"Das :attribute muss ein Bild sein.","validation.in":"Das ausgewählte :attribute ist ungültig.","validation.in_array":"Das :attribute Feld existiert nicht in :other.","validation.integer":"Das :attribute muss eine ganze Zahl sein.","validation.ip":"Das :attribute muss eine gültige IP-Adresse sein.","validation.json":"Das :attribute muss ein gültiger JSON-String sein.","validation.max.numeric":"Das :attribute darf nicht größer als :max sein.","validation.max.file":"Das :attribute darf nicht größer als :max Kilobytes sein.","validation.max.string":"Das :attribute darf nicht länger als :max Zeichen sein.","validation.max.array":"Das :attribute darf nicht mehr als :max Elemente haben.","validation.mimes":"Das :attribute muss eine Datei des Typs :values sein.","validation.mimetypes":"Das :attribute muss eine Datei des Typs :values sein.","validation.min.numeric":"Das :attribute muss mindestens :min sein.","validation.min.file":"Das :attribute muss mindestens :min Kilobytes groß sein.","validation.min.string":"Das :attribute muss mindestens :min Zeichen haben.","validation.min.array":"Das :attribute muss mindestens :min Elemente haben.","validation.not_in":"Das ausgewählte :attribute ist ungültig.","validation.numeric":"Das :attribute muss eine Zahl sein.","validation.present":"Das :attribute Feld muss vorhanden sein.","validation.regex":"Das :attribute Format ist ungültig.","validation.required":"Das :attribute Feld ist erforderlich.","validation.required_if":"Das :attribute Feld ist erforderlich, wenn :other :value ist.","validation.required_unless":"Das :attribute Feld ist erforderlich, außer :other ist in :values.","validation.required_with":"Das :attribute Feld ist erforderlich, wenn :values vorhanden ist.","validation.required_with_all":"Das :attribute Feld ist erforderlich, wenn :values vorhanden sind.","validation.required_without":"Das :attribute Feld ist erforderlich, wenn :values nicht vorhanden ist.","validation.required_without_all":"Das :attribute Feld ist erforderlich, wenn keines der :values vorhanden ist.","validation.same":"Das :attribute und :other müssen übereinstimmen.","validation.size.numeric":"Das :attribute muss :size sein.","validation.size.file":"Das :attribute muss :size Kilobytes groß sein.","validation.size.string":"Das :attribute muss :size Zeichen haben.","validation.size.array":"Das :attribute muss :size Elemente enthalten.","validation.string":"Das :attribute muss ein String sein.","validation.timezone":"Das :attribute muss eine gültige Zeitzone sein.","validation.unique":"Das :attribute wurde bereits vergeben.","validation.uploaded":"Das :attribute konnte nicht hochgeladen werden.","validation.url":"Das :attribute Format ist ungültig.","validation.custom.attribute-name.rule-name":"benutzerdefinierte-nachricht"}');
+
+/***/ }),
+
 /***/ "./resources/lang/php_en.json":
 /*!************************************!*\
   !*** ./resources/lang/php_en.json ***!
@@ -61403,16 +61442,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var select2__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(select2__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _dragndrop_ts__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./dragndrop.ts */ "./resources/vue/ts/dragndrop.ts");
 /* harmony import */ var _pages_ts__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pages.ts */ "./resources/vue/ts/pages.ts");
-/* harmony import */ var _lang_php_en_json__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../lang/php_en.json */ "./resources/lang/php_en.json");
-/* harmony import */ var _lang_php_hu_json__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../lang/php_hu.json */ "./resources/lang/php_hu.json");
-/* harmony import */ var ckeditor4_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ckeditor4-vue */ "./node_modules/ckeditor4-vue/dist/ckeditor.js");
-/* harmony import */ var ckeditor4_vue__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(ckeditor4_vue__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var vue_i18n__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vue-i18n */ "./node_modules/vue-i18n/dist/vue-i18n.esm.js");
-/* harmony import */ var _vue_composition_api__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @vue/composition-api */ "./node_modules/@vue/composition-api/dist/vue-composition-api.mjs");
-/* harmony import */ var _components_text_editor_TextEditor_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/text-editor/TextEditor.vue */ "./resources/vue/ts/components/text-editor/TextEditor.vue");
-/* harmony import */ var _components_lock_screen_LockScreen_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/lock-screen/LockScreen.vue */ "./resources/vue/ts/components/lock-screen/LockScreen.vue");
-/* harmony import */ var _components_file_manager_FileManager_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/file-manager/FileManager.vue */ "./resources/vue/ts/components/file-manager/FileManager.vue");
-/* harmony import */ var _components_category_selector_CategorySelector_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/category-selector/CategorySelector.vue */ "./resources/vue/ts/components/category-selector/CategorySelector.vue");
+/* harmony import */ var _lang__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./lang */ "./resources/vue/ts/lang.ts");
+/* harmony import */ var ckeditor4_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ckeditor4-vue */ "./node_modules/ckeditor4-vue/dist/ckeditor.js");
+/* harmony import */ var ckeditor4_vue__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(ckeditor4_vue__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var vue_i18n__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! vue-i18n */ "./node_modules/vue-i18n/dist/vue-i18n.esm.js");
+/* harmony import */ var _vue_composition_api__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @vue/composition-api */ "./node_modules/@vue/composition-api/dist/vue-composition-api.mjs");
+/* harmony import */ var _components_text_editor_TextEditor_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/text-editor/TextEditor.vue */ "./resources/vue/ts/components/text-editor/TextEditor.vue");
+/* harmony import */ var _components_lock_screen_LockScreen_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/lock-screen/LockScreen.vue */ "./resources/vue/ts/components/lock-screen/LockScreen.vue");
+/* harmony import */ var _components_file_manager_FileManager_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/file-manager/FileManager.vue */ "./resources/vue/ts/components/file-manager/FileManager.vue");
+/* harmony import */ var _components_category_selector_CategorySelector_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/category-selector/CategorySelector.vue */ "./resources/vue/ts/components/category-selector/CategorySelector.vue");
 /* provided dependency */ var __webpack_provided_window_dot_jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -61425,9 +61463,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-/**
- * Build time generated language files
- */
 
 
 
@@ -61436,17 +61471,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-window.vue.use((ckeditor4_vue__WEBPACK_IMPORTED_MODULE_8___default()));
-window.vue.use(_vue_composition_api__WEBPACK_IMPORTED_MODULE_13__["default"]);
-window.vue.use(vue_i18n__WEBPACK_IMPORTED_MODULE_14__["default"]);
-var i18n = new vue_i18n__WEBPACK_IMPORTED_MODULE_14__["default"]({
+window.vue.use((ckeditor4_vue__WEBPACK_IMPORTED_MODULE_7___default()));
+window.vue.use(_vue_composition_api__WEBPACK_IMPORTED_MODULE_12__["default"]);
+window.vue.use(vue_i18n__WEBPACK_IMPORTED_MODULE_13__["default"]);
+var i18n = new vue_i18n__WEBPACK_IMPORTED_MODULE_13__["default"]({
   locale: window.navigator.language.split('-')[0] || 'en',
   fallbackLocale: 'en',
-  messages: {
-    en: _lang_php_en_json__WEBPACK_IMPORTED_MODULE_6__,
-    hu: _lang_php_hu_json__WEBPACK_IMPORTED_MODULE_7__
-  }
+  messages: _lang__WEBPACK_IMPORTED_MODULE_6__["default"]
 });
 var hcms = new window.vue({
   name: 'HorizontCMS',
@@ -61459,18 +61490,24 @@ var hcms = new window.vue({
     };
   },
   components: {
-    TextEditor: _components_text_editor_TextEditor_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
-    LockScreen: _components_lock_screen_LockScreen_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
-    FileManager: _components_file_manager_FileManager_vue__WEBPACK_IMPORTED_MODULE_11__["default"],
-    CategorySelector: _components_category_selector_CategorySelector_vue__WEBPACK_IMPORTED_MODULE_12__["default"]
+    TextEditor: _components_text_editor_TextEditor_vue__WEBPACK_IMPORTED_MODULE_8__["default"],
+    LockScreen: _components_lock_screen_LockScreen_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
+    FileManager: _components_file_manager_FileManager_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
+    CategorySelector: _components_category_selector_CategorySelector_vue__WEBPACK_IMPORTED_MODULE_11__["default"]
   },
   created: function created() {
     console.info("HorizontCMS started");
-    console.log("Available languages: ", this.i18n.availableLocales);
+    console.log("Available locales:", this.$i18n.availableLocales);
   },
   methods: {
     lock: function lock() {
       this.$refs.lockscreen.lock();
+    },
+    setLocale: function setLocale(lang) {
+      if (this.$i18n.availableLocales.includes(lang)) {
+        this.$i18n.locale = lang;
+      }
+      console.log("Current locale:", this.$i18n.locale);
     }
   }
 });

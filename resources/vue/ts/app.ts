@@ -3,18 +3,13 @@
  * for JavaScript based Bootstrap features such as modals and tabs. This
  * code may be modified to fit the specific needs of your application.
  */
-import * as $ from "jquery";
-import * as bootstrap from "bootstrap";
-import "bootstrap-fileinput";
-import "select2";
-import "./dragndrop.ts";
-import "./pages.ts";
-
-/**
- * Build time generated language files
- */
-import en from '../../lang/php_en.json';
-import hu from '../../lang/php_hu.json';
+import * as $ from 'jquery';
+import * as bootstrap from 'bootstrap';
+import 'bootstrap-fileinput';
+import 'select2';
+import './dragndrop.ts';
+import './pages.ts';
+import lang from './lang';
 
 import CKEditor from 'ckeditor4-vue';
 import VueI18n from 'vue-i18n';
@@ -31,7 +26,7 @@ window.vue.use(VueI18n);
 const i18n = new VueI18n({
     locale: window.navigator.language.split('-')[0] || 'en',
     fallbackLocale: 'en',
-    messages: {en, hu}
+    messages: lang
 });
 
 
@@ -55,12 +50,19 @@ const hcms = new window.vue({
     },
     created: function(){
         console.info("HorizontCMS started");
-        console.log("Available languages: ", this.i18n.availableLocales );
+        console.log("Available locales:", this.$i18n.availableLocales );
     },
     methods: {
         lock: function(){
             this.$refs.lockscreen.lock();
         },
+        setLocale: function(lang: string) {
+
+            if(this.$i18n.availableLocales.includes(lang)){
+                this.$i18n.locale = lang;
+            }
+            console.log("Current locale:", this.$i18n.locale);
+        }
     }
 
 });
