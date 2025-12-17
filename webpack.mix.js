@@ -19,6 +19,7 @@ mix.autoload({
 });
 
 mix.i18n('resources/lang');
+//mix.copy('resources/lang/*.json', 'resources/vue/ts/assets/i18n');
 
 mix.ts('resources/vue/ts/app.ts', 'js')
    .ts('resources/vue/ts/main.ts', 'js')

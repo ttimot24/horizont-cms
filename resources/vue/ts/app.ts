@@ -10,7 +10,14 @@ import "select2";
 import "./dragndrop.ts";
 import "./pages.ts";
 
+/**
+ * Build time generated language files
+ */
+import en from '../../lang/php_en.json';
+import hu from '../../lang/php_hu.json';
+
 import CKEditor from 'ckeditor4-vue';
+import VueI18n from 'vue-i18n';
 import VueCompositionAPI from '@vue/composition-api';
 import TextEditor from './components/text-editor/TextEditor.vue';
 import LockScreen from './components/lock-screen/LockScreen.vue';
@@ -19,26 +26,22 @@ import CategorySelector from './components/category-selector/CategorySelector.vu
 
 window.vue.use(CKEditor);
 window.vue.use(VueCompositionAPI);
+window.vue.use(VueI18n);
 
-/*const i18n = createI18n({
-    locale:  window.navigator.language.split('-')[0],
-    fallbackLocale: 'en', // set fallback locale
-    messages: {
-    }
-});*/
+const i18n = new VueI18n({
+    locale: window.navigator.language.split('-')[0] || 'en',
+    fallbackLocale: 'en',
+    messages: {en, hu}
+});
+
 
 const hcms = new window.vue({
     name: 'HorizontCMS',
     el: '#hcms',
-   // i18n,
+    i18n,
     data: {
 
     },
-  /*  setup() {
-        return {
-        ...useI18n()
-        }
-    }, */
     provide() {
         return {
           bootstrap: bootstrap
@@ -51,7 +54,8 @@ const hcms = new window.vue({
         CategorySelector
     },
     created: function(){
-        console.log("HorizontCMS started");
+        console.info("HorizontCMS started");
+        console.log("Available languages: ", this.i18n.availableLocales );
     },
     methods: {
         lock: function(){
