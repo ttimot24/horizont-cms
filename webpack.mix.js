@@ -23,6 +23,6 @@ mix.i18n('resources/lang');
 mix.ts('resources/vue/ts/app.ts', 'js')
    .ts('resources/vue/ts/main.ts', 'js')
    .ts('resources/vue/ts/pages.ts', 'js')
-   .js('resources/vue/ts/dragndrop.js', 'js')
+   .js('resources/vue/ts/dragndrop.ts', 'js')
    .vue()
    .sass('resources/vue/sass/horizontcms-next.scss', 'css');

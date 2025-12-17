@@ -3,7 +3,6 @@ import DeleteModal from '../delete-modal/DeleteModal.vue';
 import { environment } from '../../environments/environment';
 import { FileManagerResponse } from '../../model/FileManagerResponse';
 import { catchError, of, map, retry, throwError } from 'rxjs';
-import axios from 'axios';
 
 export default defineComponent({
     name: 'FileManager',

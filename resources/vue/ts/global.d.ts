@@ -9,5 +9,6 @@ declare global {
         CKEDITOR: any,
         bootstrap: any;
         hcms: Vue;
+        dragndroporder: () => void;
     }
 }

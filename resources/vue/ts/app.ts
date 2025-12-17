@@ -7,6 +7,7 @@ import * as $ from "jquery";
 import * as bootstrap from "bootstrap";
 import "bootstrap-fileinput";
 import "select2";
+import "./dragndrop.ts";
 
 import CKEditor from 'ckeditor4-vue';
 import VueCompositionAPI from '@vue/composition-api';

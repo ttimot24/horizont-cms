@@ -1,4 +1,4 @@
-@extends('layout', ['title' => trans('page.pages'), 'js' => array_merge($js, ['resources/js/dragndrop.js']) ])
+@extends('layout', ['title' => trans('page.pages') ])
 
 @section('content')
     <div class='container main-container'>

@@ -1,6 +1,6 @@
 {
     "name": "ttimot24/horizont-cms",
-    "version": "1.2.0",
+    "version": "1.4.2",
     "description": "The CMS that fits exactly to your needs",
     "keywords": ["hcms", "laravel","vuejs","bootstrap","website"],
     "license": "MIT",
@@ -31,7 +31,8 @@
         "mockery/mockery": "1.4.*",
         "filp/whoops" : "~2.0",
         "bamarni/composer-bin-plugin": "^1.8",
-        "larastan/larastan": "^2.9"
+        "larastan/larastan": "^2.9",
+        "laravel/pint": "^1.25"
     },
     "autoload": {
         "classmap": [

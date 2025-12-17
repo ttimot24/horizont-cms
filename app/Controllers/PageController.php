@@ -171,13 +171,12 @@ class PageController extends Controller
         return redirect(route("page.index"))->withMessage(['danger' => trans('message.something_went_wrong')]);
     }
 
-    public function reorder()
+    public function reorder(Request $request)
     {
-        //TODO Return JSON response
 
         try {
 
-            $order = json_decode(request()->input("order"), true);
+            $order = $request->input("order");
 
             for ($i = 0; $i < count($order); $i++) {
                 $page = \App\Model\Page::find($order[$i]);

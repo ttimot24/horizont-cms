@@ -119,6 +119,10 @@ Route::get('/plugins',function(Request $request){
 
 })->middleware('auth:api');
 
+################################################
+
+Route::put('pages/reorder', [\App\Controllers\PageController::class, 'reorder'])
+                ->middleware('auth:api');
 
 Route::post('lock-up',function(Request $request){
 
