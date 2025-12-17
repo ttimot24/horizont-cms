@@ -9,11 +9,14 @@ import "bootstrap-fileinput";
 import "select2";
 
 import CKEditor from 'ckeditor4-vue';
+import VueCompositionAPI from '@vue/composition-api';
 import TextEditor from './components/text-editor/TextEditor.vue';
 import LockScreen from './components/lock-screen/LockScreen.vue';
 import FileManager from './components/file-manager/FileManager.vue';
+import CategorySelector from './components/category-selector/CategorySelector.vue';
 
 window.vue.use(CKEditor);
+window.vue.use(VueCompositionAPI);
 
 /*const i18n = createI18n({
     locale:  window.navigator.language.split('-')[0],
@@ -42,7 +45,8 @@ const hcms = new window.vue({
     components: {
         TextEditor,
         LockScreen,
-        FileManager
+        FileManager,
+        CategorySelector
     },
     created: function(){
         console.log("HorizontCMS started");
