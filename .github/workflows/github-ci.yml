@@ -49,6 +49,7 @@ jobs:
     #      if [ -f "reports/coverage.xml" ]; then vendor/bin/codacycoverage clover reports/coverage.xml; fi 
       - name: Test Report
         uses: dorny/test-reporter@v2
+        run: ls -l reports
         if: ${{ !cancelled() }}
         with:
           name: PHPUnit tests
