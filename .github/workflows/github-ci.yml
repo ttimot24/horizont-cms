@@ -52,7 +52,7 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: PHPUnit tests
-          path: reports/junit.xml
+          path: ./reports/junit.xml
           reporter: java-junit
 
       - name: Show versions
