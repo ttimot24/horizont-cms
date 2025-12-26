@@ -35,7 +35,7 @@ class InstallCommand extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         echo "
  _  _         _            _    ___ __  __ ___    ___ _    ___ 
