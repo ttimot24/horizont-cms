@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Gate;
 
 class PermissionsGate
 {
-    public static function register()
+    public static function register(): void
     {
         Gate::define('access', function ($user, string $permission) {
             return $user->hasPermission($permission);

@@ -49,7 +49,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function mapWebRoutes()
+    protected function mapWebRoutes(): void
     {
         Route::group([
             'middleware' => ['web', 'website'],
@@ -66,7 +66,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function mapApiRoutes()
+    protected function mapApiRoutes(): void
     {
         Route::group([
             'middleware' => 'api',
@@ -78,7 +78,7 @@ class RouteServiceProvider extends ServiceProvider
     }
 
 
-    protected function mapBackendRoutes()
+    protected function mapBackendRoutes(): void
     {
         Route::group([
             'middleware' => 'web',
