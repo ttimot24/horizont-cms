@@ -11,7 +11,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: php-actions/composer@v6
         with:
           args: --ignore-platform-reqs
@@ -21,7 +21,7 @@ jobs:
   phpstan: 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: php-actions/composer@v6
         with:
           args: --ignore-platform-reqs
@@ -31,14 +31,14 @@ jobs:
   test:
     runs-on: ubuntu-latest 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: php-actions/composer@v6
         with:
           args: --ignore-platform-reqs
       - name: Force installed variable
         run: export INSTALLED=YES
       - name: Run unit tests
-        run: XDEBUG_MODE=coverage vendor/bin/phpunit --testsuite Unit --log-junit reports/junit.xml --coverage-clover reports/coverage.xml --coverage-html ./reports/html
+        run: XDEBUG_MODE=coverage vendor/bin/phpunit --testsuite Unit --log-junit ./reports/junit.xml --coverage-clover ./reports/coverage.xml --coverage-html ./reports/html
     #  - name: Upload coverage
     #    run: | 
     #      if [ -f "reports/coverage.xml" ]; then vendor/bin/codacycoverage clover reports/coverage.xml; fi 
@@ -62,7 +62,7 @@ jobs:
   frontend:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use Node.js 22.x
       uses: actions/setup-node@v3
       with:
@@ -74,7 +74,7 @@ jobs:
   docker_image:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Log in to Docker Hub
       uses: docker/login-action@v3
       with:
