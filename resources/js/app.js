@@ -3877,7 +3877,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../environments/environment */ "./resources/vue/ts/environments/environment.ts");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/dist/esm5/internal/operators/catchError.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/dist/esm5/internal/observable/of.js");
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 function _typeof(obj) {
   "@babel/helpers - typeof";
 
@@ -3927,7 +3926,7 @@ function _typeof(obj) {
     unlock: function unlock() {
       var vm = this;
       console.log(vm);
-      var password_field = $("#lock_pwd");
+      var password_field = document.querySelector('#lock_pwd');
       this.http.post(_environments_environment__WEBPACK_IMPORTED_MODULE_1__.environment.REST_API_BASE + '/lock-up', {
         id: this.user.id,
         password: this.password
@@ -3939,8 +3938,8 @@ function _typeof(obj) {
         if (response.data) {
           vm.modal.hide();
           localStorage.locksession = 'false';
-        } else {
-          password_field.addClass('is-invalid');
+        } else if (password_field) {
+          password_field.classList.add('is-invalid');
         }
         password_field = null;
       });

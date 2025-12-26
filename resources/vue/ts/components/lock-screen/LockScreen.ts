@@ -49,7 +49,7 @@ export default defineComponent({
 
             console.log(vm);
 
-            var password_field: any = $("#lock_pwd");
+            var password_field: HTMLElement | null = document.querySelector('#lock_pwd');
 
             this.http.post(environment.REST_API_BASE+'/lock-up',
                 {
@@ -70,8 +70,8 @@ export default defineComponent({
                     vm.modal.hide();
                     localStorage.locksession = 'false';
 
-                } else {
-                    password_field.addClass('is-invalid');
+                } else if (password_field) {
+                    password_field.classList.add('is-invalid');
                 }
 
                 password_field = null;
