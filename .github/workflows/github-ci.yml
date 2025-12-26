@@ -43,7 +43,7 @@ jobs:
       - name: Force installed variable
         run: export INSTALLED=YES
       - name: Run unit tests
-        run: XDEBUG_MODE=coverage vendor/bin/phpunit --testsuite Unit --coverage-clover ./reports/coverage.xml --coverage-html ./reports/html && ls -l reports && rm .gitignore
+        run: XDEBUG_MODE=coverage vendor/bin/phpunit --testsuite Unit --coverage-clover ./reports/coverage.xml --coverage-html ./reports/html && ls -l reports && git add ./reports -f
     #  - name: Upload coverage
     #    run: | 
     #      if [ -f "reports/coverage.xml" ]; then vendor/bin/codacycoverage clover reports/coverage.xml; fi 
