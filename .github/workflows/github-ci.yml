@@ -48,7 +48,7 @@ jobs:
         with:
           name: PHPUnit tests
           path: reports/junit.xml
-          reporter: jest-junit
+          reporter: java-junit
 
       - name: Show versions
         run: | 
