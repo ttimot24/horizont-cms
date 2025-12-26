@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 use App\Model\Settings;
 
 class PluginServiceProvider extends ServiceProvider
