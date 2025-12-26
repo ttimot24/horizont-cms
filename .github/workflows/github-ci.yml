@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [ "master" ]
 
+permissions:
+  contents: read
+  actions: read
+  checks: write
+
 jobs:
 
   lint:
@@ -44,10 +49,10 @@ jobs:
     #      if [ -f "reports/coverage.xml" ]; then vendor/bin/codacycoverage clover reports/coverage.xml; fi 
       - name: Test Report
         uses: dorny/test-reporter@v2
-        if: ${{ !cancelled() }}       # run this step even if previous step failed
+        if: ${{ !cancelled() }}
         with:
           name: PHPUnit tests
-          path: reports/junit.xml
+          path: reports/*.xml
           reporter: java-junit
 
       - name: Show versions
