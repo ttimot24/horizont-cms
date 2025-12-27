@@ -137,6 +137,6 @@
     </div>
 
     @if (isset($user))
-        @include('image_details', ['modal_id' => $user->id, 'image' => $user->getImage()])
+        @include('image_details', ['modal_id' => $user->id, 'image' => $user->getImageFilePath()])
     @endif
 @endsection
