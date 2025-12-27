@@ -48,15 +48,15 @@ if (app()->isInstalled()) {
 
 		try {
 
-			$router = new \App\Http\RouteResolver();
+			$resolver = new \App\Http\RouteResolver();
 
 			try {
 
-				$router->changeNamespace("Theme\\" . $_THEME_NAME . "\\App\\Controllers\\");
+				$resolver->changeNamespace("Theme\\" . $_THEME_NAME . "\\App\\Controllers\\");
 
 				$action = explode("/", $args)[0];
 
-				return $router->resolve($slug, $action, ltrim($args, $action . "/"));
+				return $resolver->resolve($slug, $action, ltrim($args, $action . "/"));
 			} catch (Exception $e) {
 
 
