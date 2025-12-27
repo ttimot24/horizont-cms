@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use \Illuminate\Database\Eloquent\Model;
+use \Illuminate\Database\Eloquent\Builder;
 
 class Settings extends Model {
   
@@ -19,29 +20,29 @@ class Settings extends Model {
   	public $settings;
   	private static $static_settings = null;
 
-	public static function get($setting,$default = null, bool $valueCheck = false){
+	public static function get(string $setting, $default = null, bool $valueCheck = false){
 
 		if(!$valueCheck && self::has($setting)){
 			return self::$static_settings[$setting];
 		}
 
-		if($valueCheck && self::has($setting) && self::$static_settings[$setting]!=""){
+		if($valueCheck && self::has($setting) && !empty(self::$static_settings[$setting])){
 			return self::$static_settings[$setting];
 		}
 		
 		return $default;
 	}
 
-	public static function has($setting){
+	public static function has(string $setting): bool {
 		if(self::$static_settings==null){
 			self::$static_settings = self::getAll();	
 		}
 
-		return array_key_exists($setting,self::$static_settings);
+		return array_key_exists($setting, self::$static_settings);
 	}
 
 
-	public static function getAll(){
+	public static function getAll(): array {
 
 		$array = [];
 
@@ -53,7 +54,7 @@ class Settings extends Model {
 	}
 
 
-	public function assignAll(){
+	public function assignAll(): void {
 		$settings = self::all();
 
 		$this->settings = new \stdClass();
@@ -65,11 +66,9 @@ class Settings extends Model {
 			}
 		
 		}
-
-
 	}
 
-	public function scopeGroup($query, $group){
+	public function scopeGroup(Builder $query, string $group): Builder {
 		return $query->where('group', $group);
 	}
 

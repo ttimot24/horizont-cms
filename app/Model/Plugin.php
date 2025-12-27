@@ -48,24 +48,24 @@ class Plugin extends Model
 		return $query->where('active', '1');
 	}
 
-	public function setRootDir($root_dir)
+	public function setRootDir($root_dir): void
 	{
 		$this->root_dir = $root_dir;
 	}
 
-	public function exists()
+	public function exists(): bool
 	{
 		return file_exists($this->getPath());
 	}
 
-	public function isInstalled()
+	public function isInstalled(): bool
 	{
 		$result = self::rootDir($this->root_dir)->get();
 
 		return !$result->isEmpty();
 	}
 
-	public function isActive()
+	public function isActive(): bool
 	{
 
 		return ($this->isInstalled() && $this->active == 1);
@@ -79,27 +79,27 @@ class Plugin extends Model
 		return isset($this->config[$config]) ? $this->config[$config] : $default;
 	}
 
-	public function getName()
+	public function getName(): string
 	{
 		return $this->getInfo('name') == null ? $this->root_dir : $this->getInfo('name');
 	}
 
-	public function getNamespaceFor($for)
+	public function getNamespaceFor($for): string
 	{
 		return "\Plugin\\" . $this->root_dir . "\\App\\" . ucfirst($for) . "\\";
 	}
 
-	public function getSlug()
+	public function getSlug(): string
 	{
 		return namespace_to_slug($this->root_dir);
 	}
 
-	public function getPath()
+	public function getPath(): string
 	{
 		return 'plugins' . DIRECTORY_SEPARATOR . $this->root_dir;
 	}
 
-	public function getDatabaseFilesPath()
+	public function getDatabaseFilesPath(): string | null
 	{
 
 		$path_to_db = $this->getPath() . '/database';
@@ -111,7 +111,7 @@ class Plugin extends Model
 		return null;
 	}
 
-	private function loadInfoFromFile()
+	private function loadInfoFromFile(): void
 	{
 
 		$file_without_extension = $this->getPath() . "/plugin_info";
@@ -128,12 +128,12 @@ class Plugin extends Model
 		}
 	}
 
-	public function hasInfo()
+	public function hasInfo(): bool
 	{
 		return isset($this->info);
 	}
 
-	public function setAllInfo($all_info)
+	public function setAllInfo($all_info): void
 	{
 		$this->info = $all_info;
 	}
@@ -148,23 +148,23 @@ class Plugin extends Model
 		return isset($this->info->{$info}) ? $this->info->{$info} : null;
 	}
 
-	public function getShortCode()
+	public function getShortCode(): string
 	{
 		return "{[" . $this->root_dir . "]}";
 	}
 
 
-	public function hasRegisterClass()
+	public function hasRegisterClass(): bool
 	{
 		return class_exists($this->getRegisterClass());
 	}
 
-	public function getRegisterClass()
+	public function getRegisterClass(): string
 	{
 		return "\Plugin\\" . $this->root_dir . "\Register";
 	}
 
-	public function hasRegister($register)
+	public function hasRegister($register): bool
 	{
 		return method_exists($this->getRegisterClass(), $register);
 	}
@@ -187,7 +187,7 @@ class Plugin extends Model
 		return $default;
 	}
 
-	public function isUpdatable()
+	public function isUpdatable(): bool
 	{
 
 		if($this->isInstalled()
@@ -210,7 +210,7 @@ class Plugin extends Model
 		return ltrim(empty($this->getInfo('requires')->core)? 'v0.0.0' : $this->getInfo('requires')->core, 'v');
 	}
 
-	public function isCompatibleWithCore()
+	public function isCompatibleWithCore(): bool
 	{
 		return \Composer\Semver\Comparator::greaterThanOrEqualTo(ltrim(config('horizontcms.version'), 'v'), $this->getRequiredCoreVersion());
 	}

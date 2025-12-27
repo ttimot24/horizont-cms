@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request;
 use \App\Services\Theme;
+use \App\Model\Settings;
 
 class ThemeServiceProvider extends ServiceProvider
 {
@@ -13,11 +15,11 @@ class ThemeServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         if (app()->isInstalled()) {
 
-            $theme = new Theme(\App\Model\Settings::get('theme'));
+            $theme = new Theme(Settings::get('theme'));
 
             $this->app->singleton(Theme::class, function ($app) use($theme) {
                 return $theme;
@@ -35,7 +37,7 @@ class ThemeServiceProvider extends ServiceProvider
         }
     }
 
-    protected function registerThemeConfigs(Theme $theme)
+    protected function registerThemeConfigs(Theme $theme): void
     {
         foreach (glob($theme->getPath().'/config/*.php') as $file) {
             $this->mergeConfigFrom(base_path($file), strtolower('theme:'.basename($file, '.php')));
@@ -44,20 +46,22 @@ class ThemeServiceProvider extends ServiceProvider
     }
 
 
-    protected function registerTranslations(Theme $theme){
-        if (!\Request::is(\Config::get('horizontcms.backend_prefix') . "/*")) {
+    protected function registerTranslations(Theme $theme): void
+    {
+        if (!Request::is(\Config::get('horizontcms.backend_prefix') . "/*")) {
             $this->loadJsonTranslationsFrom(base_path($theme->getPath() . "resources/lang"));
         }
     }
 
-    protected function registerThemeViews(Theme $theme){
+    protected function registerThemeViews(Theme $theme): void
+    {
         \View::addNamespace('theme', [
             $theme->getPath() . "app" . DIRECTORY_SEPARATOR . "View",
             $theme->getPath() . "resources" . DIRECTORY_SEPARATOR . "views",
         ]);
     }
 
-    protected function registerThemeRoutes(Theme $theme)
+    protected function registerThemeRoutes(Theme $theme): void
     {
 
         if (file_exists($theme->getPath() . 'routes/web.php')) {
@@ -86,7 +90,7 @@ class ThemeServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
     }
 }

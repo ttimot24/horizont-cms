@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Model\Trait;
+
+use Illuminate\Database\Eloquent\Builder;
  
 trait IsActive {
 
@@ -20,11 +22,11 @@ trait IsActive {
         return $this->active == null || $this->active == 0;
     }
 
-    public function scopeActive($query){
+    public function scopeActive(Builder $query): Builder {
         return $query->where('active', '>', 0);
     }
 
-    public function scopeInActive($query){
+    public function scopeInActive(Builder $query): Builder {
         return $query->where('active', 0);
     }
 

@@ -32,7 +32,7 @@ class ThemeCommand extends Command
 
 
 
-    public function handle()
+    public function handle(): void
     {
 
         $selectedTheme = $this->argument('theme');
@@ -45,7 +45,7 @@ class ThemeCommand extends Command
     }
 
 
-    private function set($theme)
+    private function set($theme): void
     {
         if (file_exists(base_path('themes' . DIRECTORY_SEPARATOR . $theme))) {
 

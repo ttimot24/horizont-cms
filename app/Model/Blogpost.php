@@ -42,7 +42,7 @@ class Blogpost extends Model
     
 
     //TODO Use https://github.com/spatie/laravel-sluggable
-    public static function findBySlug($slug)
+    public static function findBySlug($slug): ?Blogpost
     {
 
         $blogpost = self::where('slug', $slug)->first();
@@ -111,27 +111,27 @@ class Blogpost extends Model
         return empty($this->summary) ? substr(strip_tags($this->text), 0, $char_num) : $this->summary;
     }
 
-    public function getTotalCharacterCount()
+    public function getTotalCharacterCount(): int
     {
         return strlen(strip_tags($this->text));
     }
 
-    public function getTotalWordCount()
+    public function getTotalWordCount(): int
     {
         return str_word_count(strip_tags($this->text));
     }
 
-    public function getReadingTime()
+    public function getReadingTime(): int
     {
         return ($this->getTotalWordCount() / 200) * 60;
     }
 
-    public function isPublished()
+    public function isPublished(): bool
     {
         return $this->isActive();
     }
 
-    public function isFeatured()
+    public function isFeatured(): bool
     {
         return $this->active == 2;
     }

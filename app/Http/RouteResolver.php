@@ -5,7 +5,7 @@ namespace App\Http;
 /**
  * @deprecated deprecated since version 1.0.0
  */
-class RouteResolver{
+class RouteResolver {
 
 	private $defaultNamespace = "\App\\Controllers\\";
 
@@ -15,20 +15,19 @@ class RouteResolver{
 		$this->resetNamespace();
 	}
 
-	public function getNamespace(){
+	public function getNamespace(): string {
 		return $this->namespace;
 	}
 
-	public function resetNamespace(){
+	public function resetNamespace(): void {
 		$this->namespace = $this->defaultNamespace;
 	}
 
-	public function changeNamespace($namespace){
+	public function changeNamespace(string $namespace): void {
 		$this->namespace = $namespace;
 	}
 
-
-	public function resolveControllerClass($controller){
+	public function resolveControllerClass(string $controller): string {
 
 		$controller_name = studly_case($controller).'Controller';
 
@@ -44,7 +43,7 @@ class RouteResolver{
 	}
 
 
-	public function resolve($controller = 'dashboard',$action = null, $args = null){
+	public function resolve(string $controller = 'dashboard', string | null $action = null, string | null | int $args = null){
 
 				$action!="" || $action===null ? : $action='index';		
 

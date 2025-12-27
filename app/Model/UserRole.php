@@ -32,7 +32,7 @@ class UserRole extends Model {
 	/**
     * Mutator for rights
     */
-    public function setRightsAttribute($value){
+    public function setRightsAttribute($value): void{
     	$this->attributes['rights'] = json_encode($value);
     }
 
@@ -42,7 +42,7 @@ class UserRole extends Model {
         $this->setRightsAttribute($all_rights);
     }
 
-    public function isAdminRole(){
+    public function isAdminRole(): bool {
         $roles = $this->getRightsAttribute();
 
         return $roles? in_array('admin_area',$roles) : false;

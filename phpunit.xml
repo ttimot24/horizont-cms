@@ -19,7 +19,9 @@
       <directory suffix="Test.php">resources/tests</directory>
     </testsuite>
   </testsuites>
-  <logging/>
+  <logging>
+    <junit outputFile="reports/junit.xml"/>
+  </logging>
   <php>
     <env name="APP_ENV" value="testing"/>
     <env name="CACHE_DRIVER" value="array"/>

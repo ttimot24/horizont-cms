@@ -11,7 +11,7 @@ class ThemeEngineServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
 
         $this->app->singleton(\App\Interfaces\ThemeEngineInterface::class, function ($app) {
@@ -31,7 +31,7 @@ class ThemeEngineServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
     }
 }

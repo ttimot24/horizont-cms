@@ -19,7 +19,7 @@ class UserEventListener
     }
 
 
-    public function countLogin(Login $event){
+    public function countLogin(Login $event): void {
         if(!$this->request->expectsJson()){
             $event->user->increment('visits');
         }
@@ -32,7 +32,7 @@ class UserEventListener
      * @param  Login  $event
      * @return void
      */
-    public function handle(Login $event)
+    public function handle(Login $event): void
     {
         //
     }

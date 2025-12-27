@@ -173,7 +173,7 @@
                 @endif
                 @endcan
 
-                @include('image_details', ['modal_id' => $user->id, 'image' => $user->getImage()])
+                @include('image_details', ['modal_id' => $user->id, 'image' => $user->getImageFilePath()])
 
                 @can('delete', 'user')
                 @include('confirm_delete', [

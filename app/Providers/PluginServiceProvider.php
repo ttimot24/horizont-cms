@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Request;
+use App\Model\Settings;
 
 class PluginServiceProvider extends ServiceProvider
 {
@@ -16,7 +18,7 @@ class PluginServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(\Illuminate\Contracts\Http\Kernel $kernel)
+    public function boot(\Illuminate\Contracts\Http\Kernel $kernel): void
     {
         $this->kernel = $kernel;
 
@@ -39,15 +41,15 @@ class PluginServiceProvider extends ServiceProvider
                 $this->registerPluginJSScripts();
             }
         } catch (\Exception $e) {
-            if (\Settings::get('website_debug') == 1 && !\Request::is(config('horizontcms.backend_prefix') . "*")) {
+            if (Settings::get('website_debug') == 1 && !Request::is(config('horizontcms.backend_prefix') . "*")) {
                 throw $e;
-            } else if (\Settings::get('admin_debug') == 1 && \Request::is(config('horizontcms.backend_prefix') . "*")) {
+            } else if (Settings::get('admin_debug') == 1 && Request::is(config('horizontcms.backend_prefix') . "*")) {
                 throw $e;
             }
         }
     }
 
-    private function registerPluginConfigs()
+    private function registerPluginConfigs(): void
     {
 
         foreach ($this->app->plugins as $plugin) {
@@ -58,7 +60,7 @@ class PluginServiceProvider extends ServiceProvider
 
     }
 
-    private function registerPluginJSScripts()
+    private function registerPluginJSScripts(): void
     {
 
         $jsPlugins = [];
@@ -74,7 +76,7 @@ class PluginServiceProvider extends ServiceProvider
     }
 
 
-    private function registerPluginAutoLoaders()
+    private function registerPluginAutoLoaders(): void
     {
 
 
@@ -88,7 +90,7 @@ class PluginServiceProvider extends ServiceProvider
     }
 
 
-    private function registerPluginProviders()
+    private function registerPluginProviders(): void
     {
 
         foreach ($this->app->plugins as $plugin) {
@@ -99,7 +101,7 @@ class PluginServiceProvider extends ServiceProvider
         }
     }
 
-    private function registerPluginMiddlewares()
+    private function registerPluginMiddlewares(): void
     {
 
         foreach ($this->app->plugins as $plugin) {
@@ -115,7 +117,7 @@ class PluginServiceProvider extends ServiceProvider
         }
     }
 
-    public function registerPluginEvents()
+    public function registerPluginEvents(): void
     {
 
         foreach ($this->app->plugins as $plugin) {
@@ -130,12 +132,12 @@ class PluginServiceProvider extends ServiceProvider
 
 
 
-    private function registerPluginLanguage()
+    private function registerPluginLanguage(): void
     {
 
-        if (\Request::is(config('horizontcms.backend_prefix') . "/plugin/run/*")) {
+        if (Request::is(config('horizontcms.backend_prefix') . "/plugin/run/*")) {
 
-            $plugin = $this->app->plugins->get(studly_case(\Request::segment(4)));
+            $plugin = $this->app->plugins->get(studly_case(Request::segment(4)));
 
             if ($plugin != null) {
                 $this->loadTranslationsFrom(base_path($plugin->getPath() . "/resources/lang"), 'plugin');
@@ -144,7 +146,7 @@ class PluginServiceProvider extends ServiceProvider
     }
 
 
-    private function registerPluginConsoleCommands()
+    private function registerPluginConsoleCommands(): void
     {
         foreach ($this->app->plugins as $plugin) {
             if (!$plugin->isActive()) {
@@ -156,7 +158,7 @@ class PluginServiceProvider extends ServiceProvider
         }
     }
 
-    public function registerPluginViewPaths()
+    public function registerPluginViewPaths(): void
     {
 
 
@@ -172,11 +174,11 @@ class PluginServiceProvider extends ServiceProvider
         }
     }
 
-    protected function registerPluginRoutes()
+    protected function registerPluginRoutes(): void
     {
 
         if (!isset($this->app->plugins)) {
-            return false;
+            return;
         }
 
         foreach ($this->app->plugins as $plugin) {
@@ -204,7 +206,7 @@ class PluginServiceProvider extends ServiceProvider
         }
     }
 
-    private function registerPluginAliases()
+    private function registerPluginAliases(): void
     {
 
         foreach (app()->plugins as $plugin) {
@@ -221,7 +223,7 @@ class PluginServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
     }
 }
