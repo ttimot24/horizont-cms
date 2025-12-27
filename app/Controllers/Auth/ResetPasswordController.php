@@ -53,7 +53,7 @@ class ResetPasswordController extends Controller
      * @param  string  $password
      * @return void
      */
-    protected function resetPassword($user, $password)
+    protected function resetPassword($user, $password): void
     {
 
         $user->password = $password;

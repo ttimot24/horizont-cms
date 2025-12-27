@@ -15,6 +15,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract {
 
@@ -53,7 +54,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $defaultImage = "resources/images/icons/profile.png";
     
 
-    public static function findBySlug($slug){
+    public static function findBySlug(string $slug){
 
         $user = self::where('slug',$slug)->first();
 
@@ -111,7 +112,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     * Don't mix up with Admin as a role! 
     *
     */
-    public function isAdmin(){
+    public function isAdmin(): bool {
         return $this->hasPermission('admin_area');
     }
 
@@ -120,23 +121,23 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     * https://erikbelusic.com/tracking-if-a-user-is-online-in-laravel/
     *
     */
-    public function isOnline(){
+    public function isOnline(): bool {
 
     	return Cache::has('user-is-online-' . $this->id);
 	}
 
-    public function getSlug(){
+    public function getSlug(): string {
         return empty($this->slug)? str_slug($this->username) : $this->slug;
     }
 
     /**
     * Mutator for passwords
     */
-    public function setPasswordAttribute($value): void {
+    public function setPasswordAttribute(string $value): void {
     	$this->attributes['password'] = \Hash::make($value);
     }
 
-    public function scopeEmail($query, $email){
+    public function scopeEmail(Builder $query, string $email): Builder {
         return $query->where('email', $email);
     }
 

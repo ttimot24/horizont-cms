@@ -5,7 +5,7 @@ namespace App\Http;
 /**
  * @deprecated deprecated since version 1.0.0
  */
-class RouteResolver{
+class RouteResolver {
 
 	private $defaultNamespace = "\App\\Controllers\\";
 

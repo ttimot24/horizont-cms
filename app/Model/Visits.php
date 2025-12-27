@@ -10,7 +10,7 @@ class Visits extends Model {
 
     public $timestamps = false;
 
-    public static function newVisitor(\Illuminate\Http\Request $request){
+    public static function newVisitor(\Illuminate\Http\Request $request): ?Visits {
     	$visit = null;
 
     	try{
@@ -33,7 +33,7 @@ class Visits extends Model {
     }
 
 
-	public function getCreatedAtAttribute(){	
+	public function getCreatedAtAttribute(): \Carbon\Carbon {	
         return new \Carbon\Carbon($this->date." ".$this->time);
     }
 

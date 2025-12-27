@@ -11,11 +11,11 @@ trait UploadsImage {
 
     protected $form_field_name = 'up_file';
 
-    private function getMaxImageSize(){
+    private function getMaxImageSize(): int {
         return config('horizontcms.max_upload_file_size', 2560); // 2.5 MB
     }
 
-    private function getStrippedDirectoryPath($model){
+    private function getStrippedDirectoryPath($model): string {
         return str_replace('storage/', '', $model->getImageDirectory());
     }
 

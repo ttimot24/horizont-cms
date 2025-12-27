@@ -5,7 +5,7 @@ namespace App\Model\Trait;
 trait HasImage
 {
     
-    public function attachImage($image): void
+    public function attachImage(string $image): void
     {
        if ($this->isUrl($image)) {
             $this->image = $image;
