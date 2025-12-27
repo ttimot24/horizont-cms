@@ -5,7 +5,6 @@ namespace App\Model;
 use App\Model\Trait\HasImage;
 use App\Model\Trait\IsActive;
 use \Illuminate\Database\Eloquent\Model;
-use PhpParser\Node\Expr\BooleanNot;
 
 class Plugin extends Model
 {
