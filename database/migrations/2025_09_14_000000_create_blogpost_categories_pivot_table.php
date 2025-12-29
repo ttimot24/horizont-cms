@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
 
-    private $table_name = 'blogpost_categories_pivot';
+    private string $table_name = 'blogpost_categories_pivot';
 
-    public function up()
+    public function up(): void
     {
         Schema::create($this->table_name, function (Blueprint $table) {
             $table->id();
@@ -33,7 +33,7 @@ return new class extends Migration
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists($this->table_name);
     }

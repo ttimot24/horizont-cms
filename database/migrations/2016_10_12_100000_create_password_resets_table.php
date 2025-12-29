@@ -11,9 +11,9 @@ class CreatePasswordResetsTable extends Migration
      *
      * @return void
      */
-    private $table_name = 'password_resets';
+    private string $table_name = 'password_resets';
 
-    public function up()
+    public function up(): void
     {
         if (Schema::hasTable($this->table_name)) { return; }
 
@@ -29,7 +29,7 @@ class CreatePasswordResetsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop($this->table_name);
     }

@@ -13,7 +13,7 @@ class UserRolesSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         DB::table('user_roles')->insert([
             'name' => 'Public',

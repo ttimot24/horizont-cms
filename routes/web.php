@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use \App\Model\Settings;
-use Illuminate\Http\Request;
-use Illuminate\Contracts\Container\Container;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +58,7 @@ if (app()->isInstalled()) {
 
 				if ($e instanceof \App\Exceptions\FileNotFoundException || $e instanceof BadMethodCallException) {
 
+					/** @var \Illuminate\Routing\Controller $controller */
 					$controller = \App::make('\App\Controllers\WebsiteController');
 
 					if (method_exists($controller, 'before')) {

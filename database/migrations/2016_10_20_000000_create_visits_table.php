@@ -11,9 +11,9 @@ class CreateVisitsTable extends Migration
      *
      * @return void
      */
-    private $table_name = 'visits';
+    private string $table_name = 'visits';
     
-    public function up()
+    public function up(): void
     {
         if (Schema::hasTable($this->table_name)) { return; }
 
@@ -34,7 +34,7 @@ class CreateVisitsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop($this->table_name);
     }

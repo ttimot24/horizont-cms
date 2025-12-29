@@ -6,15 +6,15 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateUsersTable extends Migration
 {
+
+    private string $table_name = 'users';
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-
-    private $table_name = 'users';
-
-    public function up()
+    public function up(): void
     {
 
         if (Schema::hasTable($this->table_name)) { return; }
@@ -43,7 +43,7 @@ class CreateUsersTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop($this->table_name);
     }
