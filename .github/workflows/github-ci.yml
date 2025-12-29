@@ -48,12 +48,12 @@ jobs:
     #    run: | 
     #      if [ -f "reports/coverage.xml" ]; then vendor/bin/codacycoverage clover reports/coverage.xml; fi 
       - name: Test Report
-        uses: dorny/test-reporter@v2
+        uses: dorny/test-reporter@ff2d13cc3645b6e6978bb229ca7a2a5ea91208c1
         if: ${{ !cancelled() }}
         with:
           name: PHPUnit tests
           path: reports/junit.xml
-          reporter: jest-junit
+          reporter: phpunit-junit
 
       - name: Show versions
         run: | 
