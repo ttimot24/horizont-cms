@@ -5,26 +5,24 @@ namespace App\Services;
 
 class DotEnvGenerator {
 
+	private array $content = [];
+	private string $path = "";
+	private string $file = ".env";
 
-	private $content = [];
-	private $path = "";
-	private $file = ".env";
-
-
-	public function setPath($path){
+	public function setPath(string $path): void {
 		$this->path = $path."/";
 	}
 
 
-	public function addEnvVar($var,$val){
+	public function addEnvVar(string $var, string $val): void {
 		$this->content[strtoupper($var)]=$val; 
 	}
 
-	public function getEnvVars(){
+	public function getEnvVars(): array {
 		return $this->content;
 	}
 
-	public function generate(){
+	public function generate(): bool {
 
 		$file_content = "";
 

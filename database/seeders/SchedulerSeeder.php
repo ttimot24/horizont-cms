@@ -15,7 +15,7 @@ class ContentSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
   
         DB::table('schedules')->insert([

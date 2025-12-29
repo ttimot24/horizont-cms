@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
 
-    private $table_name = 'jobs';
+    private string $table_name = 'jobs';
 
     /**
      * Run the migrations.

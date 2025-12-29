@@ -11,9 +11,9 @@ class CreateUserRolesTable extends Migration
      *
      * @return void
      */
-    private $table_name = 'user_roles';
+    private string $table_name = 'user_roles';
     
-    public function up()
+    public function up(): void
     {
         if (Schema::hasTable($this->table_name)) { return; }
 
@@ -31,7 +31,7 @@ class CreateUserRolesTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop($this->table_name);
     }

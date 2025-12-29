@@ -3,6 +3,7 @@
   <coverage>
     <report>
       <clover outputFile="reports/coverage.xml"/>
+      <html outputDirectory="reports/html"/>
     </report>
   </coverage>
   <testsuites>

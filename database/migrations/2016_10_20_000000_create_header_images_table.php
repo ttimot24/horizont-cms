@@ -11,9 +11,9 @@ class CreateHeaderImagesTable extends Migration
      *
      * @return void
      */
-    private $table_name = 'header_images';
+    private string $table_name = 'header_images';
     
-    public function up()
+    public function up(): void
     {
         if (Schema::hasTable($this->table_name)) { return; }
 
@@ -37,7 +37,7 @@ class CreateHeaderImagesTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop($this->table_name);
     }

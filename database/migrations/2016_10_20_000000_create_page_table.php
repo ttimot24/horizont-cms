@@ -10,9 +10,9 @@ class CreatePageTable extends Migration{
      *
      * @return void
      */
-    private $table_name = 'pages';
+    private string $table_name = 'pages';
     
-    public function up()
+    public function up(): void
     {
         if (Schema::hasTable($this->table_name)) { return; }
 
@@ -38,7 +38,7 @@ class CreatePageTable extends Migration{
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop($this->table_name);
     }
