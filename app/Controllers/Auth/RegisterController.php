@@ -6,6 +6,8 @@ use Illuminate\Routing\Controller;
 use App\Model\User;
 use Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\View\Factory;
 
 class RegisterController extends Controller
 {
@@ -39,7 +41,7 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    public function showRegistrationForm()
+    public function showRegistrationForm(): View|Factory
     {
         return view('auth.register');
     }

@@ -33,13 +33,13 @@ class USerCommand extends Command
 
 
 
-    public function handle(){
+    public function handle(): void {
 
         $this->line("*****Administrator creation*****".PHP_EOL);
 
         if(!\App\HorizontCMS::isInstalled()){ 
             $this->info("HorizontCMS is not installed!");
-            return -1;
+            return;
         }
 
         $admin['name'] = empty($this->option("name"))? $this->ask('Name') : $this->option("name");        

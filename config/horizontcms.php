@@ -32,7 +32,6 @@ return [
 				[ "name" => "viewport", 
 				   "content" => "width=device-width, initial-scale=1.0"
 				],
-
 			],
 
 	'modules' => [ //namespaces and root dirs for modules
@@ -54,6 +53,11 @@ return [
 	],
 
 	'default_theme_engine' => env('HCMS_DEFAULT_THEME_ENGINE', 'hcms'),
+
+	'thumbnail' => [
+				'width' => env('HCMS_THUMBNAIL_WIDTH', 300),
+				'height' => env('HCMS_THUMBNAIL_HEIGHT', 200)
+	],
 
 	'creator' => [
 				'name' => 'Timot Tarjani',

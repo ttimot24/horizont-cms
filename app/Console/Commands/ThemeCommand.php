@@ -45,7 +45,7 @@ class ThemeCommand extends Command
     }
 
 
-    private function set($theme): void
+    private function set(string $theme): void
     {
         if (file_exists(base_path('themes' . DIRECTORY_SEPARATOR . $theme))) {
 

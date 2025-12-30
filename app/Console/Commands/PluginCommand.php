@@ -32,7 +32,7 @@ class PluginCommand extends Command
 
 
 
-    public function handle()
+    public function handle(): void
     {
 
         $selectedPlugin = $this->argument('plugin');
@@ -66,14 +66,14 @@ class PluginCommand extends Command
 
 
 
-    private function download($selectedPlugin)
+    private function download(string $selectedPlugin): void
     {
 
         echo "Download..." . PHP_EOL;
         throw new \Exception("This function is not supported yet!");
     }
 
-    private function remove($selectedPlugin)
+    private function remove(string $selectedPlugin): void
     {
 
         echo "Remove..." . PHP_EOL;
@@ -81,7 +81,7 @@ class PluginCommand extends Command
     }
 
 
-    private function install($selectedPlugin)
+    private function install(string $selectedPlugin): void
     {
 
         echo "Install..." . PHP_EOL;
@@ -89,7 +89,7 @@ class PluginCommand extends Command
     }
 
 
-    private function uninstall($selectedPlugin)
+    private function uninstall(string $selectedPlugin): void
     {
 
         echo "Uninstall..." . PHP_EOL;
@@ -98,7 +98,7 @@ class PluginCommand extends Command
 
 
 
-    private function activate($selectedPlugin)
+    private function activate(string $selectedPlugin): void
     {
 
         echo "Activate..." . PHP_EOL;
@@ -111,7 +111,7 @@ class PluginCommand extends Command
     }
 
 
-    private function deactivate($selectedPlugin)
+    private function deactivate(string $selectedPlugin): void
     {
 
         echo "Deactivate..." . PHP_EOL;

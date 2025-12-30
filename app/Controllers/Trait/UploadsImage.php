@@ -6,6 +6,7 @@ use TypeError;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Illuminate\Database\Eloquent\Model;
 
 trait UploadsImage {
 
@@ -15,11 +16,11 @@ trait UploadsImage {
         return config('horizontcms.max_upload_file_size', 2560); // 2.5 MB
     }
 
-    private function getStrippedDirectoryPath($model): string {
+    private function getStrippedDirectoryPath(Model $model): string {
         return str_replace('storage/', '', $model->getImageDirectory());
     }
 
-    public function uploadImage($model): bool {
+    public function uploadImage(Model $model): bool {
 
         if(!in_array('App\Model\Trait\HasImage', class_uses($model, true))){
            throw new TypeError('Class['.get_class($model).'] does not use HasImage trait');
@@ -36,7 +37,10 @@ trait UploadsImage {
             $model->attachImage($img);
             if (extension_loaded('gd') && starts_with(request()->{$this->form_field_name}->getMimeType(), 'image/')) {
 		        File::ensureDirectoryExists($model->getImageDirectory() . '/thumbs');
-                (new ImageManager(new Driver()))->read(storage_path($img))->resize(300, 200)->save($model->getThumbnailDirectory(). DIRECTORY_SEPARATOR . $model->image);
+                (new ImageManager(new Driver()))->read(storage_path($img))->resize(
+                    config('horizontcms.thumbnail.width', 300), 
+                    config('horizontcms.thumbnail.height', 200)
+                )->save($model->getThumbnailDirectory(). DIRECTORY_SEPARATOR . $model->image);
             }
 
             return true;

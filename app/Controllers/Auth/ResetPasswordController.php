@@ -6,6 +6,9 @@ namespace App\Controllers\Auth;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Support\Facades\Config;
 
 class ResetPasswordController extends Controller
 {
@@ -35,13 +38,13 @@ class ResetPasswordController extends Controller
     }
 
 
-    public function showResetForm(Request $request, $token = null)
+    public function showResetForm(Request $request, $token = null): View|Factory
     {
         return view('auth.passwords.reset', [
             'token' => $token,
             'email' => $request->email,
-            'app_name' => \Config::get('app.name'),
-            'admin_logo' => url(\Config::get('horizontcms.admin_logo')),
+            'app_name' => Config::get('app.name'),
+            'admin_logo' => url(Config::get('horizontcms.admin_logo')),
         ]);
     }
 
@@ -53,7 +56,7 @@ class ResetPasswordController extends Controller
      * @param  string  $password
      * @return void
      */
-    protected function resetPassword($user, $password): void
+    protected function resetPassword(\App\Model\User $user, $password): void
     {
 
         $user->password = $password;

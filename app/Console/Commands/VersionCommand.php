@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Config;
 
 class VersionCommand extends Command
 {
@@ -20,7 +21,7 @@ class VersionCommand extends Command
      */
     protected $description = 'Prints the application version.';
 
-    private $banner = 
+    private string $banner = 
   ",--.  ,--.              ,--.                        ,--.   ,-----.,--.   ,--. ,---.   
 |  '--'  | ,---. ,--.--.`--',-----. ,---. ,--,--, ,-'  '-.'  .--./|   `.'   |'   .-'  
 |  .--.  || .-. ||  .--',--.`-.  / | .-. ||      \'-.  .-'|  |    |  |'.'|  |`.  `-.  
@@ -45,12 +46,12 @@ Closer to the WEB";
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         if(!$this->option('no-banner')){
-            $this->info(PHP_EOL.str_Replace("app.name",\Config::get('app.name'),str_replace("{app.version}",\Config::get('horizontcms.version'), $this->banner)).PHP_EOL);
+            $this->info(PHP_EOL.str_replace("app.name",Config::get('app.name'),str_replace("{app.version}",Config::get('horizontcms.version'), $this->banner)).PHP_EOL);
         }else {
-            $this->info(PHP_EOL.\Config::get('app.name')." - ".\Config::get('horizontcms.version').PHP_EOL);
+            $this->info(PHP_EOL.Config::get('app.name')." - ".Config::get('horizontcms.version').PHP_EOL);
         }
     }
 }

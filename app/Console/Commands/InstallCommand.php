@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Config;
 
 class InstallCommand extends Command
 {
@@ -61,7 +62,7 @@ class InstallCommand extends Command
         if ($this->option('driver') != "") {
             $database['driver'] = $this->option('driver');
         } else {
-            $database['driver'] = $this->choice('Database driver', array_keys(\Config::get('database.connections')), 0);
+            $database['driver'] = $this->choice('Database driver', array_keys(Config::get('database.connections')), 0);
         }
 
         $database['username'] = $this->ask('Username');
@@ -90,10 +91,10 @@ class InstallCommand extends Command
 
         \Artisan::call("cache:clear");
 
-        \Config::set('app.env', null);
-        \Config::set('database.connections.' . $database['driver'] . '.username', $database['username']);
-        \Config::set('database.connections.' . $database['driver'] . '.password', $database['password']);
-        \Config::set('database.connections.' . $database['driver'] . '.database', $database['database']);
+        Config::set('app.env', null);
+        Config::set('database.connections.' . $database['driver'] . '.username', $database['username']);
+        Config::set('database.connections.' . $database['driver'] . '.password', $database['password']);
+        Config::set('database.connections.' . $database['driver'] . '.database', $database['database']);
 
         $this->info("1. Migrating the database...");
         $this->call("migrate", ['--no-interaction' => true, '--force' => true]);
@@ -132,6 +133,6 @@ class InstallCommand extends Command
         $this->call("key:generate", ['--no-interaction' => true, '--force' => true]);
 
 
-        $this->info("\r\n" . \Config::get('app.name') . " successfully installed!\r\n");
+        $this->info("\r\n" . Config::get('app.name') . " successfully installed!\r\n");
     }
 }

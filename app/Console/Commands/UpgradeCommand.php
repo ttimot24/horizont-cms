@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Codedge\Updater\UpdaterManager;
 
 class UpgradeCommand extends Command
 {
@@ -26,16 +27,16 @@ class UpgradeCommand extends Command
      * @return void
      */
 
-    private $updateManager = null;
+    private UpdaterManager|null $updateManager = null;
 
-    public function __construct(\Codedge\Updater\UpdaterManager $updater)
+    public function __construct(UpdaterManager $updater)
     {
         parent::__construct();
 
         $this->updateManager = $updater;
     }
 
-    public function handle()
+    public function handle(): void
     {
 
         try {
