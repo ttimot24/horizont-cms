@@ -13,7 +13,7 @@
                     [
                         'icon' => 'fa-cloud-download',
                         'label' => 'Download apps',
-                        'route' => config('horizontcms.backend_prefix') . '/plugin/onlinestore',
+                        'route' => route('pluginregistry.index'),
                         'class' => 'btn-info',
                     ],
                     [

@@ -35,16 +35,37 @@
                                     <p>version: {{ $o_plugin->info->version }} author: {{ $o_plugin->info->author }}</p>
 
                                     @if ($o_plugin->local && $o_plugin->local->getInfo('version') < $o_plugin->info->version)
-                                        <p><a href="admin/plugin/download-plugin/{{ $o_plugin->dir }}"
-                                                class="btn btn-primary btn-block btn-sm" role="button">Upgrade</a></p>
+                                            @can('update', 'pluginregistry')
+                                                <form action="{{ route('pluginregistry.store') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="plugin_name"
+                                                        value="{{ $o_plugin->dir }}">
+                                                    <button type="submit" id='install'
+                                                        class='btn btn-primary btn-block w-100'>Upgrade</button>
+                                                </form>
+                                            @endcan
                                     @elseif(isset($o_plugin->local) && !$o_plugin->local->isInstalled())
-                                        <p><a href="admin/plugin/install/{{ $o_plugin->dir }}"
-                                                class="btn btn-success btn-block btn-sm" role="button">Install</a></p>
+                                            @can('create', 'plugin')
+                                                    <form action="{{ route('plugin.store') }}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="plugin"
+                                                            value="{{ $o_plugin->dir }}">
+                                                        <button type="submit" id='install'
+                                                            class='btn btn-success btn-block w-100'>Install</button>
+                                                    </form>
+                                            @endcan
                                     @elseif(isset($o_plugin->local) && $o_plugin->local->isInstalled())
                                         <p style='height: 30px;'><b>Installed</b></p>
                                     @else
-                                        <p><a href="admin/plugin/download-plugin/{{ $o_plugin->dir }}"
-                                                class="btn btn-info btn-block btn-sm" role="button">Download</a></p>
+                                            @can('create', 'pluginregistry')
+                                                <form action="{{ route('pluginregistry.store') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="plugin_name"
+                                                        value="{{ $o_plugin->dir }}">
+                                                    <button type="submit" id='install'
+                                                        class='btn btn-info btn-block w-100'>Download</button>
+                                                </form>
+                                            @endcan
                                     @endif
                                 </div>
                             </div>

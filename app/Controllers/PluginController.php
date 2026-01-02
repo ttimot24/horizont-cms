@@ -44,65 +44,6 @@ class PluginController extends Controller
         return $this->{$id}();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function onlinestore()
-    {
-        $repo_status = true;
-
-        try {
-            $response = Http::get(config('horizontcms.sattelite_url') . '/get_plugins.php');
-
-            $plugins = collect($response->object())->map(function ($plugin) { 
-
-                $local = new \App\Model\Plugin($plugin->dir);
-
-                $plugin->local = $local->exists() ? $local : null;
-                
-                return $plugin; 
-            });
-
-        } catch (\Exception $e) {
-            \Log::warning($e);
-            $plugins = collect([]);
-            $repo_status = false;
-        }
-
-        return view('plugin.store', ['online_plugins' => $plugins, 'repo_status' => $repo_status]);
-    }
-
-
-    public function downloadPlugin($plugin_name)
-    {
-
-        $tempZip = "framework/temp/{$plugin_name}.zip";
-
-        $path = Storage::disk('local')->path($tempZip);
-
-        $response = Http::sink($path)->get(
-            config('horizontcms.sattelite_url') . "/download/plugin/{$plugin_name}"
-        );
-
-        if ($response->successful()) {
-
-            $zipper = new \Zipper();
-
-            $zipper->make(storage_path() . DIRECTORY_SEPARATOR . $tempZip)->folder($plugin_name)->extractTo('plugins' . DIRECTORY_SEPARATOR . $plugin_name);
-
-            if (file_exists("plugins/" . $plugin_name)) {
-                @Storage::delete("framework" . DIRECTORY_SEPARATOR . "temp" . DIRECTORY_SEPARATOR . $plugin_name . ".zip");
-                return redirect()->back()->withMessage(['success' => trans('Succesfully downloaded ' . $plugin_name)]);
-            } else {
-                return redirect()->back()->withMessage(['danger' => trans('Could not extract the plugin: ' . $plugin_name . "")]);
-            }
-        } else {
-            return redirect()->back()->withMessage(['danger' => trans('Could not download the plugin: ' . $plugin_name . "")]);
-        }
-    }
-
     private function migrate(\App\Model\Plugin $plugin)
     {
 
@@ -149,7 +90,7 @@ class PluginController extends Controller
             $plugin->getRegister('onInstall', []);
 
             $plugin->version = $plugin->getInfo('version');
-            unset($plugin->info, $plugin->config);
+            unset($plugin->info, $plugin->config, $plugin->default_image, $plugin->image);
             $plugin->area = 0;
             $plugin->permission = 0;
             $plugin->tables = "";

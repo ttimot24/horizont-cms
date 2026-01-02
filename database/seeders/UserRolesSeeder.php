@@ -55,10 +55,10 @@ class UserRolesSeeder extends Seeder
          DB::table('user_roles')->insert([
             'name' => 'Admin',
             'permission' => 5,
-            'rights' => json_encode(["admin_area","blogpostcategory.view","blogpostcomment.view","blogpost.view","filemanager.view","headerimage.view","page.view","plugin.view","schedule.view","search.view","settings.view","theme.view","upgrade.view","user.view","userrole.view", "log.view",
-                                                  "blogpostcategory.create","blogpostcomment.create","blogpost.create","filemanager.create","headerimage.create","page.create","plugin.create","schedule.create","search.create","settings.create","theme.create","upgrade.create","user.create","userrole.create",
-                                                  "blogpostcategory.update","blogpostcomment.update","blogpost.update","filemanager.update","headerimage.update","page.update","plugin.update","schedule.update","search.update","settings.update","theme.update","upgrade.update","user.update","userrole.update",
-                                                  "blogpostcategory.delete","blogpostcomment.delete","blogpost.delete","filemanager.delete","headerimage.delete","page.delete","plugin.delete","schedule.delete","search.delete","settings.delete","theme.delete","upgrade.delete","user.delete","userrole.delete"]),
+            'rights' => json_encode(["admin_area","blogpostcategory.view","blogpostcomment.view","blogpost.view","filemanager.view","headerimage.view","page.view","plugin.view", "pluginregistry.view","schedule.view","search.view","settings.view","theme.view","upgrade.view","user.view","userrole.view", "log.view",
+                                                  "blogpostcategory.create","blogpostcomment.create","blogpost.create","filemanager.create","headerimage.create","page.create","plugin.create", "pluginregistry.create","schedule.create","search.create","settings.create","theme.create","upgrade.create","user.create","userrole.create",
+                                                  "blogpostcategory.update","blogpostcomment.update","blogpost.update","filemanager.update","headerimage.update","page.update","plugin.update", "pluginregistry.update","schedule.update","search.update","settings.update","theme.update","upgrade.update","user.update","userrole.update",
+                                                  "blogpostcategory.delete","blogpostcomment.delete","blogpost.delete","filemanager.delete","headerimage.delete","page.delete","plugin.delete", "pluginregistry.delete","schedule.delete","search.delete","settings.delete","theme.delete","upgrade.delete","user.delete","userrole.delete"]),
         ]);
 
 
