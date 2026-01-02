@@ -5,6 +5,7 @@ namespace App\Model;
 use App\Model\Trait\HasImage;
 use App\Model\Trait\IsActive;
 use \Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Plugin extends Model
 {
@@ -38,17 +39,17 @@ class Plugin extends Model
 		}
 	}
 
-	public function scopeRootDir($query, $root_dir)
+	public function scopeRootDir(Builder $query, string $root_dir): Builder
 	{
 		return $query->where('root_dir', $root_dir);
 	}
 
-	public function scopeActive($query)
+	public function scopeActive(Builder $query): Builder
 	{
 		return $query->where('active', '1');
 	}
 
-	public function setRootDir($root_dir): void
+	public function setRootDir(string $root_dir): void
 	{
 		$this->root_dir = $root_dir;
 	}
@@ -205,7 +206,7 @@ class Plugin extends Model
 		return $this->getInfo('requires');
 	}
 
-	public function getRequiredCoreVersion()
+	public function getRequiredCoreVersion(): string
 	{
 		return ltrim(empty($this->getInfo('requires')->core)? 'v0.0.0' : $this->getInfo('requires')->core, 'v');
 	}

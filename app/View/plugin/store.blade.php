@@ -11,7 +11,7 @@
                     ['name' => trans('Plugin manager'), 'url' => route('plugin.index')],
                 ],
                 'page_title' => trans('Online Store'),
-               // 'stats' => [['label' => trans('user.all'), 'value' => count($online_plugins)]],
+                'stats' => [['label' => trans('user.all'), 'value' => $online_plugins->count()]],
             ])
 
             <div class="card-body">
@@ -25,7 +25,6 @@
                     @endif
 
                     @foreach ($online_plugins as $o_plugin)
-                        <?php $local_plugin = new \App\Model\Plugin($o_plugin->dir); ?>
 
                         <div class="col-sm-6 col-md-3 mb-3">
                             <div class="card  bg-dark p-2 text-white">
@@ -35,13 +34,13 @@
                                     <h3 class="mt-3">{{ $o_plugin->info->name }}</h3>
                                     <p>version: {{ $o_plugin->info->version }} author: {{ $o_plugin->info->author }}</p>
 
-                                    @if ($local_plugin->exists() && $local_plugin->getInfo('version') < $o_plugin->info->version)
+                                    @if ($o_plugin->local && $o_plugin->local->getInfo('version') < $o_plugin->info->version)
                                         <p><a href="admin/plugin/download-plugin/{{ $o_plugin->dir }}"
                                                 class="btn btn-primary btn-block btn-sm" role="button">Upgrade</a></p>
-                                    @elseif($local_plugin->exists() && !$local_plugin->isInstalled())
+                                    @elseif(isset($o_plugin->local) && !$o_plugin->local->isInstalled())
                                         <p><a href="admin/plugin/install/{{ $o_plugin->dir }}"
                                                 class="btn btn-success btn-block btn-sm" role="button">Install</a></p>
-                                    @elseif($local_plugin->exists() && $local_plugin->isInstalled())
+                                    @elseif(isset($o_plugin->local) && $o_plugin->local->isInstalled())
                                         <p style='height: 30px;'><b>Installed</b></p>
                                     @else
                                         <p><a href="admin/plugin/download-plugin/{{ $o_plugin->dir }}"

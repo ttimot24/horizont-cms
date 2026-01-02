@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Controllers\Trait\UploadsImage;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-
+use \Illuminate\Http\Response;
 use App\Model\BlogpostCategory;
 
 class BlogpostCategoryController extends Controller

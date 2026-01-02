@@ -4,6 +4,10 @@ namespace App\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Artisan;
 
 class PluginController extends Controller
 {
@@ -11,7 +15,7 @@ class PluginController extends Controller
 
     public function before()
     {
-        \File::ensureDirectoryExists('plugins');
+        File::ensureDirectoryExists('plugins');
     }
 
     /**
@@ -22,7 +26,7 @@ class PluginController extends Controller
     public function index()
     {
         return view('plugin.index', [
-            'all_plugin' => collect(\File::directories(base_path() . DIRECTORY_SEPARATOR . "plugins"))->map(function ($dir) {
+            'all_plugin' => collect(File::directories(base_path() . DIRECTORY_SEPARATOR . "plugins"))->map(function ($dir) {
                 return new \App\Model\Plugin(str_replace(base_path() . DIRECTORY_SEPARATOR . "plugins" . DIRECTORY_SEPARATOR, "", $dir));
             }),
             'zip_enabled' => class_exists('ZipArchive'),
@@ -50,9 +54,20 @@ class PluginController extends Controller
         $repo_status = true;
 
         try {
-            $plugins = json_decode(file_get_contents(config('horizontcms.sattelite_url') . '/get_plugins.php'));
+            $response = Http::get(config('horizontcms.sattelite_url') . '/get_plugins.php');
+
+            $plugins = collect($response->object())->map(function ($plugin) { 
+
+                $local = new \App\Model\Plugin($plugin->dir);
+
+                $plugin->local = $local->exists() ? $local : null;
+                
+                return $plugin; 
+            });
+
         } catch (\Exception $e) {
-            $plugins = [];
+            \Log::warning($e);
+            $plugins = collect([]);
             $repo_status = false;
         }
 
@@ -63,19 +78,22 @@ class PluginController extends Controller
     public function downloadPlugin($plugin_name)
     {
 
-        $temp_zip = "framework" . DIRECTORY_SEPARATOR . "temp" . DIRECTORY_SEPARATOR . $plugin_name . ".zip";
+        $tempZip = "framework/temp/{$plugin_name}.zip";
 
-        $status = \Storage::disk('local')->put($temp_zip, file_get_contents(\Config::get('horizontcms.sattelite_url') . "/download/plugin/" . $plugin_name));
-        chmod(storage_path() . DIRECTORY_SEPARATOR . $temp_zip, 0777);
+        $path = Storage::disk('local')->path($tempZip);
 
-        if ($status) {
+        $response = Http::sink($path)->get(
+            config('horizontcms.sattelite_url') . "/download/plugin/{$plugin_name}"
+        );
+
+        if ($response->successful()) {
 
             $zipper = new \Zipper();
 
-            $zipper->make(storage_path() . DIRECTORY_SEPARATOR . $temp_zip)->folder($plugin_name)->extractTo('plugins' . DIRECTORY_SEPARATOR . $plugin_name);
+            $zipper->make(storage_path() . DIRECTORY_SEPARATOR . $tempZip)->folder($plugin_name)->extractTo('plugins' . DIRECTORY_SEPARATOR . $plugin_name);
 
             if (file_exists("plugins/" . $plugin_name)) {
-                @\Storage::delete("framework" . DIRECTORY_SEPARATOR . "temp" . DIRECTORY_SEPARATOR . $plugin_name . ".zip");
+                @Storage::delete("framework" . DIRECTORY_SEPARATOR . "temp" . DIRECTORY_SEPARATOR . $plugin_name . ".zip");
                 return redirect()->back()->withMessage(['success' => trans('Succesfully downloaded ' . $plugin_name)]);
             } else {
                 return redirect()->back()->withMessage(['danger' => trans('Could not extract the plugin: ' . $plugin_name . "")]);
@@ -89,7 +107,7 @@ class PluginController extends Controller
     {
 
         if ($plugin->getDatabaseFilesPath()) {
-            return \Artisan::call("migrate", ['--path' => $plugin->getDatabaseFilesPath() . DIRECTORY_SEPARATOR . "migrations", '--no-interaction' => '', '--force' => true]);
+            return Artisan::call("migrate", ['--path' => $plugin->getDatabaseFilesPath() . DIRECTORY_SEPARATOR . "migrations", '--no-interaction' => '', '--force' => true]);
         }
         
         return null;
@@ -102,7 +120,7 @@ class PluginController extends Controller
             $seed_class = '\\Plugin\\' . $plugin->root_dir . '\\Database\\Seeds\\PluginSeeder';
 
             if (class_exists($seed_class)) {
-                return \Artisan::call('db:seed', ['--class' => $seed_class, '--no-interaction' => '', '--force' => true]);
+                return Artisan::call('db:seed', ['--class' => $seed_class, '--no-interaction' => '', '--force' => true]);
             }
         }
     }
@@ -204,7 +222,7 @@ class PluginController extends Controller
             \App\Model\Plugin::rootDir($plugin)->delete();
 
             if (file_exists("plugins/" . $plugin)) {
-                \Storage::disk('plugins')->deleteDirectory($plugin);
+                Storage::disk('plugins')->deleteDirectory($plugin);
             }
         } catch (\Exception $e) {
             return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong') . " " . $e->getMessage()]);
@@ -227,7 +245,7 @@ class PluginController extends Controller
             $zip->extractTo('plugins/');
             $zip->close();
 
-            \Storage::delete("storage/" . $file_name);
+            Storage::delete("storage/" . $file_name);
 
             return redirect()->back()->withMessage(['success' => trans('Succesfully uploaded the plugin!')]);
         } else {
