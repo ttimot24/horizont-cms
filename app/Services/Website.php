@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Config;
 
 class Website {
