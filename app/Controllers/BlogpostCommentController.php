@@ -4,21 +4,22 @@ namespace App\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
 use App\Model\BlogpostComment;
+use Illuminate\Http\RedirectResponse;
 
 class BlogpostCommentController extends Controller
 {
-
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
-        return null;
+        return view();
     }
 
     /**
@@ -27,7 +28,7 @@ class BlogpostCommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse | RedirectResponse
     {
 
         $blogpost_comment = new BlogpostComment($request->all());
@@ -46,9 +47,9 @@ class BlogpostCommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id): View | JsonResponse
     {
-        return null;
+        return view();
     }
 
     /**
@@ -58,7 +59,7 @@ class BlogpostCommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, BlogpostComment $blogpost_comment)
+    public function update(Request $request, BlogpostComment $blogpost_comment): JsonResponse | RedirectResponse
     {
 
         $blogpost_comment->blogpost_id = $request->input('blogpost_id');
@@ -78,10 +79,8 @@ class BlogpostCommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(BlogpostComment $blogpostcomment)
+    public function destroy(BlogpostComment $blogpostcomment): JsonResponse | RedirectResponse
     {
-
-
         return redirect()->back()->withMessage(
             $blogpostcomment->delete() ? ['success' => trans('message.successfully_deleted_blogpost_comment')]
                 : ['danger' => trans('message.something_went_wrong')]

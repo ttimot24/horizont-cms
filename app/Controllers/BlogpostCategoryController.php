@@ -5,8 +5,10 @@ namespace App\Controllers;
 use App\Controllers\Trait\UploadsImage;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use \Illuminate\Http\Response;
+use Illuminate\View\View;
 use App\Model\BlogpostCategory;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 class BlogpostCategoryController extends Controller
 {
@@ -20,7 +22,7 @@ class BlogpostCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): View | JsonResponse
     {
 
         $all_categories = BlogpostCategory::paginate($request->input('per_page', $this->itemPerPage));
@@ -43,7 +45,7 @@ class BlogpostCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request) {
+    public function create(Request $request): View {
         return $this->index($request);
     }
 
@@ -53,9 +55,8 @@ class BlogpostCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse | RedirectResponse
     {
-
 
         $blogpost_category = new BlogpostCategory($request->all());
         $blogpost_category->author()->associate($request->user());
@@ -64,9 +65,9 @@ class BlogpostCategoryController extends Controller
 
         if ($blogpost_category->save()) {
             return redirect()->back()->withMessage(['success' => trans('message.successfully_created_blogpost_category')]);
-        } else {
-            return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong')]);
-        }
+        } 
+
+        return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong')]);
     }
 
     /**
@@ -75,7 +76,7 @@ class BlogpostCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, BlogpostCategory $blogpostcategory)
+    public function show(Request $request, BlogpostCategory $blogpostcategory): View | JsonResponse
     {
 
         if ($request->wantsJson()) {
@@ -94,7 +95,7 @@ class BlogpostCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(BlogpostCategory $blogpostcategory)
+    public function edit(BlogpostCategory $blogpostcategory): View
     {
 
         return view('blogposts.category.edit', [
@@ -109,7 +110,7 @@ class BlogpostCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, BlogpostCategory $blogpostcategory)
+    public function update(Request $request, BlogpostCategory $blogpostcategory): JsonResponse | RedirectResponse
     {
 
         $blogpostcategory->name = $request->input('name');
@@ -129,7 +130,7 @@ class BlogpostCategoryController extends Controller
      * @param  \App\Model\BlogpostCategory  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(BlogpostCategory $blogpostcategory)
+    public function destroy(BlogpostCategory $blogpostcategory): JsonResponse | RedirectResponse
     {
 
         if ($blogpostcategory->delete()) {

@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
-
+use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
@@ -14,7 +14,7 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
 
         $updater = new \Codedge\Updater\UpdaterManager(app());
@@ -35,17 +35,17 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function show($method){
+    public function show($method): View {
         return $this->{$method}();
     }
 
 
-    public function unauthorized()
+    public function unauthorized(): View
     {
         return view('errors.unauthorized');
     }
 
-    public function notfound()
+    public function notfound(): View
     {
         return view('errors.404');
     }

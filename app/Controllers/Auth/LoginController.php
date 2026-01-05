@@ -6,10 +6,8 @@ use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Contracts\View\View;
-use Illuminate\Contracts\View\Factory;
+use Illuminate\View\View;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Routing\Redirector;
 use Illuminate\Http\RedirectResponse;
 
 class LoginController extends Controller
@@ -63,7 +61,7 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showLoginForm(): View|Factory
+    public function showLoginForm(): View
     {
 
         return view('auth.login', [
@@ -78,7 +76,7 @@ class LoginController extends Controller
         $user->save();
     }
 
-    public function logout(Request $request): Redirector|RedirectResponse
+    public function logout(Request $request): RedirectResponse
     {
 
         $this->guard()->logout();

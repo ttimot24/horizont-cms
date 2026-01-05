@@ -4,10 +4,9 @@ namespace App\Controllers\Auth;
 
 use Illuminate\Routing\Controller;
 use App\Model\User;
-use Validator;
+use Illuminate\Validation\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Contracts\View\View;
-use Illuminate\Contracts\View\Factory;
+use Illuminate\View\View;
 
 class RegisterController extends Controller
 {
@@ -25,13 +24,6 @@ class RegisterController extends Controller
     use RegistersUsers;
 
     /**
-     * Where to redirect users after login / registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/admin/login';
-
-    /**
      * Create a new controller instance.
      *
      * @return void
@@ -41,7 +33,12 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    public function showRegistrationForm(): View|Factory
+    public function redirectTo(): string
+    {
+        return route('login');
+    }
+
+    public function showRegistrationForm(): View
     {
         return view('auth.register');
     }
@@ -53,7 +50,7 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
+    protected function validator(array $data): Validator
     {
         return Validator::make($data, [
             'name' => 'required|max:255',

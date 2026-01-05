@@ -4,6 +4,10 @@ namespace App\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\File;
 
 class FileManagerController extends Controller
 {
@@ -13,7 +17,7 @@ class FileManagerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View | JsonResponse
     {
 
         $mode = request()->get('mode');
@@ -48,7 +52,7 @@ class FileManagerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(): JsonResponse | RedirectResponse
     {
         if (request()->isMethod('POST') && auth()->user()->isAdmin()) {
 
@@ -84,7 +88,7 @@ class FileManagerController extends Controller
         return redirect()->back()->withMessage(['warning' => 'Only POST method allowed!']);
     }
 
-
+    // TODO: return type and storage
     public function download()
     {
 
@@ -109,7 +113,7 @@ class FileManagerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function newFolder()
+    public function newFolder(): JsonResponse | RedirectResponse
     {
 
         if (request()->isMethod('POST')) {
@@ -117,7 +121,7 @@ class FileManagerController extends Controller
             $directory = "storage/" . str_replace("storage/", "", request()->input('dir_path')) . "/" . request()->input('new_folder_name');
 
             if (!file_exists($directory)) {
-                \File::makeDirectory($directory, $mode = 0777, true, true);
+                File::makeDirectory($directory, $mode = 0777, true, true);
 
                 if (request()->wantsJson()) {
                     return response()->json(['success' => 'Folder created successfully!']);
@@ -144,7 +148,7 @@ class FileManagerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy()
+    public function destroy(): JsonResponse | RedirectResponse
     {
 
         $toDelete = str_replace("storage/", "", request()->input('file'));
@@ -190,12 +194,12 @@ class FileManagerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function rename()
+    public function rename(): JsonResponse | RedirectResponse
     {
 
         $new_file = trim(request()->input('new_file'), "/");
 
-        if (!\Security::isExecutable($new_file) && \Storage::move(request()->input('old_file'), $new_file)) {
+        if (!\Security::isExecutable($new_file) && Storage::move(request()->input('old_file'), $new_file)) {
             if (request()->wantsJson()) {
                 return response()->json(['success' => trans('File successfully renamed!')]);
             }

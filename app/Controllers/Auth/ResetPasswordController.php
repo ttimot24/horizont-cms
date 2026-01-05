@@ -6,8 +6,7 @@ namespace App\Controllers\Auth;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
-use Illuminate\Contracts\View\View;
-use Illuminate\Contracts\View\Factory;
+use Illuminate\View\View;
 use Illuminate\Support\Facades\Config;
 
 class ResetPasswordController extends Controller
@@ -38,7 +37,7 @@ class ResetPasswordController extends Controller
     }
 
 
-    public function showResetForm(Request $request, $token = null): View|Factory
+    public function showResetForm(Request $request, $token = null): View
     {
         return view('auth.passwords.reset', [
             'token' => $token,

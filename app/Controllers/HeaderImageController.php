@@ -5,6 +5,10 @@ namespace App\Controllers;
 use App\Controllers\Trait\UploadsImage;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\File;
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 use App\Model\HeaderImage;
 
@@ -15,9 +19,9 @@ class HeaderImageController extends Controller
 
     protected $imagePath = 'images/header_images';
 
-    public function before()
+    public function before(): void
     {
-        \File::ensureDirectoryExists($this->imagePath . '/thumbs');
+        File::ensureDirectoryExists($this->imagePath . '/thumbs');
     }
 
     /**
@@ -25,7 +29,7 @@ class HeaderImageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): View | JsonResponse
     {
         $activeImages = HeaderImage::active()->orderBy('order', 'ASC')->get();
 
@@ -44,9 +48,9 @@ class HeaderImageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
-        return null;
+        return view();
     }
 
     /**
@@ -55,7 +59,7 @@ class HeaderImageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse | RedirectResponse
     {
         $header_image = new HeaderImage($request->all());
         $header_image->author()->associate($request->user());
@@ -79,9 +83,9 @@ class HeaderImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id): View | JsonResponse
     {
-        return null;
+        return view();
     }
 
     /**
@@ -90,9 +94,9 @@ class HeaderImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
-        return null;
+        return view();
     }
 
     /**
@@ -102,7 +106,7 @@ class HeaderImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, HeaderImage $headerimage)
+    public function update(Request $request, HeaderImage $headerimage): JsonResponse | RedirectResponse
     {
 
         $headerimage->fill($request->all());
@@ -123,7 +127,7 @@ class HeaderImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(HeaderImage $headerimage)
+    public function destroy(HeaderImage $headerimage): JsonResponse | RedirectResponse
     {
 
         if ($headerimage->delete()) {

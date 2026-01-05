@@ -3,8 +3,12 @@
 namespace App\Controllers;
 
 use Illuminate\Routing\Controller;
-use Session;
-use Config;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class InstallController extends Controller
 {
@@ -13,15 +17,15 @@ class InstallController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
 
-        \File::ensureDirectoryExists('framework/upgrade/cache');
+        File::ensureDirectoryExists('framework/upgrade/cache');
 
         return view("install.index", ['enable_continue' => true]);
     }
 
-    public function show($id){
+    public function show($id): View | RedirectResponse {
         return $this->{$id}();
     }
 
@@ -30,7 +34,7 @@ class InstallController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function step1()
+    public function step1(): View
     {
         // TODO Read language file list
         $languages = ['English', 'Magyar', 'Deutsch'];
@@ -44,7 +48,7 @@ class InstallController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function step2()
+    public function step2(): View
     {
 
         foreach (Config::get('database.connections') as $database) {
@@ -60,7 +64,7 @@ class InstallController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function checkConnection()
+    public function checkConnection(): RedirectResponse
     {
         request()->flash();
 
@@ -118,7 +122,7 @@ class InstallController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function step3()
+    public function step3(): View
     {
 
         request()->flash();
@@ -133,7 +137,7 @@ class InstallController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function migrate()
+    public function migrate(): RedirectResponse
     {
 
         request()->flash();
@@ -146,8 +150,8 @@ class InstallController extends Controller
             Config::set('database.connections.' . Session::get('step2.db_driver') . '.database', Session::get('step2.database'));
             Config::set('database.connections.' . Session::get('step2.db_driver') . '.prefix', Session::get('step2.prefix'));
 
-            \Artisan::call("migrate", ["--force" => true]);
-            \Artisan::call("db:seed", ["--force" => true]);
+            Artisan::call("migrate", ["--force" => true]);
+            Artisan::call("db:seed", ["--force" => true]);
 
             $administrator = new \App\Model\User();
             $administrator->name = 'Administrator';
@@ -175,7 +179,7 @@ class InstallController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function step4()
+    public function step4(): View
     {
 
         if (!Session::has('error')) {

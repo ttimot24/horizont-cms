@@ -4,7 +4,8 @@ namespace App\Controllers;
 
 use Illuminate\Routing\Controller;
 use \Jackiedo\LogReader\Facades\LogReader;
-
+use Illuminate\Support\Facades\Config;
+use Illuminate\View\View;
 
 class LogController extends Controller
 {
@@ -14,9 +15,9 @@ class LogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($file = null)
+    public function index($file = null): View
     {
-        LogReader::setLogPath(dirname(\Config::get('logging.channels.' . \Config::get('logging.default') . '.path')));
+        LogReader::setLogPath(dirname(Config::get('logging.channels.' . Config::get('logging.default') . '.path')));
 
         $entries = collect();
         $files = collect(LogReader::getLogFilenameList());
@@ -39,9 +40,8 @@ class LogController extends Controller
 
     }
 
-    public function show($log){
+    public function show($log): View {
         return $this->index($log);
     }
-
 
 }

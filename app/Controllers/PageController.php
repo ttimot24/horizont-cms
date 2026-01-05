@@ -6,7 +6,10 @@ use App\Controllers\Trait\UploadsImage;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use App\Model\Page;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 class PageController extends Controller
 {
@@ -17,7 +20,7 @@ class PageController extends Controller
 
     public function before()
     {
-        \File::ensureDirectoryExists($this->imagePath . '/thumbs');
+        File::ensureDirectoryExists($this->imagePath . '/thumbs');
     }
 
     /**
@@ -145,7 +148,7 @@ class PageController extends Controller
     }
 
 
-    public function setHomePage($id)
+    public function setHomePage($id): RedirectResponse
     {
 
         if (\App\Model\Settings::where("setting", "home_page")->update(['value' => $id])) {
@@ -162,7 +165,7 @@ class PageController extends Controller
      * @param  \App\Model\Page  $page
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Page $page)
+    public function destroy(Page $page): RedirectResponse
     {
 
         if ($page->delete()) {
@@ -172,7 +175,7 @@ class PageController extends Controller
         return redirect(route("page.index"))->withMessage(['danger' => trans('message.something_went_wrong')]);
     }
 
-    public function reorder(Request $request)
+    public function reorder(Request $request): JsonResponse
     {
 
         $request->validate([

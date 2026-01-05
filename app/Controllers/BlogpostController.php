@@ -4,6 +4,9 @@ namespace App\Controllers;
 
 use App\Controllers\Trait\UploadsImage;
 use \Illuminate\Http\Request;
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use App\Model\Blogpost;
 use Illuminate\Support\Facades\Gate;
@@ -21,7 +24,7 @@ class BlogpostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): View | JsonResponse
     {
         
         if ($request->wantsJson()) {
@@ -46,7 +49,7 @@ class BlogpostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
 
         return view('blogposts.form', [
@@ -62,7 +65,7 @@ class BlogpostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse | RedirectResponse
     {
         $request->validate(Blogpost::$rules);
 
@@ -91,7 +94,7 @@ class BlogpostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, Blogpost $blogpost)
+    public function show(Request $request, Blogpost $blogpost): View | JsonResponse
     {
 
         if ($request->wantsJson()) {
@@ -115,7 +118,7 @@ class BlogpostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Blogpost $blogpost)
+    public function edit(Blogpost $blogpost): View
     {
 
         return view('blogposts.form', [
@@ -134,7 +137,7 @@ class BlogpostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Blogpost $blogpost)
+    public function update(Request $request, Blogpost $blogpost): JsonResponse | RedirectResponse
     {
 
         $blogpost->fill($request->all());
@@ -162,7 +165,7 @@ class BlogpostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Blogpost $blogpost)
+    public function destroy(Blogpost $blogpost): JsonResponse | RedirectResponse
     {
 
         if ($blogpost->delete()) {
