@@ -2,13 +2,15 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Collection;
+
 class Theme
 {
-
+	private string $root_dir;
 	public $info;
-	public $languagePath = "resources/lang";
+	public string $languagePath = "resources/lang";
 
-	public function __construct(private $root_dir)
+	public function __construct(string $root_dir)
 	{
 		$this->root_dir = $root_dir;
 		//$this->info = file_exists($this->getPath()."theme_info.xml")? simplexml_load_file($this->getPath()."theme_info.xml") : NULL;
@@ -24,7 +26,7 @@ class Theme
 		return $this->root_dir;
 	}
 
-	public function templates()
+	public function templates(): array
 	{
 
 		if (file_exists('themes' . DIRECTORY_SEPARATOR . $this->root_dir . DIRECTORY_SEPARATOR . 'page_templates')) {
@@ -36,7 +38,7 @@ class Theme
 		return [];
 	}
 
-	public function parseThemeInfo()
+	public function parseThemeInfo(): void
 	{
 
 		$file_without_extension = $this->getPath() . "theme_info";
@@ -55,23 +57,23 @@ class Theme
 		}
 	}
 
-	public function isCurrentTheme()
+	public function isCurrentTheme(): bool
 	{
 		return $this->root_dir == \Settings::get('theme');
 	}
 
-	public function getName()
+	public function getName(): string
 	{
-		return $this->getInfo('name') == NULL ? $this->root_dir : $this->getInfo('name');
+		return empty($this->getInfo('name'))? $this->root_dir : $this->getInfo('name');
 	}
 
 
-	public function getPath()
+	public function getPath(): string
 	{
 		return 'themes/' . $this->root_dir . '/';
 	}
 
-	public function getSupportedLanguages()
+	public function getSupportedLanguages(): Collection
 	{
 		$lang_dir = $this->getPath() . $this->languagePath;
 
@@ -86,7 +88,7 @@ class Theme
 		});
 	}
 
-	public function getImage()
+	public function getImage(): string
 	{
 		return $this->getPath() . "preview.jpg";
 	}
@@ -96,22 +98,22 @@ class Theme
 		return isset($this->info->{$info}) ? $this->info->{$info} : NULL;
 	}
 
-	public function has404Template()
+	public function has404Template(): bool
 	{
 		return (file_exists($this->getPath() . "404.blade.php") || file_exists($this->getPath() . "404.php"));
 	}
 
-	public function hasWebsiteDownTemplate()
+	public function hasWebsiteDownTemplate(): bool
 	{
 		return (file_exists($this->getPath() . "website_down.blade.php") || file_exists($this->getPath() . "website_down.php"));
 	}
 
-	public function getRequiredCoreVersion()
+	public function getRequiredCoreVersion(): string
 	{
 		return ltrim(empty($this->getInfo('requires')->core)? 'v0.0.0' :  $this->getInfo('requires')->core, 'v');
 	}
 
-	public function isCompatibleWithCore()
+	public function isCompatibleWithCore(): bool
 	{
 		return \Composer\Semver\Comparator::greaterThanOrEqualTo(ltrim(config('horizontcms.version'), 'v'), $this->getRequiredCoreVersion());
 	}

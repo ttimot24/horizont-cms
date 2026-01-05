@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 
 class PluginMiddleware
 {
@@ -13,9 +14,8 @@ class PluginMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): Closure
     {
-
 
         if($request->is(config('horizontcms.backend_prefix')."/plugin/run/*")){
 

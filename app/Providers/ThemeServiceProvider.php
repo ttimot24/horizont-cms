@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Config;
 use \App\Services\Theme;
 use \App\Model\Settings;
 
@@ -48,7 +49,7 @@ class ThemeServiceProvider extends ServiceProvider
 
     protected function registerTranslations(Theme $theme): void
     {
-        if (!Request::is(\Config::get('horizontcms.backend_prefix') . "/*")) {
+        if (!Request::is(Config::get('horizontcms.backend_prefix') . "/*")) {
             $this->loadJsonTranslationsFrom(base_path($theme->getPath() . "resources/lang"));
         }
     }

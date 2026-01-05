@@ -6,9 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 class ModuleLoaderServiceProvider extends ServiceProvider
 {
-   
-    private $moduleLoader;
-
 
     /**
      * Register any application services.

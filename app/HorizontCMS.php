@@ -2,10 +2,10 @@
 
 namespace App;
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Collection;
 
-
-class HorizontCMS extends \Illuminate\Foundation\Application
+class HorizontCMS extends Application
 {
 
     // TODO Settings should be added here
@@ -18,17 +18,17 @@ class HorizontCMS extends \Illuminate\Foundation\Application
         $this->plugins = new Collection();
     }
 
-    public static function isInstalled()
+    public static function isInstalled(): bool
     {
         return file_exists(base_path(".env")) || config('horizontcms.installed', false);
     }
 
-    public function publicPath($path = '')
+    public function publicPath($path = ''): string
     {
         return $this->basePath . DIRECTORY_SEPARATOR;
     }
 
-    public function setPlugins(Collection $plugins){
+    public function setPlugins(Collection $plugins): void {
         $this->plugins = $plugins;
     }
 

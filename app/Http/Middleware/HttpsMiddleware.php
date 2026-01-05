@@ -3,11 +3,13 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class HttpsMiddleware
 {
 
-    public function handle($request, Closure $next){
+    public function handle(Request $request, Closure $next): Closure|RedirectResponse {
 
         if(\App\HorizontCMS::isInstalled()){
 

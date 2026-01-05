@@ -3,6 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class InstallerMiddleware
 {
@@ -13,12 +16,12 @@ class InstallerMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): Closure|RedirectResponse
     {
 
         if(!\App\HorizontCMS::isInstalled() && !$request->is(config('horizontcms.backend_prefix').'/install*')){
 
-            \Auth::logout();
+            Auth::logout();
 
             return redirect(route('install.index'));
 

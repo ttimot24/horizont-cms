@@ -3,8 +3,11 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\Request;
+use Lavary\Menu\Facade as Menu;
 
 class MenuMiddleware
 {
@@ -15,11 +18,11 @@ class MenuMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): Closure
     {
-        \App::setLocale($request->settings['language']);
+        App::setLocale($request->settings['language']);
 
-        \Menu::make('MainMenu', function ($menu) {
+        Menu::make('MainMenu', function ($menu) {
 
             $menu->add("<i class='fa fa-circle-notch'></i>" . trans('navbar.dashboard'), route("dashboard.index"));
 
@@ -76,13 +79,13 @@ class MenuMiddleware
             }
         });
 
-        \Menu::make('RightMenu', function ($menu) use ($request) {
+        Menu::make('RightMenu', function ($menu) use ($request) {
 
             $menu->add("<img style='height:30px;margin-top:-10px;margin-bottom:-10px;object-fit:cover;border-radius:1.5px;' src='" . Auth::user()->getThumb() . "' />  " . \Auth::user()->username)->id('current_user');
             $menu->find('current_user')->add("<img style='border-radius:1.5px;width:95%;height:135px;margin:10px 2.5% 10px 2.5%;object-fit:cover;' class='img img-rounded' src='" . Auth::user()->getThumb() . "' /><br> <p style='color:white;font-size:14px;'>" . \Auth::user()->username . " (" . strtolower(\Auth::user()->role->name) . ")</p>", ['url' => '#', 'style' => 'clear:both;width:215px;text-align:center;', 'class' => 'current-image'])->id('current_image');
             $menu->find('current_image')->divide();
-            $menu->find('current_user')->add(trans('navbar.profile_view'), ['route' => ['user.show', 'user' => \Auth::user()]])->id('view_account');
-            $menu->find('current_user')->add(trans('navbar.profile_settings'), ['route' => ['user.edit', 'user' => \Auth::user()]])->id('account_settings');
+            $menu->find('current_user')->add(trans('navbar.profile_view'), ['route' => ['user.show', 'user' => Auth::user()]])->id('view_account');
+            $menu->find('current_user')->add(trans('navbar.profile_settings'), ['route' => ['user.edit', 'user' => Auth::user()]])->id('account_settings');
 
             if (Gate::allows('view', 'settings')) {
                 $menu->add("<i class='fa fa-cogs'></i> ", route('settings.index'))->id('settings');

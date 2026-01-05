@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Config;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -27,7 +28,7 @@ class AuthServiceProvider extends ServiceProvider
 
         \App\Providers\Gates\PermissionsGate::register();
 
-        $prefix = \Config::get('horizontcms.backend_prefix');
+        $prefix = Config::get('horizontcms.backend_prefix');
 
         if (
             $this->app->request->is($prefix . '*') && !$this->app->request->is($prefix . '/install*')
@@ -37,22 +38,18 @@ class AuthServiceProvider extends ServiceProvider
             Gate::define('global-authorization', function ($user) use ($prefix) {
                 $request = app()->request;
 
-                // Admin dashboard vagy root esetén engedélyezett
                 if ($request->segment(2) === null || $request->is($prefix . '/dashboard*')) {
                     return true;
                 }
 
-                // Meghatározzuk a modul nevét
                 $isPluginRun = $request->is($prefix . '/plugin/run/*');
 
                 $segment = $isPluginRun? $request->segment(4): $request->segment(2);
 
-                $segment = str_replace('-', '', $segment); // kötőjelek eltávolítása
+                $segment = str_replace('-', '', $segment);
 
-                // Meghatározzuk az akciót (módszert) - pl. view, create stb.
-                $action = $request->route()?->getActionMethod(); // pl. index, show, create, store, edit, update, destroy
+                $action = $request->route()?->getActionMethod(); // index, show, create, store, edit, update, destroy
 
-                // Akció térképezés az engedély típusokhoz
                 $actionMap = [
                     'index'   => 'view',
                     'show'    => 'view',
@@ -67,10 +64,9 @@ class AuthServiceProvider extends ServiceProvider
                 $mappedAction = $actionMap[$action] ?? null;
 
                 if (!$mappedAction) {
-                    return false; // Ismeretlen akció
+                    return false;
                 }
 
-                // Teljes permission kulcs: pl. blogpost.view
                 $permissionKey = "{$segment}.{$mappedAction}";
 
                 return in_array($permissionKey, $user->role->rights);

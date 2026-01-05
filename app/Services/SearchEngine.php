@@ -5,15 +5,15 @@ namespace App\Services;
 class SearchEngine
 {
 
-    private $searchModels = [];
+    private array $searchModels = [];
     private $searchKey = null;
 
-    public function registerModel($model)
+    public function registerModel($model): void
     {
         $this->searchModels[$model] = [];
     }
 
-    public function getRegisteredModels()
+    public function getRegisteredModels(): array
     {
         return $this->searchModels;
     }
@@ -23,7 +23,7 @@ class SearchEngine
         return $this->searchKey;
     }
 
-    public function executeSearch($search_key)
+    public function executeSearch($search_key): void
     {
 
         $this->clearResults();
@@ -51,7 +51,7 @@ class SearchEngine
         return $this->searchModels[$model];
     }
 
-    public function clearResults()
+    public function clearResults(): void
     {
         $this->searchKey = null;
         foreach ($this->searchModels as $key => $values) {
@@ -66,7 +66,7 @@ class SearchEngine
         return $this->searchModels;
     }
 
-    public function getTotalCount()
+    public function getTotalCount(): int
     {
 
         $total_count = 0;

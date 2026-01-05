@@ -12,8 +12,11 @@ class UrlManager
 	/**
 	 * @deprecated deprecated since version 1.0.0
 	 */
-	public static function seo_url($string)
+	public static function seo_url(string|null $string): string
 	{
+		if(empty($string)) {
+			return "";
+		}
 
 		$string = explode("/", $string);
 
@@ -34,7 +37,7 @@ class UrlManager
 	/**
 	 * @deprecated deprecated since version 1.0.0
 	 */
-	public static function http_protocol($string)
+	public static function http_protocol(string $string): string
 	{
 
 		if (strpos($string, 'http') === false) {

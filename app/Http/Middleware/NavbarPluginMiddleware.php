@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\Request;
+use Lavary\Menu\Facade as Menu;
 
 class NavbarPluginMiddleware
 {
@@ -14,12 +16,12 @@ class NavbarPluginMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): Closure
     {
         if (app()->plugins != null && !app()->plugins->isEmpty()) {
 
-            $main_menu = \Menu::get('MainMenu');
-            $right_menu = \Menu::get('RightMenu');
+            $main_menu = Menu::get('MainMenu');
+            $right_menu = Menu::get('RightMenu');
 
             foreach (app()->plugins as $plugin) {
                 try {

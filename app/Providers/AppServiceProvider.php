@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Config;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
-        \Config::set('self-update.version_installed', \Config::get('horizontcms.version'));
+        Config::set('self-update.version_installed', Config::get('horizontcms.version'));
 
         \Illuminate\Pagination\Paginator::useBootstrap();
 
@@ -33,8 +34,8 @@ class AppServiceProvider extends ServiceProvider
 
 
         View::share('title', "");
-        View::share('css', \Config::get('horizontcms.css'));
-        View::share('js', \Config::get('horizontcms.js'));
+        View::share('css', Config::get('horizontcms.css'));
+        View::share('js', Config::get('horizontcms.js'));
         
     }
 

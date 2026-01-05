@@ -7,6 +7,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Config;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -37,7 +38,7 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->namespace($this->namespace)
-                ->prefix(\Config::get('horizontcms.backend_prefix'))
+                ->prefix(Config::get('horizontcms.backend_prefix'))
                 ->group(base_path('routes/backend.php'));
 
             Route::middleware(['web', 'website'])
