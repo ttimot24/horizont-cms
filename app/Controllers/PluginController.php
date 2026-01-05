@@ -179,18 +179,21 @@ class PluginController extends Controller
         if (request()->hasFile('up_file')) {
 
             $file_name = request()->up_file[0]->store('framework/temp');
-        }
 
         $zip = new \ZipArchive;
-        if ($zip->open("storage/" . $file_name) === TRUE) {
-            $zip->extractTo('plugins/');
-            $zip->close();
+            if ($zip->open("storage/" . $file_name) === TRUE) {
+                $zip->extractTo('plugins/');
+                $zip->close();
 
-            Storage::delete("storage/" . $file_name);
+                Storage::delete("storage/" . $file_name);
 
-            return redirect()->back()->withMessage(['success' => trans('Succesfully uploaded the plugin!')]);
-        } else {
-            return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong')]);
-        }
+                return redirect()->back()->withMessage(['success' => trans('Succesfully uploaded the plugin!')]);
+            } else {
+                return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong')]);
+            } 
+        
+        } 
+        
+        return redirect()->back()->withMessage(['danger' => trans('No file uploaded!')]);
     }
 }

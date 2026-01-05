@@ -49,6 +49,8 @@ class UserRoleController extends Controller
 
         $controllers = array_slice(scandir(app_path('Controllers')), 3);
 
+        $permission_list = [];
+
         foreach ($controllers as $controller) {
             
             if (!str_ends_with($controller, 'Controller.php') || in_array($controller, ['WebsiteController.php', 'InstallController.php', 'DashboardController.php'])) {
