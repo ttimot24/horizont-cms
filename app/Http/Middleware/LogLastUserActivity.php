@@ -17,7 +17,7 @@ class LogLastUserActivity
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next): Closure
+    public function handle(Request $request, Closure $next)
     {
 
         if(Auth::check()) {

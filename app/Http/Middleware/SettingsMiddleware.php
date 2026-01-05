@@ -24,7 +24,7 @@ class SettingsMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next): Closure
+    public function handle(Request $request, Closure $next)
     {
 
         if(\App\HorizontCMS::isInstalled()){

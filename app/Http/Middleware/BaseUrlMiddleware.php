@@ -15,7 +15,7 @@ class BaseUrlMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next): Closure
+    public function handle(Request $request, Closure $next)
     {
 
         $base_url = "//".$request->headers->get('host').$request->getBaseUrl()."/";

@@ -18,7 +18,7 @@ class MenuMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next): Closure
+    public function handle(Request $request, Closure $next)
     {
         App::setLocale($request->settings['language']);
 

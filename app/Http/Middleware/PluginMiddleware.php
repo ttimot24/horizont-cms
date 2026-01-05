@@ -14,7 +14,7 @@ class PluginMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next): Closure
+    public function handle(Request $request, Closure $next)
     {
 
         if($request->is(config('horizontcms.backend_prefix')."/plugin/run/*")){
