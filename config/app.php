@@ -171,7 +171,6 @@ return [
         Lavary\Menu\ServiceProvider::class,
 
         Madnest\Madzipper\MadzipperServiceProvider::class,
-//        Chumper\Zipper\ZipperServiceProvider::class,
         Jackiedo\LogReader\LogReaderServiceProvider::class
     ],
 

@@ -7,6 +7,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Madnest\Madzipper\Madzipper;
 
 class PluginRegistryController extends Controller
 {
@@ -63,7 +64,7 @@ class PluginRegistryController extends Controller
 
         if ($response->successful()) {
 
-            $zipper = new \Zipper();
+            $zipper = new Madzipper();
 
             $zipper->make(storage_path() . DIRECTORY_SEPARATOR . $tempZip)->folder($plugin_name)->extractTo('plugins' . DIRECTORY_SEPARATOR . $plugin_name);
 
