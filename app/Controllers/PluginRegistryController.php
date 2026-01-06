@@ -27,7 +27,7 @@ class PluginRegistryController extends Controller
         $repo_status = true;
 
         try {
-            $response = Http::get(config('horizontcms.sattelite_url') . '/get_plugins.php');
+            $response = Http::get(config('horizontcms.sattelite_url') . '/api/v1/plugins');
 
             $plugins = collect($response->object())->map(function ($plugin) { 
 
@@ -58,7 +58,7 @@ class PluginRegistryController extends Controller
         $path = Storage::disk('local')->path($tempZip);
 
         $response = Http::sink($path)->get(
-            config('horizontcms.sattelite_url') . "/download/plugin/{$plugin_name}"
+            config('horizontcms.sattelite_url') . "/api/v1/plugins/{$plugin_name}/download"
         );
 
         if ($response->successful()) {
