@@ -37,6 +37,7 @@ class ContentSeeder extends Seeder
             'id' => 2,
             'name' => 'Blog',
             'slug' => 'blog',
+            'language' => 'en',
             'url' => 'blog.php',
             'visibility' => 1,
             'parent_id' => NULL,
@@ -53,6 +54,7 @@ class ContentSeeder extends Seeder
             'id' => 1,
             'title' => 'Welcome to HorizontCMS!',
             'slug' => 'welcome-to-horizontcms',
+            'language' => 'en',
             'summary' => 'Your very first post.',
             'text' => 'If you see this, the install was successfull!',
             'category_id' => 1,
@@ -67,11 +69,21 @@ class ContentSeeder extends Seeder
         DB::table('blogpost_categories')->insert([
             'id' => 1,
             'name' => 'default',
+            'language' => 'en',
             'author_id' => 1,
             'image' => '',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => NULL,
         ]);
+
+        DB::table('blogpost_categories_pivot')->insert([
+            'id' => 1,
+            'blogpost_id' => 1,
+            'blogpost_category_id' => 1,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => NULL,
+        ]);
+
 
         DB::table('header_images')->insert([
             'id' => 1,

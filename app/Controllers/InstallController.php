@@ -3,8 +3,10 @@
 namespace App\Controllers;
 
 use Illuminate\Routing\Controller;
-use Session;
-use Config;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Artisan;
 
 class InstallController extends Controller
 {
@@ -16,7 +18,7 @@ class InstallController extends Controller
     public function index()
     {
 
-        \File::ensureDirectoryExists('framework/upgrade/cache');
+        File::ensureDirectoryExists('framework/upgrade/cache');
 
         return view("install.index", ['enable_continue' => true]);
     }
@@ -146,8 +148,8 @@ class InstallController extends Controller
             Config::set('database.connections.' . Session::get('step2.db_driver') . '.database', Session::get('step2.database'));
             Config::set('database.connections.' . Session::get('step2.db_driver') . '.prefix', Session::get('step2.prefix'));
 
-            \Artisan::call("migrate", ["--force" => true]);
-            \Artisan::call("db:seed", ["--force" => true]);
+            Artisan::call("migrate", ["--force" => true]);
+            Artisan::call("db:seed", ["--force" => true]);
 
             $administrator = new \App\Model\User();
             $administrator->name = 'Administrator';
