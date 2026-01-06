@@ -2,12 +2,14 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Collection;
+
 class ShortCode
 {
 
 	private array $widgets = [];
 
-	public function initalize(array $plugins): void
+	public function initalize(Collection $plugins): void
 	{
 
 		foreach ($plugins as $plugin) {
