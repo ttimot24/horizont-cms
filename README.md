@@ -12,7 +12,7 @@
 This lightweight CMS platform is not just about functionality—it's about empowerment. Whether you're a seasoned developer or a novice user, HorizontCMS provides intuitive tools and a seamless interface to extend and build your online presence with ease. With just one click, you can unlock endless possibilities and unleash your creativity.
 
 
-### Latest version: [v1.4.1](https://github.com/ttimot24/HorizontCMS/releases/tag/v1.4.1)
+### Latest version: [v1.4.2](https://github.com/ttimot24/HorizontCMS/releases/tag/v1.4.2)
 
 
 ### Installation
