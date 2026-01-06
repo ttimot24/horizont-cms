@@ -13,9 +13,11 @@ class WebsiteController extends Controller
 
     private $engine;
 
-    public function __construct(Request $request, \App\Interfaces\ThemeEngineInterface $engine){
+    public function __construct(Request $request){
         $this->request = $request;
-        $this->engine = $engine;
+        if(app()->isInstalled()){
+            $this->engine = app()->make(\App\Interfaces\ThemeEngineInterface::class);
+        }
     }
 
     /**
