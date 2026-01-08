@@ -12,9 +12,11 @@ use Madnest\Madzipper\Madzipper;
 class PluginRegistryController extends Controller
 {
 
+    private readonly string $apiPath;
 
     public function before()
     {
+        $this->apiPath = config('horizontcms.sattelite_url') . '/api/v1/plugins';
         File::ensureDirectoryExists('plugins');
     }
 
@@ -28,7 +30,7 @@ class PluginRegistryController extends Controller
         $repo_status = true;
 
         try {
-            $response = Http::get(config('horizontcms.sattelite_url') . '/api/v1/plugins');
+            $response = Http::get($this->apiPath);
 
             $plugins = collect($response->object())->map(function ($plugin) { 
 
@@ -58,9 +60,7 @@ class PluginRegistryController extends Controller
 
         $path = Storage::disk('local')->path($tempZip);
 
-        $response = Http::sink($path)->get(
-            config('horizontcms.sattelite_url') . "/api/v1/plugins/{$plugin_name}/download"
-        );
+        $response = Http::sink($path)->get($this->apiPath . "/{$plugin_name}/download");
 
         if ($response->successful()) {
 
