@@ -14,7 +14,7 @@ class PluginRegistryController extends Controller
 
     private readonly string $apiPath;
 
-    public function before()
+    public function __construct()
     {
         $this->apiPath = config('horizontcms.sattelite_url') . '/api/v1/plugins';
         File::ensureDirectoryExists('plugins');
@@ -65,8 +65,13 @@ class PluginRegistryController extends Controller
         if ($response->successful()) {
 
             $zipper = new Madzipper();
+            $zipper->make(storage_path() . DIRECTORY_SEPARATOR . $tempZip);
 
-            $zipper->make(storage_path() . DIRECTORY_SEPARATOR . $tempZip)->folder($plugin_name)->extractTo('plugins' . DIRECTORY_SEPARATOR . $plugin_name);
+            if ($zipper->contains($plugin_name.'/plugin_info.xml')) {
+                $zipper->folder($plugin_name)->extractTo('plugins/' . $plugin_name);
+            } else {
+                $zipper->extractTo('plugins/' . $plugin_name);
+            }
 
             if (file_exists("plugins/" . $plugin_name)) {
                 @Storage::delete("framework" . DIRECTORY_SEPARATOR . "temp" . DIRECTORY_SEPARATOR . $plugin_name . ".zip");
