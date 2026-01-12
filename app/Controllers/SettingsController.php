@@ -22,7 +22,7 @@ class SettingsController extends Controller
     {
 
         foreach ($request->all() as $key => $value) {
-            Settings::updateOrCreate(['setting' => $key], ['value' => $value, 'more' => 1]);
+            Settings::updateOrCreate(['setting' => $key], ['value' => $value]);
         }
 
         Cache::forget('settings');
