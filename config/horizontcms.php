@@ -43,6 +43,7 @@ return [
 				'en' => 'English',
 				'de' => 'Deutsch',
 				'hu' => 'Magyar',
+				'es' => 'Español'
 			],
 	
 	
