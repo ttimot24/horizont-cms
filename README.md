@@ -26,7 +26,7 @@ Experience seamless installation and setup with our Command Line Interface (CLI)
 
   1. Download or clone the CMS
   2. Navigate to the app root folder and run ```composer install```
-  3. Run ```php artisan horizontcms:install```
+  3. Run ```php artisan hcms:install```
   4. Enter the required database and administrator informations.
   5. You're finished.
 
