@@ -95,6 +95,16 @@ Route::get('/settings', function(Request $request){
 
 });
 
+Route::get('/settings/{key}', function(string $key){
+
+    $settings = Cache::get('settings_'.$key, function () use($key) {
+        return \App\Model\Settings::group('website')->key($key)->first();
+    });
+
+    return response()->json($settings);
+
+});
+
 Route::get('/users',function(Request $request){
 
     if(Gate::allows('view', 'user')){

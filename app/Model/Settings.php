@@ -72,4 +72,8 @@ class Settings extends Model {
 		return $query->where('group', $group);
 	}
 
+	public function scopeKey(Builder $query, string $key): Builder {
+		return $query->where('setting', $key);
+	}
+
 }
