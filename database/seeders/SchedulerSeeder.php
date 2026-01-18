@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 use Carbon\Carbon;
 
-class ContentSeeder extends Seeder
+class SchedulerSeeder extends Seeder
 {
     /**
      * Run the database seeds.
