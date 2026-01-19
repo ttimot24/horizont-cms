@@ -22,7 +22,7 @@ class Html {
 	/**
 	 * @deprecated deprecated since version 1.0.0
 	 */
-	public static function meta(string $property, string $content): string {
+	public static function meta(string $property, string|null $content): string {
 		return "<meta property='".$property."' content='".$content."' />";
 	}
 

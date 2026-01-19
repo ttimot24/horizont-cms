@@ -30,7 +30,25 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique(['blogpost_id', 'blogpost_category_id'], 'pivot_blogpost_category_unique');
+
         });
+
+
+        DB::table('blogposts')
+            ->whereNotNull('category_id')
+            ->select('id', 'category_id')
+            ->orderBy('id')
+            ->chunk(500, function ($posts) {
+                DB::table($this->table_name)->insert(
+                    $posts->map(fn ($post) => [
+                        'blogpost_id'          => $post->id,
+                        'blogpost_category_id' => $post->category_id,
+                        'created_at'           => now(),
+                        'updated_at'           => now(),
+                    ])->toArray()
+                );
+        });
+
     }
 
     public function down(): void
