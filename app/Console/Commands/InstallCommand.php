@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Artisan;
 
 class InstallCommand extends Command
 {
@@ -89,7 +90,7 @@ class InstallCommand extends Command
         $admin['password'] = $this->secret('Password');
         $admin['email'] = $this->ask('Email');
 
-        \Artisan::call("cache:clear");
+        Artisan::call("cache:clear");
 
         Config::set('app.env', null);
         Config::set('database.connections.' . $database['driver'] . '.username', $database['username']);
@@ -118,15 +119,17 @@ class InstallCommand extends Command
 
         $this->info("3. Generating .env file...");
 
-        $dotenv = new \App\Services\DotEnvGenerator();
-        $dotenv->addEnvVar('DB_HOST', '127.0.0.1');
-        $dotenv->addEnvVar('DB_CONNECTION', $database['driver']);
-        $dotenv->addEnvVar('DB_USERNAME', $database['username']);
-        $dotenv->addEnvVar('DB_PASSWORD', $database['password']);
-        $dotenv->addEnvVar('DB_DATABASE', $database['database']);
+        $dotenv = new \App\Services\DotEnvGenerator([
+            'DB_HOST' => '127.0.0.1',
+            'DB_CONNECTION' => $database['driver'],
+            'DB_USERNAME' => $database['username'],
+            'DB_PASSWORD' => $database['password'],
+            'DB_DATABASE' => $database['database'],
+            'HCMS_ADMIN_PREFIX' => Config::get('horizontcms.backend_prefix') 
+        ]);
 
-        $dotenv->addEnvVar('HCMS_ADMIN_PREFIX', 'admin');
         $dotenv->generate();
+
         $this->info("Ready");
 
 

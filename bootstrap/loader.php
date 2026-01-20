@@ -8,6 +8,9 @@
 | modules section.
 |
 */
+/**
+* @deprecated deprecated since version 1.4.0
+*/
 function module_loader($class): void
 {
 

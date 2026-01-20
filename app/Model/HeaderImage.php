@@ -22,4 +22,6 @@ class HeaderImage extends Model {
         'title', 'type' ,'link' ,'description', 'image', 'active',
     ];
 
+    protected $defaultImage = '';
+
 }
