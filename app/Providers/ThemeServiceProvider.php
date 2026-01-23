@@ -26,6 +26,7 @@ class ThemeServiceProvider extends ServiceProvider
                 return $theme;
             });
 
+            $this->registerThemeAutoLoader($theme);
 
             $this->registerThemeConfigs($theme);
 
@@ -35,6 +36,14 @@ class ThemeServiceProvider extends ServiceProvider
 
             $this->registerThemeRoutes($theme);
 
+        }
+    }
+
+    private function registerThemeAutoLoader(Theme $theme): void
+    {
+        $autoloader =  base_path($theme->getPath() . "/vendor/autoload.php");
+        if (file_exists($autoloader)) {
+            require_once($autoloader);
         }
     }
 
