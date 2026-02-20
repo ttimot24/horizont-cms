@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +67,42 @@ Route::get('/pages/slug/{slug}', function($slug){
   
     return response()->json($page);
   });
+
+Route::get('/files', function(){
+
+        $path = trim(request()->query('path', ''), '/');
+
+        if (Str::contains($path, ['..', './', '\\'])) {
+            return response()->json([
+                'message' => 'Invalid path'
+            ], 400);
+        }
+
+        if (!Storage::disk('public')->exists($path)) {
+            return response()->json([
+                'message' => 'Path not found'
+            ], 404);
+        }
+
+        $directories = Storage::disk('public')->directories($path);
+        $files = Storage::disk('public')->files($path);
+
+        return response()->json([
+            'path' => $path,
+            'directories' => collect($directories)->map(fn ($dir) => [
+                'name' => basename($dir),
+                'path' => $dir,
+                'type' => 'directory',
+            ]),
+            'files' => collect($files)->map(fn ($file) => [
+                'name' => basename($file),
+                'path' => $file,
+                'type' => 'file',
+                'size' => Storage::disk('public')->size($file),
+                'url' => Storage::disk('public')->url($file),
+            ]),
+        ]);
+});
 
 Route::apiResource('blogposts', \App\Controllers\BlogpostController::class)
             ->only(['index', 'show']);
