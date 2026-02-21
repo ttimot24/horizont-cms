@@ -9,7 +9,7 @@ class DotEnvGenerator {
 	private string $path = "";
 	private string $file = ".env";
 
-	public function __construct(array|null $envs) {
+	public function __construct(array|null $envs = null) {
 		if(is_null($envs)){
 			return;
 		}
