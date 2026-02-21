@@ -65,30 +65,7 @@
                             </div>
 
                             <div class="row p-3">
-                                <div class='form-group col-xs-12 col-md-6'>
-                                    <label for='level'>{{ trans('page.page_level') }}</label>
-                                    <select class='form-select' name='parent_select' id='level'>
-                                        <option value='0' @if (isset($page) && $page->parent_id == null) selected @endif>Main menu
-                                        </option>
-                                        <option value='1' @if (isset($page) && $page->parent_id != null) selected @endif>Submenu
-                                        </option>";
-                                    </select>
-                                </div>
-
-                                <div class='form-group col-xs-12 col-md-6' id='submenus'>
-                                    <label for='submenus'>Parent menu:</label>
-                                    <select class='form-select' name='parent_id'>
-                                        @foreach (config('horizontcms.languages') as $key => $value)
-                                        <optgroup label='{{ $value }}'>
-                                            @foreach ($all_page->filter(fn($page) => $page->language == $key) as $each)
-                                                <option value="{{ $each->id }}"
-                                                    {{ isset($page) && $page->parent != null && $each->is($page->parent) ? 'selected' : '' }}>
-                                                    {{ $each->name }}</option>
-                                            @endforeach
-                                        </optgroup>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                <parent-page-selector :label="'{{ trans('page.page_level') }}'" :languages='@json(config('horizontcms.languages'))' :page='@json($page)' :all_pages='@json($all_page)' />
                             </div>
 
                             <div class='form-group col-xs-12 col-md-12' style='margin-top:20px;margin-bottom:20px;'>
@@ -175,28 +152,4 @@
         @include('image_details', ['modal_id' => $page->id, 'image' => $page->getImage()])
     @endif
 
-@endsection
-
-@section('head')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type='text/javascript' defer>
-
-            $(document).ready(function() {
-
-                if ($('#level').find('option:selected').val() == '1') {
-                    $('#submenus').show();
-                }
-
-                $('#level').change(function() {
-                    if ($(this).find('option:selected').val() == '0') {
-                        $('#submenus').hide();
-
-                    } else {
-
-                        $('#submenus').show();
-                    }
-                });
-            });
-    </script>
-    
 @endsection

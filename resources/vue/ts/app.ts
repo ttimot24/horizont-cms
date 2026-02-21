@@ -18,6 +18,7 @@ import TextEditor from './components/text-editor/TextEditor.vue';
 import LockScreen from './components/lock-screen/LockScreen.vue';
 import FileManager from './components/file-manager/FileManager.vue';
 import CategorySelector from './components/category-selector/CategorySelector.vue';
+import ParentPageSelector from './components/parent-page-selector/ParentPageSelector.vue';
 
 window.vue.use(CKEditor);
 window.vue.use(VueCompositionAPI);
@@ -46,7 +47,8 @@ const hcms = new window.vue({
         TextEditor,
         LockScreen,
         FileManager,
-        CategorySelector
+        CategorySelector,
+        ParentPageSelector
     },
     created: function(){
         console.info("HorizontCMS started");

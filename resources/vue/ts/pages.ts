@@ -11,24 +11,6 @@ axios.defaults.headers.common['Accept'] = "application/json";
 axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken.getAttribute('content');
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + apiToken.getAttribute('content');
 
-
-$(document).ready(function () {
-
-  var submenus = $('#submenus');
-
-  submenus.hide();
-
-  $('#level').change(function () {
-    $(this).find('option:selected').val() == '1' ? submenus.show() : submenus.hide();
-  });
-
-
-  $("#selected-image").hide();
-
-});
-
-
-
 function readURL(input: HTMLInputElement) {
   if (input.files && input.files[0]) {
     var reader = new FileReader();

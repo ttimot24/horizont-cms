@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import DeleteModal from './DeleteModal.ts';
+import DeleteModal from './DeleteModal';
 
 describe('DeleteModal - Unit Tests', () => {
     let component: any;

@@ -28692,14 +28692,6 @@ var apiToken = document.head.querySelector('meta[name="api-token"]');
 (axios_observable__WEBPACK_IMPORTED_MODULE_2___default().defaults.headers.common.Accept) = "application/json";
 (axios_observable__WEBPACK_IMPORTED_MODULE_2___default().defaults.headers.common["X-CSRF-TOKEN"]) = csrfToken.getAttribute('content');
 (axios_observable__WEBPACK_IMPORTED_MODULE_2___default().defaults.headers.common.Authorization) = 'Bearer ' + apiToken.getAttribute('content');
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
-  var submenus = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#submenus');
-  submenus.hide();
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()('#level').change(function () {
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).find('option:selected').val() == '1' ? submenus.show() : submenus.hide();
-  });
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#selected-image").hide();
-});
 function readURL(input) {
   if (input.files && input.files[0]) {
     var reader = new FileReader();

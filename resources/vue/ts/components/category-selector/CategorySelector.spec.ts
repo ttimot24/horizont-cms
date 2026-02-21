@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import CategorySelector from './CategorySelector.ts';
+import CategorySelector from './CategorySelector';
 import { of, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 
