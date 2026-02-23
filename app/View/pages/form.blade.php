@@ -65,7 +65,7 @@
                             </div>
 
                             <div class="row p-3">
-                                <parent-page-selector :label="'{{ trans('page.page_level') }}'" :languages='@json(config('horizontcms.languages'))' :page='@json($page)' :all_pages='@json($all_page)' />
+                                <parent-page-selector :label="'{{ trans('page.page_level') }}'" :languages='@json(config('horizontcms.languages'))' :page='@json(isset($page)? $page : null)' :all_pages='@json($all_page)' />
                             </div>
 
                             <div class='form-group col-xs-12 col-md-12' style='margin-top:20px;margin-bottom:20px;'>
