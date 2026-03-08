@@ -92,7 +92,7 @@
             </div>
 
             <div class="d-flex justify-content-center mt-5">
-                {{ $entries->links()->withPath(route('log.show', ['log' => $current_file])) }}
+                {{ $entries->withPath(route('log.show', ['log' => $current_file]))->links() }}
             </div>
 
         </div>
