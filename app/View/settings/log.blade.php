@@ -47,7 +47,7 @@
             <div class="card bg-dark text-white mb-4 p-4">
                 <div class="row">
                     <div class="col-6">
-                        <h4>Entries: {{ $all_file_entries }}</h4>
+                        <h4>Entries: {{ $entries->total() }}</h4>
                     </div>
                     <div class='col-6 text-end'>
                         @if (isset($current_file))

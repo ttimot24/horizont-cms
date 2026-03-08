@@ -32,7 +32,6 @@ class LogController extends Controller
         return view('settings.log', [
             'all_files' => $files->reverse(),
             'entries' => $entries,
-            'all_file_entries' => LogReader::count(),
             'current_file' => isset($current_file) ? $current_file : null,
             'max_files' => 15
         ]);
