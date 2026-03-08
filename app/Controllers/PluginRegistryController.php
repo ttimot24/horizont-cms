@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Madnest\Madzipper\Madzipper;
 
@@ -42,7 +43,7 @@ class PluginRegistryController extends Controller
             });
 
         } catch (\Exception $e) {
-            \Log::warning($e);
+            Log::warning($e);
             $plugins = collect([]);
             $repo_status = false;
         }

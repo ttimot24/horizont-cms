@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class FileManagerController extends Controller
 {
@@ -117,7 +118,7 @@ class FileManagerController extends Controller
             $directory = "storage/" . str_replace("storage/", "", request()->input('dir_path')) . "/" . request()->input('new_folder_name');
 
             if (!file_exists($directory)) {
-                \File::makeDirectory($directory, $mode = 0777, true, true);
+                File::makeDirectory($directory, $mode = 0777, true, true);
 
                 if (request()->wantsJson()) {
                     return response()->json(['success' => 'Folder created successfully!']);
@@ -195,7 +196,7 @@ class FileManagerController extends Controller
 
         $new_file = trim(request()->input('new_file'), "/");
 
-        if (!\Security::isExecutable($new_file) && \Storage::move(request()->input('old_file'), $new_file)) {
+        if (!\Security::isExecutable($new_file) && Storage::move(request()->input('old_file'), $new_file)) {
             if (request()->wantsJson()) {
                 return response()->json(['success' => trans('File successfully renamed!')]);
             }

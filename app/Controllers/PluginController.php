@@ -4,8 +4,8 @@ namespace App\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Artisan;
 
@@ -136,7 +136,7 @@ class PluginController extends Controller
                 $plugin->getRegister('onUpgrade', [$plugin->version]);
                 $plugin->version = $plugin->getInfo('version');
             } catch(\Exception $e){
-                \Log::error("Plugin upgrade error for ".$plugin->root_dir.": ".$e->getMessage());
+                Log::error("Plugin upgrade error for ".$plugin->root_dir.": ".$e->getMessage());
                 return redirect()->back()->withMessage(['danger' => "Plugin upgrade error for ".$plugin->root_dir.": ".$e->getMessage()]);
             };
         }

@@ -4,6 +4,10 @@ namespace App\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 use App\Services\Theme;
 use App\Model\Settings;
@@ -51,13 +55,13 @@ class ThemeController extends Controller
 
         try {
 
-            $themes = json_decode(file_get_contents(\Config::get('horizontcms.sattelite_url') . '/get_themes.php'));
+            $themes = json_decode(file_get_contents(Config::get('horizontcms.sattelite_url') . '/get_themes.php'));
 
             if ($themes == null) {
                 throw new \Exception('Could not fetch Themes');
             }
         } catch (\Exception $e) {
-            \Log::warning("Could not fetch themes from repository: " . $e->getMessage());
+            Log::warning("Could not fetch themes from repository: " . $e->getMessage());
             $themes = [];
             $repo_status = false;
         }
@@ -129,7 +133,7 @@ class ThemeController extends Controller
                 $zip->extractTo('themes/');
                 $zip->close();
 
-                \Storage::delete("storage/" . $file_name);
+                Storage::delete("storage/" . $file_name);
 
                 return redirect()->back()->withMessage(['success' => trans('Succesfully uploaded the theme!')]);
             } else {
@@ -174,7 +178,7 @@ class ThemeController extends Controller
 
                 return redirect()->back()->withMessage(['success' => trans('message.successfully_saved_settings')]);
             } catch (\Exception $e) {
-                \Log::error($e);
+                Log::error($e);
                 return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong')]);
             }
     }
@@ -183,7 +187,7 @@ class ThemeController extends Controller
     public function destroy($theme)
     {
 
-        if (\File::deleteDirectory("themes/" . $theme)) {
+        if (File::deleteDirectory("themes/" . $theme)) {
             return redirect()->back()->withMessage(['success' => trans('Succesfully deleted the theme!')]);
         } else {
             return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong')]);

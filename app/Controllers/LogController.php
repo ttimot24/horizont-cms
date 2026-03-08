@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use Illuminate\Routing\Controller;
 use \Jackiedo\LogReader\Facades\LogReader;
-
+use Illuminate\Support\Facades\Config;
 
 class LogController extends Controller
 {
@@ -16,7 +16,7 @@ class LogController extends Controller
      */
     public function index($file = null)
     {
-        LogReader::setLogPath(dirname(\Config::get('logging.channels.' . \Config::get('logging.default') . '.path')));
+        LogReader::setLogPath(dirname(Config::get('logging.channels.' . Config::get('logging.default') . '.path')));
 
         $entries = collect();
         $files = collect(LogReader::getLogFilenameList());
@@ -26,6 +26,10 @@ class LogController extends Controller
             $current_file = empty($file)?  basename($files->last()) : $file;
 
             $entries = LogReader::filename($current_file)->orderBy('date', 'desc')->paginate(250);
+        }
+
+        if (request()->wantsJson()) {
+            return response()->json($entries);
         }
 
         // dd($entries);

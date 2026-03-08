@@ -6,6 +6,7 @@ use App\Controllers\Trait\UploadsImage;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use App\Model\Page;
 
 class PageController extends Controller

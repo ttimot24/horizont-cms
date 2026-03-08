@@ -4,7 +4,9 @@ namespace App\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+
 use App\Model\ScheduledTask;
+use App\Model\Settings;
 
 class ScheduleController extends Controller
 {
@@ -20,7 +22,7 @@ class ScheduleController extends Controller
         return view('settings.schedules', [
             'commands' => rescue(fn() => \Artisan::all(), fn() => []),
             'scheduled_tasks' => \App\Model\ScheduledTask::all(),
-            'scheduler' => \Settings::firstOrNew(['setting' => 'scheduler'], ['value' => 'not configured'])
+            'scheduler' => Settings::firstOrNew(['setting' => 'scheduler'], ['value' => 'not configured'])
         ]);
     }
 

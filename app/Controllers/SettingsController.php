@@ -5,6 +5,9 @@ namespace App\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Config;
 
 use App\Model\Settings;
 
@@ -13,8 +16,8 @@ class SettingsController extends Controller
 
     public function before()
     {
-        \File::ensureDirectoryExists('images/logos');
-        \File::ensureDirectoryExists('images/favicons');
+        File::ensureDirectoryExists('images/logos');
+        File::ensureDirectoryExists('images/favicons');
     }
 
 
@@ -118,16 +121,16 @@ class SettingsController extends Controller
     public function database()
     {
 
-        switch (\Config::get('database.default')) {
+        switch (Config::get('database.default')) {
 
             case 'mysql':
-                $tables = \DB::select('SHOW TABLES');
+                $tables = DB::select('SHOW TABLES');
                 break;
             case 'pgsql':
-                $tables = \DB::select('SELECT table_name FROM information_schema.tables ORDER BY table_name');
+                $tables = DB::select('SELECT table_name FROM information_schema.tables ORDER BY table_name');
                 break;
             case 'sqlite':
-                $tables = \DB::select("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name");
+                $tables = DB::select("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name");
                 break;
 
             default:
