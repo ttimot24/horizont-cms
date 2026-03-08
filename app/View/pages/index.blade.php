@@ -38,16 +38,14 @@
                             <th>{{ trans('page.th_id') }}</th>
                             <th>{{ trans('page.th_image') }}</th>
                             <th>{{ trans('page.th_name') }}</th>
-                            <th>{{ trans('page.th_template') }}</th>
-                            <th>{{ trans('page.th_visibility') }}</th>
-                            <th>{{ trans('page.th_type') }}</th>
-                            <th>{{ trans('page.th_child_links') }}</th>
+                            <th class="d-none d-md-table-cell">{{ trans('page.th_template') }}</th>
+                            <th class="d-none d-md-table-cell">{{ trans('page.th_visibility') }}</th>
+                            <th class="d-none d-md-table-cell">{{ trans('page.th_type') }}</th>
+                            <th class="d-none d-md-table-cell">{{ trans('page.th_child_links') }}</th>
                             <th class="text-center">{{ trans('actions.th_action') }}</th>
                         </tr>
                     </thead>
                     <tbody id="pages">
-
-
 
                         @foreach ($all_pages as $each)
                             <tr>
@@ -79,8 +77,8 @@
                                 </td>
                                 <td>{{ $each->name }}
                                 </td>
-                                <td>@if($each->url)<span class='badge bg-dark w-75'> {{$each->url}}</span> @endif</td>
-                                <td>
+                                <td class="d-none d-md-table-cell">@if($each->url)<span class='badge bg-dark w-75'> {{$each->url}}</span> @endif</td>
+                                <td class="d-none d-md-table-cell">
 
                                     @if ($each->visibility == 1)
                                         <span class='badge bg-success w-75'>{{ trans('page.visible') }}</span>
@@ -89,7 +87,7 @@
                                     @endif
 
                                 </td>
-                                <td>
+                                <td class="d-none d-md-table-cell">
 
                                     @if ($each->parent == null)
                                         <b>{{ trans('page.menu_type1') }}</b>
@@ -101,11 +99,9 @@
 
                                 </td>
 
-
-
-                                <td class='ps-4'><span class='badge rounded-pill bg-dark'>{{ $each->subpages->count() }}
-                                    </span></td>
-
+                                <td class='ps-4 d-none d-md-table-cell'>
+                                    <span class='badge rounded-pill bg-dark'>{{ $each->subpages->count() }}</span>
+                                </td>
 
                                 <td class='text-center'>
 
