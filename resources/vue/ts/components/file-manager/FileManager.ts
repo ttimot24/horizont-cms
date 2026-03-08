@@ -167,15 +167,17 @@ export default defineComponent({
             var dirPath = vm.currentDirectory;
             var folderName = $('[name="new_folder_name"]').val();
 
-
-            $.post(event.target.action,
-                {
-                    _token: vm.csrfToken,
-                    dir_path: dirPath,
-                    new_folder_name: folderName
-                },
-                function (data: any) {
-                    if (typeof data.success !== undefined) {
+            this.http.put(environment.REST_API_BASE + '/file-manager/new-folder', {
+                 _token: vm.csrfToken,
+                dir_path: dirPath,
+                new_folder_name: folderName
+            }).pipe(
+                catchError((error: any) => {
+                    console.error(error);
+                    return of(error);
+                })
+            ).subscribe((data: any) => {
+                  if (typeof data.success !== undefined) {
 
                         console.log("Dir created: " + dirPath + '/' + folderName);
 
@@ -190,8 +192,7 @@ export default defineComponent({
                         console.log("Error:");
                         console.log(data);
                     }
-                }
-            );
+            });
 
         },
         upload: function (event: any): void {
@@ -281,7 +282,7 @@ export default defineComponent({
             var file = vm.currentDirectory.concat('/').concat($('[name="old_name"]').val());
             console.log(file);
 
-            this.http.put(event.target.action,{
+            this.http.put(environment.REST_API_BASE + '/file-manager/rename', {
                 _token: vm.csrfToken,
                 old_file: vm.currentDirectory.concat('/').concat($('[name="old_name"]').val()),
                 new_file: vm.currentDirectory.concat('/').concat($('[name="new_name"]').val())
@@ -292,7 +293,7 @@ export default defineComponent({
                 })
             ).subscribe((data: any) => {
                 if (typeof data.success !== undefined) {
-                    vm.open(vm.currentDirectory);
+                    vm.open(vm.currentDirectory, false);
                     vm.modalRename.hide();
                     $('[name="new_name"]').val('');
                 } else {

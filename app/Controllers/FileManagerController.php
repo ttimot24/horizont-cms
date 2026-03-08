@@ -44,6 +44,11 @@ class FileManagerController extends Controller
         return view($mode == 'embed' ? 'media.embed' : 'media.fmframe', $data);
     }
 
+    public function show($id)
+    {
+        return $this->index();
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -85,6 +90,40 @@ class FileManagerController extends Controller
         return redirect()->back()->withMessage(['warning' => 'Only POST method allowed!']);
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update($id)
+    {
+
+        if($id == "new-folder") {
+            return $this->newFolder();
+        }
+
+        if($id == "rename") {
+            $new_file = trim(request()->input('new_file'), "/");
+
+            if (!\Security::isExecutable($new_file) && Storage::move(request()->input('old_file'), $new_file)) {
+                if (request()->wantsJson()) {
+                    return response()->json(['success' => trans('File successfully renamed!')]);
+                }
+            } else {
+                if (request()->wantsJson()) {
+                    return response()->json(['danger' => trans('message.something_went_wrong')]);
+                }
+            }
+        }
+
+        if (request()->wantsJson()) {
+            return response()->json(['message' => 'Invalid action!']);
+        }
+
+        return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong')]);
+    }
 
     public function download()
     {
@@ -113,7 +152,7 @@ class FileManagerController extends Controller
     public function newFolder()
     {
 
-        if (request()->isMethod('POST')) {
+        if (request()->isMethod('POST') || request()->isMethod('PUT')) {
 
             $directory = "storage/" . str_replace("storage/", "", request()->input('dir_path')) . "/" . request()->input('new_folder_name');
 
@@ -183,29 +222,4 @@ class FileManagerController extends Controller
         }
     }
 
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function rename()
-    {
-
-        $new_file = trim(request()->input('new_file'), "/");
-
-        if (!\Security::isExecutable($new_file) && Storage::move(request()->input('old_file'), $new_file)) {
-            if (request()->wantsJson()) {
-                return response()->json(['success' => trans('File successfully renamed!')]);
-            }
-        } else {
-            if (request()->wantsJson()) {
-                return response()->json(['danger' => trans('message.something_went_wrong')]);
-            }
-        }
-
-        return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong')]);
-    }
 }

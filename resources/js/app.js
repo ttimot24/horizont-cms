@@ -3696,11 +3696,14 @@ function _typeof(obj) {
       var vm = this;
       var dirPath = vm.currentDirectory;
       var folderName = $('[name="new_folder_name"]').val();
-      $.post(event.target.action, {
+      this.http.put(_environments_environment__WEBPACK_IMPORTED_MODULE_1__.environment.REST_API_BASE + '/file-manager/new-folder', {
         _token: vm.csrfToken,
         dir_path: dirPath,
         new_folder_name: folderName
-      }, function (data) {
+      }).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.catchError)(function (error) {
+        console.error(error);
+        return (0,rxjs__WEBPACK_IMPORTED_MODULE_7__.of)(error);
+      })).subscribe(function (data) {
         if (_typeof(data.success) !== undefined) {
           console.log("Dir created: " + dirPath + '/' + folderName);
           vm.modalNewFolder.hide();
@@ -3778,7 +3781,7 @@ function _typeof(obj) {
       var vm = this;
       var file = vm.currentDirectory.concat('/').concat($('[name="old_name"]').val());
       console.log(file);
-      this.http.put(event.target.action, {
+      this.http.put(_environments_environment__WEBPACK_IMPORTED_MODULE_1__.environment.REST_API_BASE + '/file-manager/rename', {
         _token: vm.csrfToken,
         old_file: vm.currentDirectory.concat('/').concat($('[name="old_name"]').val()),
         new_file: vm.currentDirectory.concat('/').concat($('[name="new_name"]').val())
@@ -3787,7 +3790,7 @@ function _typeof(obj) {
         return (0,rxjs__WEBPACK_IMPORTED_MODULE_7__.of)(error);
       })).subscribe(function (data) {
         if (_typeof(data.success) !== undefined) {
-          vm.open(vm.currentDirectory);
+          vm.open(vm.currentDirectory, false);
           vm.modalRename.hide();
           $('[name="new_name"]').val('');
         } else {
