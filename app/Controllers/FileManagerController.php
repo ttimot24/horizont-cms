@@ -99,6 +99,13 @@ class FileManagerController extends Controller
      */
     public function update($id)
     {
+        if (!auth()->user()->isAdmin()) {
+            if (request()->wantsJson()) {
+                return response()->json(['warning' => 'Unauthorized!']);
+            }
+
+            return redirect()->back()->withMessage(['warning' => 'Unauthorized!']);
+        }
 
         if($id == "new-folder") {
             return $this->newFolder();

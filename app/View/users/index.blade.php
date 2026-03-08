@@ -30,10 +30,10 @@
                             <th>{{ trans('user.th_id') }}</th>
                             <th>{{ trans('user.th_image') }}</th>
                             <th>{{ trans('user.th_name') }}</th>
-                            <th>{{ trans('user.th_username') }}</th>
-                            <th>{{ trans('user.th_email') }}</th>
-                            <th class="text-center">{{ trans('user.th_rank') }}</th>
-                            <th class="text-center">{{ trans('user.th_session') }}</th>
+                            <th class="d-none d-md-table-cell">{{ trans('user.th_username') }}</th>
+                            <th class="d-none d-md-table-cell">{{ trans('user.th_email') }}</th>
+                            <th class="d-none d-md-table-cell text-center">{{ trans('user.th_rank') }}</th>
+                            <th class="d-none d-md-table-cell text-center">{{ trans('user.th_session') }}</th>
                             <th class="text-center">{{ trans('actions.th_action') }}</th>
                         </tr>
                     </thead>
@@ -51,11 +51,11 @@
 
                                 <td><a href='{{ route('user.show', ['user' => $each]) }}'>{{ $each->name }}</a></td>
 
-                                <td>{{ $each->username }}</td>
+                                <td class="d-none d-md-table-cell">{{ $each->username }}</td>
 
-                                <td>{{ $each->email }} <br> @if(!$each->isActive()) <span class="badge rounded-pill w-75 text-bg-danger">{{ trans('user.inactive') }}</span> @endif</td>
+                                <td class="d-none d-md-table-cell">{{ $each->email }} <br> @if(!$each->isActive()) <span class="badge rounded-pill w-75 text-bg-danger">{{ trans('user.inactive') }}</span> @endif</td>
 
-                                <td>
+                                <td class="d-none d-md-table-cell">
                                     <span
                                         class="d-block badge rounded-pill {{ $each->isAdmin()? 'bg-danger' : 'bg-dark' }}"
                                         style='font-size:13px;'>
@@ -67,7 +67,7 @@
                                     </span>
                                 </td>
 
-                                <td class="text-center text-bold">
+                                <td class="text-center text-bold d-none d-md-table-cell">
 
                                     @if ($each->isOnline())
                                         <span class='badge rounded-pill bg-success w-75'>Online</span>

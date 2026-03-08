@@ -15,7 +15,7 @@
         <section class="row">
 
 
-            <div class='col-3'>
+            <div class='col-12 col-md-3 mb-4'>
                 <div class="list-group">
                     @foreach ($all_files as $file)
                         <a href="{{ route('log.show', ['log' => basename($file)]) }}"
@@ -27,7 +27,7 @@
                 @endforeach
             </div>
         </div>
-        <div class='col-9'>
+        <div class='col-12 col-md-9'>
 
             <?php
             

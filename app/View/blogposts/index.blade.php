@@ -26,10 +26,10 @@
                             <th>{{ trans('blogpost.th_id') }}</th>
                             <th>{{ trans('blogpost.th_image') }}</th>
                             <th class="col-6">{{ trans('blogpost.th_title') }}</th>
-                            <th>{{ trans('blogpost.th_comments') }}</th>
-                            <th class='hidden-xs text-center'>{{ trans('blogpost.th_date') }}</th>
-                            <th class="">{{ trans('blogpost.th_author') }}</th>
-                            <th class='hidden-xs '>{{ trans('blogpost.th_category') }}</th>
+                            <th class="d-none d-md-table-cell">{{ trans('blogpost.th_comments') }}</th>
+                            <th class='d-none d-md-table-cell text-center'>{{ trans('blogpost.th_date') }}</th>
+                            <th class="d-none d-md-table-cell">{{ trans('blogpost.th_author') }}</th>
+                            <th class='d-none d-md-table-cell '>{{ trans('blogpost.th_category') }}</th>
                             <th class="text-center">{{ trans('actions.th_action') }}</th>
                         </tr>
                     </thead>
@@ -54,28 +54,28 @@
                                     
                                     
                                   </td>
-                                <td><a
-                                        href="{{ route('blogpost.show', ['blogpost' => $blogpost]) }}">{{ $blogpost->title }}</a><br>
+                                <td>
+                                    <a href="{{ route('blogpost.show', ['blogpost' => $blogpost]) }}">{{ $blogpost->title }}</a><br>
                                     @if ($blogpost->isDraft())
                                         <span class="badge bg-info">{{ trans('actions.draft') }}</span>
                                     @elseif($blogpost->isFeatured())
                                         <span class="badge bg-success">{{ trans('Featured') }}</span>
                                     @endif
                                 </td>
-                                <td class="text-center"><span
+                                <td class="d-none d-md-table-cell text-center"><span
                                         class="badge rounded-pill bg-dark">{{ count($blogpost->comments) }}</span></td>
-                                <td class='hidden-xs text-center justify-content-center align-items-center col-1'>{{ $blogpost->created_at->format('Y-m-d') }}</br>
+                                <td class='d-none d-md-table-cell text-center justify-content-center align-items-center col-1'>{{ $blogpost->created_at->format('Y-m-d') }}</br>
                                     <font size='2'><i>at</i> {{ $blogpost->created_at->format('H:i:s') }}</font>
                                 </td>
+                                <td class="d-none d-md-table-cell">
                                 @if ($blogpost->author)
-                                    <td><a
-                                            href="{{ route('user.show', ['user' => $blogpost->author]) }}">{{ $blogpost->author->username }}</a>
-                                    </td>
+                                    <a href="{{ route('user.show', ['user' => $blogpost->author]) }}">{{ $blogpost->author->username }}</a>
                                 @else
-                                    <td>{{ trans('blogpost.removed_user') }}</td>
+                                    {{ trans('blogpost.removed_user') }}
                                 @endif
+                                </td>
                                 @if ($blogpost->categories)
-                                    <td class='hidden-xs col-1'>
+                                    <td class='d-none d-md-table-cell col-1'>
                                     @foreach($blogpost->categories as $category)
 
                                         <span class="badge bg-success {{ $blogpost->categories->count()==1? 'd-block' : '' }}" style='font-size:13px;'>{{ $category->name }}</span>
@@ -83,7 +83,7 @@
                                     @endforeach
                                     </td>
                                 @else
-                                    <td class='hidden-xs'>none</td>
+                                    <td class='d-none d-md-table-cell'>none</td>
                                 @endif
                                 <td class="text-center">
 
