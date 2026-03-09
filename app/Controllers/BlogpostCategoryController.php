@@ -23,7 +23,7 @@ class BlogpostCategoryController extends Controller
     public function index(Request $request)
     {
 
-        $all_categories = BlogpostCategory::paginate($request->input('per_page', $this->itemPerPage));
+        $all_categories = BlogpostCategory::paginateSortAndFilter();
 
 
         if ($request->wantsJson()) {
