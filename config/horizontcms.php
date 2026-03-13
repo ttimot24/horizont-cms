@@ -18,6 +18,8 @@ return [
 
 	'max_upload_file_size' => env('HCMS_MAX_UPLOAD_FILE_SIZE', 2560), // 2.5 MB
 
+	'upload_file_rename' => env('HCMS_UPLOAD_FILE_RENAME', true), // rename uploaded files to unique names
+
 	'sattelite_url' => env('HCMS_CENTRAL_REPO','https://hcms-store.bluehill.hu'),
 
 	'css' => [

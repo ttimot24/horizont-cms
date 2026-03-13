@@ -64,7 +64,10 @@ class FileManagerController extends Controller
 
                 foreach (request()->up_file as $file) {
                     if (!\Security::isExecutable($file)) {
-                        $images[] = $file->store($dir);
+
+                        $images[] = config("horizontcms.upload_file_rename") ?
+                            $file->store($dir) :
+                            $file->storeAs($dir, $file->getClientOriginalName());
                     }
                 }
 

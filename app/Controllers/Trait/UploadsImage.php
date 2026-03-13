@@ -26,27 +26,33 @@ trait UploadsImage {
            throw new TypeError('Class['.get_class($model).'] does not use HasImage trait');
         }
 
-        if (request()->hasFile($this->form_field_name)) {
-
-            request()->validate([
-                $this->form_field_name => 'nullable|image|max:' . $this->getMaxImageSize(),
-            ]);
-
-            File::ensureDirectoryExists($model->getImageDirectory());
-            $img = request()->{$this->form_field_name}->store($this->getStrippedDirectoryPath($model));
-            $model->attachImage($img);
-            if (extension_loaded('gd') && starts_with(request()->{$this->form_field_name}->getMimeType(), 'image/')) {
-		        File::ensureDirectoryExists($model->getImageDirectory() . '/thumbs');
-                (new ImageManager(new Driver()))->read(storage_path($img))->resize(
-                    config('horizontcms.thumbnail.width', 300), 
-                    config('horizontcms.thumbnail.height', 200)
-                )->save($model->getThumbnailDirectory(). DIRECTORY_SEPARATOR . $model->image);
-            }
-
-            return true;
+        if (!request()->hasFile($this->form_field_name)) {
+            return false;
         }
+
+        request()->validate([
+            $this->form_field_name => 'nullable|image|max:' . $this->getMaxImageSize(),
+        ]);
+
+        File::ensureDirectoryExists($model->getImageDirectory());
+
+        $file = request()->file($this->form_field_name);
         
-        return false;
+        $img = config("horizontcms.upload_file_rename") ?
+               $file->store($this->getStrippedDirectoryPath($model)) : 
+               $file->storeAs($this->getStrippedDirectoryPath($model), $file->getClientOriginalName());
+
+        $model->attachImage($img);
+        
+        if (extension_loaded('gd') && starts_with(request()->{$this->form_field_name}->getMimeType(), 'image/')) {
+		    File::ensureDirectoryExists($model->getImageDirectory() . '/thumbs');
+            (new ImageManager(new Driver()))->read(storage_path($img))->resize(
+                config('horizontcms.thumbnail.width', 300), 
+                config('horizontcms.thumbnail.height', 200)
+            )->save($model->getThumbnailDirectory(). DIRECTORY_SEPARATOR . $model->image);
+        }
+
+        return true;
     }
 
 }

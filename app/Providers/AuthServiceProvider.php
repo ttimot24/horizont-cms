@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Config;
 
@@ -69,7 +70,13 @@ class AuthServiceProvider extends ServiceProvider
 
                 $permissionKey = "{$segment}.{$mappedAction}";
 
-                return in_array($permissionKey, $user->role->rights);
+                $hasPermission = in_array($permissionKey, $user->role->rights);
+
+                if(!$hasPermission){
+                    Log::warning("Access denied: ".$user->username."[".$user->id.'|'.$user->role->name."] does not have access[".$permissionKey."] to: ".$request->url());
+                }
+
+                return $hasPermission;
             });
         }
     }
