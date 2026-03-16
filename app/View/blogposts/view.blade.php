@@ -130,10 +130,14 @@
                                             class="color-primary">{{ $blogpost->updated_at->format(\Settings::get('date_format', \Config::get('horizontcms.default_date_format'), true)) }}</a></b>
                                 @endif
 
-                                @if ($blogpost->category)
-                                    <b class="d-block mb-3">{{ trans('blogpost.category') }} : <a class="color-primary"
-                                            href="{{ route('blogpostcategory.show', ['blogpostcategory' => $blogpost->category]) }}">{{ $blogpost->category->name }}</a></b>
-                                @endif
+                                <b class="d-block mb-3">{{ trans('blogpost.category') }} : 
+                                    @foreach ($blogpost->categories as $category)      
+                                        <a class="color-primary me-3"
+                                            href="{{ route('blogpostcategory.show', ['blogpostcategory' => $category]) }}">
+                                            {{ $category->name }}
+                                        </a>
+                                    @endforeach
+                                </b>
                                 <b class="d-block mb-3">{{ trans('blogpost.reading_time') }} : <a
                                         class="color-primary">{{ ceil($blogpost->getReadingTime() / 60) }} mins</a></b>
                                 <b class="d-block mb-3">{{ trans('blogpost.characters') }} : <a

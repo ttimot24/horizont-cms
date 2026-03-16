@@ -56,7 +56,6 @@ class BlogpostCategoryController extends Controller
     public function store(Request $request)
     {
 
-
         $blogpost_category = new BlogpostCategory($request->all());
         $blogpost_category->author()->associate($request->user());
 
