@@ -61,12 +61,12 @@ class Plugin extends Model
 
 	public function isInstalled(): bool
 	{
-		return self::rootDir($this->root_dir)->exists();
+		return !empty($this->getAttributes());
 	}
 
 	public function isActive(): bool
 	{
-		return self::rootDir($this->root_dir)->active()->exists();
+		return $this->isInstalled() && ($this->active == 1);
 	}
 
 	public function getConfig($config, $default = null)
