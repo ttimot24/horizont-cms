@@ -128,6 +128,21 @@
                                                 </a>
                                             </li>
                                             @endcan
+                                            @can('create', 'blogpost')
+                                            <li>
+                                                <form method="POST"
+                                                    action="{{ route('blogpost.update', ['blogpost' => $blogpost]) }}">
+                                                    @csrf
+                                                    @method('PUT')
+
+                                                    <input type="hidden" name="duplicate" value="1">
+                                                    <button type="submit" class='dropdown-item text-decoration-none text-dark'>
+                                                        <span class='fa fa-copy me-2' aria-hidden='true'></span>
+                                                        {{ trans('Duplicate') }}
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            @endcan
                                             @can('delete', 'blogpost')
                                             <li>
                                                 <a data-bs-toggle='modal' data-bs-target=#delete_<?= $blogpost->id ?>

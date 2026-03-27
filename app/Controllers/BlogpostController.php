@@ -137,17 +137,24 @@ class BlogpostController extends Controller
     public function update(Request $request, Blogpost $blogpost)
     {
 
-        $blogpost->fill($request->all());
+        if($request->has("duplicate")){
+            $blogpost = $blogpost->replicate();
+            $blogpost->active = 0;
+        } else {
 
-        $blogpost->slug = str_slug($request->input('title', $blogpost->title), "-");
-        $blogpost->categories()->sync($request->input('category_ids', $blogpost->categories->pluck('id')->toArray()));
+            $blogpost->fill($request->all());
 
-        $blogpost->author()->associate(
-            Gate::allows('update','user') && $request->has('author_id')? 
-            \App\Model\User::findOrFail($request->input('author_id')) : $request->user()
-        );
+            $blogpost->slug = str_slug($request->input('title', $blogpost->title), "-");
+            $blogpost->categories()->sync($request->input('category_ids', $blogpost->categories->pluck('id')->toArray()));
 
-        $this->uploadImage($blogpost);
+            $blogpost->author()->associate(
+                Gate::allows('update','user') && $request->has('author_id')? 
+                \App\Model\User::findOrFail($request->input('author_id')) : $request->user()
+            );
+
+            $this->uploadImage($blogpost);
+
+        }
 
         if ($blogpost->save()) {
             return redirect()->back()->with('blogpost', $blogpost)->withMessage(['success' => trans('message.successfully_updated_blogpost')]);

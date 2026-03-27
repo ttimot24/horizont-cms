@@ -128,15 +128,24 @@ class PageController extends Controller
     public function update(Request $request, Page $page)
     {
 
-        $request->validate(Page::$rules);
+        if($request->has("duplicate")){
+            $page = $page->replicate();
+            $page->queue = 999;
+            $page->visibility = 0;
+            $page->active = 0;
+        } else {
 
-        $page->fill($request->all());
+            $request->validate(Page::$rules);
 
-        $page->slug = str_slug($request->input('name'), "-");
-        $page->parent_id = $request->input('parent_select') == 0 ? NULL : $request->input('parent_id');
-        $page->page = clean($request->input('page'));
+            $page->fill($request->all());
 
-        $this->uploadImage($page);
+            $page->slug = str_slug($request->input('name'), "-");
+            $page->parent_id = $request->input('parent_select') == 0 ? NULL : $request->input('parent_id');
+            $page->page = clean($request->input('page'));
+
+            $this->uploadImage($page);
+
+        }
 
         if ($page->save()) {
             return redirect(route("page.edit", ['page' => $page]))->withMessage(['success' => trans('message.successfully_updated_page')]);

@@ -126,6 +126,21 @@
                                                 </a>
                                             </li>
                                             @endcan
+                                            @can('create', 'page')
+                                            <li>
+                                                <form method="POST"
+                                                    action="{{ route('page.update', ['page' => $each]) }}">
+                                                    @csrf
+                                                    @method('PUT')
+
+                                                    <input type="hidden" name="duplicate" value="1">
+                                                    <button type="submit" class='dropdown-item text-decoration-none text-dark'>
+                                                        <span class='fa fa-copy me-2' aria-hidden='true'></span>
+                                                        {{ trans('Duplicate') }}
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            @endcan
                                             @can('delete', 'page')
                                             <li>
                                                 <a data-bs-toggle='modal' data-bs-target=#delete_<?= $each->id ?>
