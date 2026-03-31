@@ -154,18 +154,6 @@ class PageController extends Controller
         return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong')]);
     }
 
-
-    public function setHomePage($id)
-    {
-
-        if (\App\Model\Settings::where("setting", "home_page")->update(['value' => $id])) {
-            return redirect()->back()->withMessage(['success' => trans('message.successfully_set_homepage')]);
-        } 
-
-        return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong')]);
-    }
-
-
     /**
      * Remove the specified resource from database.
      *

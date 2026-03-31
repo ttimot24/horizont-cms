@@ -44,9 +44,8 @@
                                                 </div>
                                                 <div class="col text-end">
                                                     <a class='btn btn-primary btn-sm mr-2' data-bs-toggle='modal' data-bs-backdrop='static'
-                                                        data-bs-target='.upload_file_to_storage'><i class="fa fa-upload"
-                                                            aria-hidden="true"></i>
-                                                        Upload</a>
+                                                        data-bs-target='.upload_file_to_storage'>
+                                                        <i class="fa fa-upload" aria-hidden="true"></i> Upload</a>
                                                     <a v-for=" type in  newTypes "  class='btn btn-sm btn-primary me-1' data-bs-toggle='modal' data-bs-backdrop='static'
                                                         :data-bs-target="'.new_' + type">
                                                         <i :class="'fa fa-' + type" aria-hidden="true"></i> Create {{ type }}
@@ -90,6 +89,7 @@
 
                                             <div clas='row'>
                                                 <img style="width:7rem;" src='resources/images/icons/dir.png'>
+                                               <!-- <i class="fa-solid fa-folder text-warning" style="font-size: 8rem;"></i>-->
                                             </div>
                                             <b>{{ folder }}</b>
                                         </div>

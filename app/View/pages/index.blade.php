@@ -157,35 +157,9 @@
                                 </td>
                             </tr>
 
-
-                            <div class="modal mo-{{ $each->id }}" id="mo-{{ $each->id }}" tabindex="-1"
-                                role="dialog" aria-labelledby="myModalLabel">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header modal-header-warning bg-warning text-white">
-                                            <h4 class="modal-title" id="myModalLabel">{{ trans('page.change_homepage') }}
-                                            </h4>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            {{ trans('page.are_you_sure_to_set', ['page_name' => $each->name]) }}
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default"
-                                                data-bs-dismiss="modal">{{ trans('actions.close') }}
-                                            </button>
-                                            <a href="admin/page/set-home-page/{{ $each->id }}" type="button"
-                                                class="btn btn-primary">{{ trans('actions.set') }}
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             </td>
                             </tr>
                         @endforeach
-
 
                     </tbody>
                 </table>
@@ -195,6 +169,37 @@
                 </div>
 
             </div>
+
+            @can('update', 'page')
+                @foreach($all_pages as $each)
+                    <div class="modal mo-{{ $each->id }}" id="mo-{{ $each->id }}" tabindex="-1"
+                        role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header modal-header-warning bg-warning text-white">
+                                    <h4 class="modal-title" id="myModalLabel">{{ trans('page.change_homepage') }}
+                                    </h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    {{ trans('page.are_you_sure_to_set', ['page_name' => $each->name]) }}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default"
+                                        data-bs-dismiss="modal">{{ trans('actions.close') }}
+                                    </button>
+                                    <form method="POST" action="{{ route('settings.store') }}">
+                                        @csrf
+                                        <input type="hidden" name="home_page" value="{{ $each->id }}" />
+                                        <button type="submit" class='btn btn-primary'>{{ trans('actions.set') }}</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            @endcan
 
             @can('delete', 'page')
             @foreach ($all_pages as $each)
