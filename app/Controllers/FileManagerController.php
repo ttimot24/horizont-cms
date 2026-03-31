@@ -114,6 +114,10 @@ class FileManagerController extends Controller
             return $this->newFolder();
         }
 
+        if($id == "new-file") {
+            return $this->newFile();
+        }
+
         if($id == "rename") {
             $new_file = trim(request()->input('new_file'), "/");
 
@@ -181,6 +185,40 @@ class FileManagerController extends Controller
                 }
 
                 return redirect()->back()->withMessage(['danger' => 'Folder already exists!']);
+            }
+        }
+
+        return redirect()->back()->withMessage(['danger' => 'Invalid HTTP method!']);
+    }
+
+
+    /**
+     * Create a new file.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function newFile()
+    {
+
+        if (request()->isMethod('POST') || request()->isMethod('PUT')) {
+
+            $file = "storage/" . str_replace("storage/", "", request()->input('dir_path')) . "/" . request()->input('new_file_name', 'new_file.txt');
+
+            if (!file_exists($file)) {
+                File::put($file, '');
+
+                if (request()->wantsJson()) {
+                    return response()->json(['success' => 'File created successfully!']);
+                }
+
+                return redirect()->back()->withMessage(['success' => 'File created successfully!']);
+            } else {
+
+                if (request()->wantsJson()) {
+                    return response()->json(['danger' => 'File already exists!']);
+                }
+
+                return redirect()->back()->withMessage(['danger' => 'File already exists!']);
             }
         }
 

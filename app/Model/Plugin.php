@@ -36,7 +36,9 @@ class Plugin extends Model
 			isset($this->root_dir) ?: $this->setRootDir($root_dir);
 
 			$this->imageDir = $this->getPath();
+
 		}
+		
 	}
 
 	public function scopeRootDir(Builder $query, string $root_dir): Builder

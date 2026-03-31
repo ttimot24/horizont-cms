@@ -26,6 +26,7 @@ export default defineComponent({
     },
     data: function () {
         return {
+            newTypes: ['folder', 'file'],
             previousDirectory: null,
             currentDirectory: this.directory,
             drivers: [],
@@ -52,6 +53,7 @@ export default defineComponent({
         vm.modalRename = vm.getModal("rename_sample");
         vm.modalUpload = vm.getModal("upload_file_to_storage");
         vm.modalNewFolder = vm.getModal("new_folder");
+        vm.modalNewFile = vm.getModal("new_file");
         vm.modalDelete = vm.getModal("delete_sample");
 
         $('#delete-form').on('submit', (event: Event) => { event.preventDefault(); this.deleteFile(); });
@@ -160,17 +162,18 @@ export default defineComponent({
             });
 
         },
-        newFolder: function (event: any): void {
+        createNew: function (event: any, type: string): void {
 
             var vm = this;
 
             var dirPath = vm.currentDirectory;
-            var folderName = $('[name="new_folder_name"]').val();
+            var newName = $('[name="new_'+type+'_name"]').val();
 
-            this.http.put(environment.REST_API_BASE + '/file-manager/new-folder', {
+            this.http.put(environment.REST_API_BASE + '/file-manager/new-'+type, {
                  _token: vm.csrfToken,
                 dir_path: dirPath,
-                new_folder_name: folderName
+                new_folder_name: newName,
+                new_file_name: newName
             }).pipe(
                 catchError((error: any) => {
                     console.error(error);
@@ -179,14 +182,20 @@ export default defineComponent({
             ).subscribe((data: any) => {
                   if (typeof data.success !== undefined) {
 
-                        console.log("Dir created: " + dirPath + '/' + folderName);
+                        console.log(type + " created: " + dirPath + '/' + newName);
 
                         vm.modalNewFolder.hide();
+                        vm.modalNewFile.hide();
 
-                        $('[name="new_folder_name"]').val("");
+                        $('[name="new_'+type+'_name"]').val("");
 
-                        vm.folders.push(folderName);
+                        if(type==='folder'){
+                            vm.folders.push(newName);
+                        }
 
+                        if(type==='file'){
+                            vm.files.push(newName);
+                        }
 
                     } else {
                         console.log("Error:");

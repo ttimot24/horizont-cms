@@ -47,9 +47,10 @@
                                                         data-bs-target='.upload_file_to_storage'><i class="fa fa-upload"
                                                             aria-hidden="true"></i>
                                                         Upload</a>
-                                                    <a class='btn btn-sm btn-primary' data-bs-toggle='modal' data-bs-backdrop='static'
-                                                        data-bs-target='.new_folder'><i class="fa fa-folder" aria-hidden="true"></i> Create
-                                                        Folder</a>
+                                                    <a v-for=" type in  newTypes "  class='btn btn-sm btn-primary me-1' data-bs-toggle='modal' data-bs-backdrop='static'
+                                                        :data-bs-target="'.new_' + type">
+                                                        <i :class="'fa fa-' + type" aria-hidden="true"></i> Create {{ type }}
+                                                    </a>
                                                 </div>
                                             </div>
 
@@ -128,23 +129,21 @@
 
 
 
-    <div class='modal new_folder' id='new_folder' tabindex='-1' role='dialog' aria-labelledby='new_folder'
-        aria-hidden='true'>
+    <div v-for=" type in  newTypes "  :class="'modal new_' + type" :id="'new_' + type" tabindex='-1' role='dialog' :aria-labelledby="'new_' + type" aria-hidden='true'>
         <div class='modal-dialog'>
             <div class='modal-content'>
                 <div class='modal-header modal-header-primary bg-primary'>
-                    <h4 class='modal-title text-white'>Create new folder</h4>
+                    <h4 class='modal-title text-white'>Create new {{ type }}</h4>
                     <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
                 </div>
 
-                <form action='admin/file-manager/new-folder' method='POST' enctype='multipart/form-data'
-                    v-on:submit.prevent=" newFolder ">
+                <form :action="'admin/file-manager/new-' + type" method='POST' enctype='multipart/form-data' v-on:submit.prevent=" createNew(event, type) ">
                     <div class='modal-body'>
                         <div class='form-group'>
                             <div class='form-group'>
                                 <label for='title'>Name:</label>
-                                <input type='text' class='form-control' name='new_folder_name'
-                                    placeholder='Enter folder name' required>
+                                <input type='text' class='form-control' :name="'new_' + type + '_name'"
+                                    :placeholder="'Enter ' + type + ' name'" required>
                             </div>
                         </div>
                     </div>
@@ -156,8 +155,6 @@
             </div>
         </div>
     </div>
-
-
 
     <div class='modal rename_modal' id='rename_sample' tabindex='-1' role='dialog' aria-labelledby='rename_file'
         aria-hidden='true'>
