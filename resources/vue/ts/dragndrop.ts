@@ -1,97 +1,182 @@
 'use strict';
 
-import * as $ from 'jquery';
 import Sortable from 'sortablejs';
+import axios from 'axios';
 import { environment } from './environments/environment';
-import axios, { Axios } from  'axios-observable';
-import { catchError, throwError } from 'rxjs';
 
 let sortableInstance: Sortable | null = null;
 
-const csrfToken: HTMLElement = document.head.querySelector('meta[name="csrf-token"]') as HTMLElement;
-const apiToken: HTMLElement = document.head.querySelector('meta[name="api-token"]') as HTMLElement;
+/**
+ * CSRF / API token setup
+ */
+const csrfToken = document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content;
+const apiToken = document.querySelector<HTMLMetaElement>('meta[name="api-token"]')?.content;
 
-axios.defaults.headers.common['Content-Type'] = "application/json";
-axios.defaults.headers.common['Accept'] = "application/json";
-axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken.getAttribute('content');
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + apiToken.getAttribute('content');
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+axios.defaults.headers.common['Accept'] = 'application/json';
 
-function dragndrop(): void {
+if (csrfToken) {
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+}
 
-    function after_drop(): void {
-        var alist: number[] = [];
+if (apiToken) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${apiToken}`;
+}
 
-        $("#page-list-table tbody tr").each(function (iter: number) {
-            var $this: JQuery<HTMLElement> = $(this);
-            var pageId: string = $this.find('td').eq(1).html().split(" ")[0];
+/**
+ * Collect current row order from DOM
+ */
+function getOrder(): number[] {
+    const rows = document.querySelectorAll<HTMLTableRowElement>(
+        '#page-list-table tbody tr'
+    );
 
-            alist[iter] = Number(pageId);
-        });
+    const order: number[] = [];
 
-        axios.put(environment.REST_API_BASE+"/pages/reorder", {
-            order: alist
-        })
-        .pipe(
-            catchError((error: any) => {
-                console.error(error);
-                return throwError(error);
-            })
-        )
-        .subscribe((response: any) => {
-            console.log(response);
-        });
+    rows.forEach((row) => {
+        const id = row.getAttribute('data-id');
+        if (id) {
+            order.push(Number(id));
+        }
+    });
 
+    return order;
+}
+
+/**
+ * Send reorder to backend
+ */
+async function sendOrder(): Promise<void> {
+    try {
+        const order = getOrder();
+
+        await axios.put(
+            `${environment.REST_API_BASE}/pages/reorder`,
+            { order }
+        );
+
+        console.log('Order saved:', order);
+    } catch (err) {
+        console.error('Reorder failed:', err);
     }
+}
 
-    const tbody = document.querySelector('#page-list-table tbody') as HTMLElement;
-    if (tbody) {
-        sortableInstance = Sortable.create(tbody, {
-            handle: '.fa-arrows-v',
-            onEnd: function (evt: Sortable.SortableEvent) {
-                renumber_table('#page-list-table');
-                after_drop();
-            }
-        });
-    }
+/**
+ * Recalculate UI priority column
+ */
+function renumberTable(): void {
+    const rows = document.querySelectorAll<HTMLTableRowElement>(
+        '#page-list-table tbody tr'
+    );
 
-    $('table').on('click', '.btn-delete', function (this: HTMLElement) {
-        var tableID: string = '#' + ($(this).closest('table').attr('id') || '');
-        var r: boolean = confirm('Delete this item?');
-        if (r) {
-            $(this).closest('tr').remove();
-            renumber_table(tableID);
+    rows.forEach((row, index) => {
+        const el = row.querySelector<HTMLElement>('.priority');
+        if (el) {
+            el.textContent = String(index + 1);
         }
     });
 }
 
-function renumber_table(tableID: string): void {
-    $(tableID + " tr").each(function (this: HTMLElement) {
-        var count: number = $(this).parent().children().index($(this)) + 1;
-        $(this).find('.priority').html(count.toString());
+/**
+ * Init SortableJS
+ */
+function initSortable(): void {
+    const tbody = document.querySelector<HTMLTableSectionElement>(
+        '#page-list-table tbody'
+    );
+
+    if (!tbody) return;
+
+    sortableInstance = Sortable.create(tbody, {
+        handle: '.drag-handle',
+        animation: 150,
+        forceFallback: true,
+        fallbackClass: 'sortable-fallback',
+        ghostClass: 'sortable-ghost',
+        onEnd: async () => {
+            renumberTable();
+            await sendOrder();
+        }
     });
 }
 
-export default function dragndroporder(): void {
-    $('#orderer').toggleClass('btn-default');
-    $('#orderer').toggleClass('btn-success');
+/**
+ * Destroy SortableJS
+ */
+function destroySortable(): void {
+    sortableInstance?.destroy();
+    sortableInstance = null;
+}
 
-    if ($('#page-list-table').hasClass('order-active')) {
-        $('.torder').remove();
-        $('#page-list-table').removeClass('order-active');
-        if (sortableInstance) {
-            sortableInstance.destroy();
-            sortableInstance = null;
+/**
+ * Delete handler (event delegation)
+ */
+function initDeleteHandler(): void {
+    document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+
+        const btn = target.closest('.btn-delete');
+        if (!btn) return;
+
+        const row = btn.closest('tr');
+        if (!row) return;
+
+        const ok = confirm('Delete this item?');
+
+        if (ok) {
+            row.remove();
+            renumberTable();
         }
+    });
+}
+
+/**
+ * Toggle reorder mode
+ * (Blade-ben előre definiált .reorder-col oszlopot használ)
+ */
+function toggleOrderMode(): void {
+    const table = document.getElementById('page-list-table');
+    const btn = document.getElementById('orderer');
+
+    if (!table) return;
+
+    const isActive = table.classList.contains('reorder-active');
+
+    if (isActive) {
+        table.classList.remove('reorder-active');
+
+        btn?.classList.remove('btn-success');
+        btn?.classList.add('btn-default');
+
+        destroySortable();
     } else {
+        table.classList.add('reorder-active');
 
-        $('table').find('tr').each(function (this: HTMLElement) {
-            $(this).find('th').eq(0).before("<th class='col-md-1 torder'>Reorder</th>");
-            $(this).find('td').eq(0).before("<td class='torder'><i class='well well-sm fa fa-arrows-v' style='border-radius:3px;cursor:grab;font-size:20px;' aria-hidden='true'></i></td>");
-        });
+        btn?.classList.remove('btn-default');
+        btn?.classList.add('btn-success');
 
-        $('#page-list-table').addClass('order-active');
-        dragndrop();
+        initSortable();
     }
 }
 
-window.dragndroporder = dragndroporder;
+/**
+ * Init module
+ */
+export default function dragndroporder(): void {
+    const btn = document.getElementById('orderer');
+
+    if (btn) {
+        btn.addEventListener('click', toggleOrderMode);
+    }
+
+    initDeleteHandler();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    dragndroporder();
+});
+
+/**
+ * Global exposure (Blade fallback)
+ */
+(window as any).dragndroporder = dragndroporder;

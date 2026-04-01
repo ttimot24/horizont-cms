@@ -23,7 +23,7 @@
                         'icon' => 'fa-arrows-v',
                         'label' => trans('page.order'),
                         'class' => 'btn-default',
-                        'data' => "id=orderer onclick=dragndroporder();  data-csrf=".csrf_token(),
+                        'data' => "id=orderer data-csrf=".csrf_token(),
                           
                     ],
                 ],
@@ -35,6 +35,7 @@
                 <table id="page-list-table" class='table table-hover table-condensed'>
                     <thead>
                         <tr class="bg-dark text-white">
+                            <th class="torder d-none reorder-col">Reorder</th>
                             <th>{{ trans('page.th_id') }}</th>
                             <th>{{ trans('page.th_image') }}</th>
                             <th>{{ trans('page.th_name') }}</th>
@@ -48,7 +49,12 @@
                     <tbody id="pages">
 
                         @foreach ($all_pages as $each)
-                            <tr>
+                            <tr data-id="{{ $each->id }}" style="cursor:move;">
+
+                                <td class="torder d-none reorder-col">
+                                    <i class="fa fa-arrows-v drag-handle fs-3"></i>
+                                </td>
+
                                 <td>{{ $each->id }}
 
                                     @if ($each->is($home_page))

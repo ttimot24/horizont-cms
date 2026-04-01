@@ -31175,3 +31175,23 @@ tr #hidden-home a:hover {
 .list-group-item:first-child {
   border-radius: 0px;
 }
+
+.reorder-active .reorder-col {
+  display: table-cell !important;
+}
+
+.sortable-fallback {
+  display: table !important;
+  width: 100% !important;
+  table-layout: fixed;
+}
+
+.sortable-ghost {
+  opacity: 0.4;
+  background: #f0f0f0;
+}
+
+.sortable-drag {
+  opacity: 0.8;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
