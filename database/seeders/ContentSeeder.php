@@ -57,7 +57,6 @@ class ContentSeeder extends Seeder
             'language' => 'en',
             'summary' => 'Your very first post.',
             'text' => 'If you see this, the install was successfull!',
-            'category_id' => 1,
             'comments_enabled' => 1,
             'author_id' => 1,
             'image' => '',
