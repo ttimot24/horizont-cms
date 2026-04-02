@@ -34,7 +34,7 @@ return [
 	'create_email' => 'Email',
 	'create_phone' => 'Phone',
 	'create_emailnotify' => 'Notify about registration',
-	'create_select_rank' => 'Select rank',
+	'create_select_rank' => 'Select role',
 	'create_add_user_button' => 'Add user',
 
 	//View

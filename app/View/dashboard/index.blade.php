@@ -71,7 +71,7 @@
         </div>
 
         <div class="mt-3 mb-4 p-2">
-            <h1 class="text-center">{{ trans('dashboard.welcome_message') }}</h1>
+            <h1 class="text-center">Hello {{ auth()->user()->name }}!</h1>
         </div>
 
         <div class='container col-md-12'>
