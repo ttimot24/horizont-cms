@@ -22,7 +22,6 @@ class Plugin extends Model
 	public function __construct($root_dir = null)
 	{
 		$this->image = "icon.jpg";
-		$this->defaultImage = "resources/images/icons/plugin.png";
 
 		if (isset($root_dir) && !is_array($root_dir)) {
 
@@ -40,6 +39,11 @@ class Plugin extends Model
 		}
 		
 	}
+
+	public function getDefaultImage(): string
+    {
+        return "resources/images/icons/plugin.png";
+    }
 
 	public function scopeRootDir(Builder $query, string $root_dir): Builder
 	{
@@ -63,7 +67,7 @@ class Plugin extends Model
 
 	public function isInstalled(): bool
 	{
-		return !empty($this->getAttributes());
+		return $this->exists() && isset($this->id);
 	}
 
 	public function isActive(): bool
