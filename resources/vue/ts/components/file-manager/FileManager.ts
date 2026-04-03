@@ -231,37 +231,39 @@ export default defineComponent({
                 formData.append('up_file[]', file, file.name);
             }
 
-
-            $.ajax({
-                url: event.target.action,
-                type: 'POST',
-                enctype: 'multipart/form-data',
-                data: formData,
-                async: false,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (data: any) {
-                    if (typeof data.success !== undefined) {
-                        console.log(data);
-
-                        vm.modalUpload.hide();
-
-                        fileSelect.val("");
-
-                        //fileSelect.fileinput("clear");
-
-                        for (var i = 0; i < data.uploadedFileNames.length; i++) {
-                            console.log(vm.basename(data.uploadedFileNames[i]));
-                            vm.files.push(vm.basename(data.uploadedFileNames[i]).concat('.').concat(vm.getFileExtension(data.uploadedFileNames[i])));
-                        }
-                    } else {
-                        console.log("Error" + data);
-                    }
-                },
-                error: function () {
-                    console.log("Error in ajax form submission");
+            vm.http.post(event.target.action, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
                 }
+            }).pipe(
+                retry(environment.API_RETRY),
+                catchError((error: any) => {
+                    console.error(error);
+                    return of(error);
+                })
+            ).subscribe((response: any) => {
+
+                const data = response.data;
+                
+                if (typeof data.success !== undefined) {
+                    console.log(data);
+                    vm.modalUpload.hide();
+                    fileSelect.val("");
+                    //fileSelect.fileinput("clear");
+                    
+                    data.uploadedFileNames?.forEach((uploaded: string) => {
+                        const base = vm.basename(uploaded);
+                        const ext = vm.getFileExtension(uploaded);
+                        
+                        console.log(base);
+                        vm.files.push(base + '.' + ext);
+                    });
+                } else {
+                    console.log("Error" + data);
+                }
+            }).catch(function (error: any) {
+                console.log("Error in axios form submission");
+                console.error(error);
             });
         },
         basename: function (url: string): string {
