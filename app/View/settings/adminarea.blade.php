@@ -6,7 +6,10 @@
         <div class="card">
 
             @include('breadcrumb', [
-                'links' => [['name' => trans('settings.settings'), 'url' => route('settings.index')]],
+                'links' => [
+                    ['name' => trans('settings.settings'), 'url' => route('settings.index')],
+                    ['name' => trans('settings.adminarea_settings'), 'url' => route('settings.show', ['setting' => 'adminarea'])]
+                ],
                 'page_title' => trans('settings.adminarea_settings'),
             ])
 

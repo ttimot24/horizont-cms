@@ -5,7 +5,10 @@
 
         <div class="card mb-3">
             @include('breadcrumb', [
-                'links' => [['name' => trans('settings.settings'), 'url' => route('settings.index')]],
+                'links' => [
+                    ['name' => trans('settings.settings'), 'url' => route('settings.index')],
+                    ['name' => trans('settings.social_media'), 'url' => route('settings.show', ['setting' => 'socialmedia'])]
+                ],
                 'page_title' => trans('Social media'),
             ])
             <div class="card-body">

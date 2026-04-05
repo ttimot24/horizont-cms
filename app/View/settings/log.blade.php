@@ -4,7 +4,11 @@
     <div class='container card'>
 
         @include('breadcrumb', [
-            'links' => [['name' => trans('settings.settings'), 'url' => route('settings.index')], ['name' => trans('Log'), 'url' => route('log.index')], ['name' => $current_file, 'url' => route('log.show', ['log' => $current_file])]],
+            'links' => [
+                ['name' => trans('settings.settings'), 'url' => route('settings.index')], 
+                ['name' => trans('Log'), 'url' => route('log.index')], 
+                ['name' => $current_file, 'url' => route('log.show', ['log' => $current_file])]
+            ],
             'page_title' => 'System log',
             'stats' => [
                 ['label'=> 'Files', 'value' => $all_files->count()]

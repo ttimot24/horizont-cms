@@ -5,7 +5,10 @@
         <div class="card mb-3">
 
             @include('breadcrumb', [
-                'links' => [['name' => trans('settings.settings'), 'url' => route('settings.index')]],
+                'links' => [
+                    ['name' => trans('settings.settings'), 'url' => route('settings.index')],
+                    ['name' => trans('settings.server'), 'url' => route('settings.show', ['setting' => 'server'])]
+                ],
                 'page_title' => trans('Server Information'),
             ])
 

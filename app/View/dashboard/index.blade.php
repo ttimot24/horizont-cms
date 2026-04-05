@@ -58,6 +58,7 @@
                     </form>
                 @endcan
 
+                
                 @if ($upgrade != null && $upgrade->isNewVersionAvailable())
                 <div class="container">
                     <div class="alert alert-warning mt-4" role="alert">

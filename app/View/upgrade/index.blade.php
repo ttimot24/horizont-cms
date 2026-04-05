@@ -8,7 +8,10 @@
         <div class="card mb-3">
 
             @include('breadcrumb', [
-                'links' => [['name' => trans('settings.settings'), 'url' => route('settings.index')]],
+                'links' => [
+                    ['name' => trans('settings.settings'), 'url' => route('settings.index')],
+                    ['name' => trans('System Update Center'), 'url' => route('upgrade.index')]
+                ],
                 'page_title' => trans('System Update Center'),
                 'stats' => [['label' => 'Current version', 'value' => $current_version]],
             ])

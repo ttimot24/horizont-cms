@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Config;
+use App\Services\DashboardWidget;
 
 use App\Model\Settings;
 
@@ -36,17 +37,48 @@ class SettingsController extends Controller
     private function getSettingsPanels()
     {
 
-
-        return [
-            ['name' => trans('settings.website'), 'link' => route('settings.show', ['setting' => 'website']), 'icon' => 'fa fa-globe'],
-            ['name' => trans('settings.admin_area'), 'link' => route('settings.show', ['setting' => 'adminarea']), 'icon' => 'fa fa-desktop'],
-            ['name' => trans('settings.update_center'), 'link' => route('upgrade.index'), 'icon' => 'fa fa-arrow-circle-up'],
-            ['name' => trans('settings.server'), 'link' => route('settings.show', ['setting' => 'server']), 'icon' => 'fa fa-server'],
-            ['name' => trans('settings.social_media'), 'link' => route('settings.show', ['setting' => 'socialmedia']), 'icon' => 'fa fa-thumbs-up'],
-            ['name' => trans('Log'), 'link' => route('log.index'), 'icon' => 'fa fa-bug'],
-            ['name' => trans('settings.database'), 'link' => route('settings.show', ['setting' => 'database']), 'icon' => 'fa fa-database'],
-            ['name' => trans('settings.scheduler'), 'link' => route('schedule.index', ['setting' => 'schedules']), 'icon' => 'fa fa-clock'],
-        ];
+        return collect([
+            DashboardWidget::builder()
+                ->setName(trans('settings.website'))
+                ->setIcon("fa fa-globe")
+                ->setLink(route('settings.show', ['setting' => 'website']))
+                ->build(),
+            DashboardWidget::builder()
+                ->setName(trans('settings.admin_area'))
+                ->setIcon("fa fa-desktop")
+                ->setLink(route('settings.show', ['setting' => 'adminarea']))
+                ->build(),
+            DashboardWidget::builder()
+                ->setName(trans('settings.update_center'))
+                ->setIcon("fa fa-arrow-circle-up")
+                ->setLink(route('upgrade.index'))
+                ->build(),
+            DashboardWidget::builder()
+                ->setName(trans('settings.server'))
+                ->setIcon("fa fa-server")
+                ->setLink(route('settings.show', ['setting' => 'server']))
+                ->build(),
+            DashboardWidget::builder()
+                ->setName(trans('settings.social_media'))
+                ->setIcon("fa fa-thumbs-up")
+                ->setLink(route('settings.show', ['setting' => 'socialmedia']))
+                ->build(),
+            DashboardWidget::builder()
+                ->setName(trans('Log'))
+                ->setIcon("fa fa-bug")
+                ->setLink(route('log.index'))
+                ->build(),
+            DashboardWidget::builder()
+                ->setName(trans('settings.database'))
+                ->setIcon("fa fa-database")
+                ->setLink(route('settings.show', ['setting' => 'database']))
+                ->build(),
+            DashboardWidget::builder()
+                ->setName(trans('settings.scheduler'))
+                ->setIcon("fa fa-clock")
+                ->setLink(route('schedule.index'))
+                ->build()
+            ]);
     }
 
     /**

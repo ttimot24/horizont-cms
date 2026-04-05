@@ -6,7 +6,10 @@
         <div class="card mb-3">
 
             @include('breadcrumb', [
-                'links' => [['name' => trans('settings.settings'), 'url' => route('settings.index')]],
+                'links' => [
+                    ['name' => trans('settings.settings'), 'url' => route('settings.index')],
+                    ['name' => trans('settings.scheduler'), 'url' => route('settings.show', ['setting' => 'scheduler'])]
+                ],
                 'page_title' => trans('settings.scheduler'),
                 'stats' => [['label' => trans('user.all'), 'value' => $scheduled_tasks->count()]],
                 'buttons' => [
