@@ -22,7 +22,7 @@
                     <div class="row">
                         <div class="col-xs-12 col-8">
                             <div class='form-group pull-left col-xs-12 col-md-12'>
-                                <label for='title'>{{ trans('page.menu_name') }}</label>
+                                <label for='title' class="form-label">{{ trans('page.menu_name') }}</label>
                                 <input type='text' class='form-control form-control-lg' id='menu-title' name='name'
                                     onkeyup="generateSlug(this.value)" value="{{ old('name', isset($page) ? $page->name : '') }}"
                                     required>
@@ -35,7 +35,7 @@
 
                             <div class="row p-3">
                             <div class='form-group pull-left col-xs-12 col-md-8'>
-                                <label for='title'>{{ trans('page.page_template') }}</label>
+                                <label for='title' class="form-label">{{ trans('page.page_template') }}</label>
                                 <select class='form-select' name='url'>
                                     <option value=''>{{ trans('page.default_template') }}</option>
 
@@ -50,7 +50,7 @@
                             </div>
 
                             <div class='form-group pull-left col-xs-12 col-md-4'>
-                                <label for='title'>{{ trans('settings.adminarea_language') }}</label>
+                                <label for='title' class="form-label">{{ trans('settings.adminarea_language') }}</label>
                                 <select class='form-select' name='language'>
 
                                     @foreach (config('horizontcms.languages') as $key => $value)
@@ -69,7 +69,7 @@
                             </div>
 
                             <div class='form-group col-xs-12 col-md-12' style='margin-top:20px;margin-bottom:20px;'>
-                                <label class="m-2 mr-4">{{ trans('page.visibility') }}</label>
+                                <label class="m-2 mr-4" class="form-label">{{ trans('page.visibility') }}</label>
                                 <div class='form-check form-check-inline'>
                                     <input class="form-check-input" type='radio' id='inlineRadio1' value='1'
                                         name='visibility' @if (!isset($page) || (isset($page) && $page->visibility == 1)) checked @endif>
@@ -102,7 +102,7 @@
                             @endif
 
                             <div class='form-group'>
-                                <label for='file'>{{ trans('actions.upload_image') }}:</label>
+                                <label for='file' class="form-label">{{ trans('actions.upload_image') }}:</label>
                                 <input name='up_file' accept='image/*' id='input-2' type='file' class='file'
                                     multiple='true'
                                     data-max-file-size="{{ config('horizontcms.max_upload_file_size', 2560) }}KB"
@@ -121,7 +121,7 @@
 
 
                         <div class='form-group pull-left col-xs-12 col-md-12'>
-                            <label for='text'>{{ trans('page.page_content') }}</label>
+                            <label for='text' class="form-label">{{ trans('page.page_content') }}</label>
 
                             <text-editor id="texteditor" :name="'page'"
                                 :data="'{{ remove_linebreaks(old('page', isset($page) ? str_replace("'", "&#39;", $page->page) : '')) }}'"

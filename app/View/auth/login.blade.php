@@ -25,7 +25,7 @@
             <div class="container">
                 <div class='col-xs-12 col-md-4 p-5'>
                     <div class="form-group">
-                        <label for='text'><b>{{ trans('login.email') }}</b></label>
+                        <label for='text' class="form-label"><b>{{ trans('login.email') }}</b></label>
                         <input type='email' class="form-control  @error('email') is-invalid @enderror"
                             id='email' name='email' placeholder="{{ trans('login.enter_email') }}" autofocus
                             required>
@@ -37,7 +37,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for='pwd'><b>{{ trans('login.password') }}</b></label>
+                        <label for='pwd' class="form-label"><b>{{ trans('login.password') }}</b></label>
                         <input type='password' class="form-control  @error('password') is-invalid @enderror"
                             id='pwd' name='password' placeholder="{{ trans('login.enter_password') }}" required>
                         @error('password')

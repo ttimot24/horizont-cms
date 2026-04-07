@@ -18,8 +18,8 @@
                 @csrf
 
                 <div class='form-group'>
-                    <label for='sel1'>Select language</label>
-                    <select class='form-select' id='sel1' name='lang'>
+                    <label for='lang' class="form-label">Select language</label>
+                    <select class='form-select' id='lang' name='lang'>
                         @foreach ($languages as $language)
                             <option value='{{ strtolower($language) }}'>{{ $language }}</option>
                         @endforeach

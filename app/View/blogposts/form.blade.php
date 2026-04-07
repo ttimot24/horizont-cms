@@ -22,7 +22,7 @@
                         <div class="col-xs-12 col-md-8">
 
                             <div class='form-group col mb-4'>
-                                <label for='title'>{{ trans('blogpost.title') }}</label>
+                                <label for='title' class="form-label">{{ trans('blogpost.title') }}</label>
                                 <input type='text' class='form-control form-control-lg @error('title') is-invalid @enderror' id='title' name='title'
                                     value="{{ old('title', isset($blogpost) ? $blogpost->title : '') }}" required>
 
@@ -46,7 +46,7 @@
                             <div class="row">
                             @can('update', 'user')
                                 <div class='form-group col-6 mb-4'>
-                                    <label for='sel1'>{{ trans('blogpost.author') }}</label>
+                                    <label for='author_id' class="form-label">{{ trans('blogpost.author') }}</label>
                                     <select class='form-select' name='author_id' id='sel1'>
 
                                         @foreach ($users as $user)
@@ -59,7 +59,7 @@
                                 </div>
                             @endcan
                             <div class='form-group pull-left col-xs-12 col-md-6'>
-                                <label for='title'>{{ trans('settings.adminarea_language') }}</label>
+                                <label for='language' class="form-label">{{ trans('settings.adminarea_language') }}</label>
                                 <select class='form-select' name='language'>
 
                                     @foreach (config('horizontcms.languages') as $key => $value)
@@ -74,7 +74,7 @@
                             </div>
 
                             <div class='form-group col mb-4'>
-                                <label for='title'>{{ trans('blogpost.summary') }}</label>
+                                <label for='summary' class="form-label">{{ trans('blogpost.summary') }}</label>
                                 <textarea type='text' maxlength="255" rows="3" class='form-control @error('summary') is-invalid @enderror' id='summary' name='summary'>{{ old('summary', isset($blogpost) ? $blogpost->summary : '') }}</textarea>
                                 </br>
 
@@ -103,7 +103,7 @@
                             @endif
 
                             <div class='form-group'>
-                                <label for='file'>{{ trans('actions.upload_image') }}</label>
+                                <label for='file' class="form-label">{{ trans('actions.upload_image') }}</label>
                                 <input name='up_file' accept='image/*' id='input-2' type='file' class='file'
                                     multiple='true'
                                     data-max-file-size="{{ config('horizontcms.max_upload_file_size', 2560) }}KB"
@@ -122,7 +122,7 @@
 
                         <div class="col-12">
                             <div class='form-group pull-left col-12'>
-                                <label for='text'>{{ trans('blogpost.post') }}</label>
+                                <label for='text' class="form-label">{{ trans('blogpost.post') }}</label>
                                 <text-editor id="texteditor" :name="'text'"
                                     :data="'{{ remove_linebreaks(old('blogpost', isset($blogpost) ? str_replace("'", "&#39;", $blogpost->text) : '')) }}'"
                                     :language="'{{ config('app.locale') }}'"

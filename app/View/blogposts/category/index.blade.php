@@ -23,7 +23,7 @@
                             <div class="row g-3 align-items-center">
                                 <div class="col-auto">
                                     <label for="inputPassword6"
-                                        class="col-form-label">{{ trans('category.add_category') }}:</label>
+                                        class="col-form-label">{{ trans('category.add_category') }}</label>
                                 </div>
                                 <div class="col-auto">
                                     <input type='text' class='form-control' id='cat' name='name'

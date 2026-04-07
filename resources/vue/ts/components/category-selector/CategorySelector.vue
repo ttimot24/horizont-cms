@@ -1,6 +1,6 @@
 <template>
     <div class='form-group col-12 mb-4'>
-        <label v-if="label" for='sel1'>{{ label }}</label>
+        <label v-if="label" for='category_select' class="form-label">{{ label }}</label>
         <select class='form-select' name='category_ids[]' id='category_select' multiple required>
 
             <option v-for="(category) in categories" :value="category.id"

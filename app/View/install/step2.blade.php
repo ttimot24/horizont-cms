@@ -30,7 +30,7 @@
                 <div class='container'>
 
                     <div class='form-group'>
-                        <label class='control-label col-md-2' for='server'>Database Driver:</label>
+                        <label class='form-label col-md-2' for='server'>Database Driver</label>
                         <div class='col-md-5'>
                             <select class='form-select' name='db_driver'>
 
@@ -45,7 +45,7 @@
                     </div>
 
                     <div class='form-group'>
-                        <label class='control-label col-sm-2' for='server'>Host:</label>
+                        <label class='form-label col-sm-2' for='server'>Host</label>
                         <div class='col-sm-5'>
                             <input type='text' class='form-control' id='server' name='server'
                                 value="{{ old('server', 'localhost') }}" required>
@@ -53,7 +53,7 @@
                     </div>
 
                     <div class='form-group'>
-                        <label class='control-label col-sm-2' for='username'>Username:</label>
+                        <label class='form-label col-sm-2' for='username'>Username</label>
                         <div class='col-sm-5'>
                             <input type='text' class='form-control' id='username' name='username' placeholder='username'
                                 value="{{ old('username') }}" required autofocus>
@@ -62,7 +62,7 @@
 
 
                     <div class='form-group'>
-                        <label class='control-label col-sm-2' for='pwd'>Password:</label>
+                        <label class='form-label col-sm-2' for='pwd'>Password</label>
                         <div class='col-sm-5'>
                             <input type='password' class='form-control' id='pwd' name='password'
                                 placeholder='password' value=''>
@@ -70,7 +70,7 @@
                     </div>
 
                     <div class='form-group'>
-                        <label class='control-label col-sm-2' for='data'>Database:</label>
+                        <label class='form-label col-sm-2' for='data'>Database</label>
                         <div class='col-sm-5'>
                             <input type='text' class='form-control' id='data' name='database'
                                 placeholder='database name' value="{{ old('database') }}" required>
@@ -78,7 +78,7 @@
                     </div>
 
                     <div class='form-group'>
-                        <label class='control-label col-sm-2' for='prefix'>Table prefix:</label>
+                        <label class='form-label col-sm-2' for='prefix'>Table prefix</label>
                         <div class='col-sm-5'>
                             <input type='text' class='form-control' id='prefix' name='prefix' placeholder='prefix'
                                 value="{{ old('prefix', 'hcms_') }}">

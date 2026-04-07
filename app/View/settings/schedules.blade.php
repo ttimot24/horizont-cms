@@ -110,17 +110,17 @@
                                     @csrf
 
                                     <div class='form-group'>
-                                        <label for='name'>Name</label>
+                                        <label for='name' class="form-label">Name</label>
                                         <input type='text' class='form-control' id='name' name='name' required>
                                     </div>
 
                                     <div class='form-group'>
-                                        <label for='frequency'>Cron</label>
+                                        <label for='frequency' class="form-label">Cron</label>
                                         <input type='text' class='form-control' id='cron' name='frequency' required>
                                     </div>
 
                                     <div class='form-group'>
-                                        <label for='command'>Command</label>
+                                        <label for='command' class="form-label">Command</label>
                                         <select name='command' class='form-select' required>
                                             @foreach ($commands as $key => $command)
                                                 <option value='{{ $key }}'>{{ $key }}</option>
@@ -129,17 +129,17 @@
                                     </div>
 
                                     <div class='form-group'>
-                                        <label for='ping_before'>Arguments</label>
+                                        <label for='ping_before' class="form-label">Arguments</label>
                                         <input type='text' class='form-control' id='arguments' name='arguments'>
                                     </div>
 
                                     <div class='form-group'>
-                                        <label for='ping_before'>Ping before</label>
+                                        <label for='ping_before' class="form-label">Ping before</label>
                                         <input type='text' class='form-control' id='ping_before' name='ping_before'>
                                     </div>
 
                                     <div class='form-group'>
-                                        <label for='ping_after'>Ping after</label>
+                                        <label for='ping_after' class="form-label">Ping after</label>
                                         <input type='text' class='form-control' id='ping_after' name='ping_after'>
                                     </div>
 

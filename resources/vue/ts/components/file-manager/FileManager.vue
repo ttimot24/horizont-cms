@@ -141,7 +141,7 @@
                     <div class='modal-body'>
                         <div class='form-group'>
                             <div class='form-group'>
-                                <label for='title'>Name:</label>
+                                <label for='title' class="form-label">Name</label>
                                 <input type='text' class='form-control' :name="'new_' + type + '_name'"
                                     :placeholder="'Enter ' + type + ' name'" required>
                             </div>
@@ -170,14 +170,14 @@
 
                         <div class='form-group'>
                             <div class='form-group'>
-                                <label for='title'>Selected:</label>
+                                <label for='title' class="form-label">Selected</label>
                                 <input type='text' class='form-control' name='old_name' id="selected" disabled>
                             </div>
                         </div>
 
                         <div class='form-group'>
                             <div class='form-group'>
-                                <label for='title'>New name:</label>
+                                <label for='title' class="form-label">New name</label>
                                 <input type='text' class='form-control' name='new_name' id="selected" required>
                             </div>
                         </div>
@@ -208,7 +208,7 @@
 
 
                         <div class='form-group'>
-                            <label for='file'>Upload file:</label>
+                            <label for='file' class="form-label">Upload file</label>
                             <input name='up_file[]' id='input-2' type='file' class='file' multiple='true'
                                 data-show-upload='false' data-show-caption='true' required>
                         </div>

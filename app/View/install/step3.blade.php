@@ -29,7 +29,7 @@
                 <div class='container'>
 
                     <div class='form-group'>
-                        <label class='control-label col-sm-3' for='username'>Create username:</label>
+                        <label class='form-label col-sm-3' for='username'>Create username</label>
                         <div class='col-sm-5'>
                             <input type='text' class='form-control' id='username' name='ad_username'
                                 placeholder='username' value='<?= @$data['session']['ad_username'] ?>' required>
@@ -37,7 +37,7 @@
                     </div>
 
                     <div class='form-group'>
-                        <label class='control-label col-sm-3' for='pwd'>Create password:</label>
+                        <label class='form-label col-sm-3' for='pwd'>Create password</label>
                         <div class='col-sm-5'>
                             <input type='password' class='form-control' id='pwd' name='ad_password'
                                 placeholder='password' value='<?= @$data['session']['ad_password'] ?>' required>
@@ -45,7 +45,7 @@
                     </div>
 
                     <div class='form-group'>
-                        <label class='control-label col-sm-3' for='em'>Email:</label>
+                        <label class='form-label col-sm-3' for='em'>Email</label>
                         <div class='col-sm-5'>
                             <input type='email' class='form-control' id='em' name='ad_email' placeholder='email'
                                 value='<?= @$data['session']['ad_email'] ?>' required>

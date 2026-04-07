@@ -81,7 +81,7 @@ class MenuMiddleware
 
         Menu::make('RightMenu', function ($menu) use ($request) {
 
-            $menu->add("<img style='height:30px;margin-top:-10px;margin-bottom:-10px;object-fit:cover;border-radius:1.5px;' src='" . Auth::user()->getThumb() . "' />  " . \Auth::user()->username)->id('current_user');
+            $menu->add("<img style='height:30px;margin-top:-10px;margin-bottom:-10px;' class='object-fit-cover rounded-1 me-1' src='" . Auth::user()->getThumb() . "' />  " . \Auth::user()->username)->id('current_user');
             $menu->find('current_user')->add("<img style='border-radius:1.5px;width:95%;height:135px;margin:10px 2.5% 10px 2.5%;object-fit:cover;' class='img img-rounded' src='" . Auth::user()->getThumb() . "' /><br> <p style='color:white;font-size:14px;'>" . \Auth::user()->username . " (" . strtolower(\Auth::user()->role->name) . ")</p>", ['url' => '#', 'style' => 'clear:both;width:215px;text-align:center;', 'class' => 'current-image'])->id('current_image');
             $menu->find('current_image')->divide();
             $menu->find('current_user')->add(trans('navbar.profile_view'), ['route' => ['user.show', 'user' => Auth::user()]])->id('view_account');

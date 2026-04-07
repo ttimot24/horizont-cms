@@ -18,7 +18,7 @@
 
                 <div class="row g-3 align-items-center">
                     <div class="col-auto">
-                        <label for="inputPassword6" class="col-form-label">Rename:</label>
+                        <label for="inputPassword6" class="col-form-label">Rename</label>
                     </div>
                     <div class="col-auto">
                         <input type='text' class='form-control' id='cat' name='name'

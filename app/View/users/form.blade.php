@@ -22,13 +22,13 @@
                     <div class="row">
                         <div class='form-group pull-left col-xs-12 col-md-8'>
                             <div class='form-group'>
-                                <label for='name'>{{ trans('user.create_name') }}</label>
+                                <label for='name' class="form-label">{{ trans('user.create_name') }}</label>
                                 <input type='text' class='form-control @error('name') is-invalid @enderror' id='name' name='name'
                                     value="{{ old('name', isset($user) ? $user->name : '') }}" required autofocus>
                             </div>
 
                             <div class='form-group'>
-                                <label for='username'>{{ trans('user.create_username') }}</label>
+                                <label for='username' class="form-label">{{ trans('user.create_username') }}</label>
                                 <input type='text' class='form-control' id='username' name='username'
                                     value="{{ old('username', isset($user) ? $user->username : '') }}"
                                     placeholder='Write username here' required>
@@ -36,7 +36,7 @@
 
                             @if (!isset($user) || ($user && $user->is($current_user)))
                                 <div class='form-group'>
-                                    <label for='title'>{{ trans('user.create_password') }}</label>
+                                    <label for='title' class="form-label">{{ trans('user.create_password') }}</label>
                                     <input id="password" type="password"
                                         class="form-control @error('password') is-invalid @enderror" name="password"
                                         required autocomplete="current-password">
@@ -50,7 +50,7 @@
 
 
                                 <div class='form-group'>
-                                    <label for='password'>{{ trans('user.create_password_again') }}</label>
+                                    <label for='password' class="form-label">{{ trans('user.create_password_again') }}</label>
 
                                     <input id="password" type="password"
                                         class="form-control @error('password') is-invalid @enderror"
@@ -60,7 +60,7 @@
 
 
                             <div class='form-group'>
-                                <label for='title'>{{ trans('user.create_email') }}</label>
+                                <label for='title' class="form-label">{{ trans('user.create_email') }}</label>
                                 <input type='email' class='form-control  @error('email') is-invalid @enderror' id='email' name='email'
                                     value="{{ old('email', isset($user) ? $user->email : '') }}" required>
                                 
@@ -72,7 +72,7 @@
                             </div>
 
                             <div class='form-group'>
-                                <label for='title'>{{ trans('user.create_phone') }}</label>
+                                <label for='title' class="form-label">{{ trans('user.create_phone') }}</label>
                                 <input type='text' class='form-control' id='phone' name='phone'
                                     value="{{ old('phone', isset($user) ? $user->phone : '') }}">
                             </div>
@@ -80,7 +80,7 @@
 
 
                             <div class='form-group col-6'>
-                                <label for='sel1'>{{ trans('user.create_select_rank') }}</label>
+                                <label for='sel1' class="form-label">{{ trans('user.create_select_rank') }}</label>
                                 <select class='form-select' name='role_id' id='sel1'>
 
 
@@ -111,7 +111,7 @@
                             @endif
 
                             <div class='form-group'>
-                                <label for='file'>{{ trans('actions.upload_image') }}</label>
+                                <label for='file' class="form-label">{{ trans('actions.upload_image') }}</label>
                                 <input name='up_file' accept='image/*' id='input-2' type='file' class='file'
                                     data-max-file-size="{{ config('horizontcms.max_upload_file_size', 2560) }}KB"
                                     multiple='true' data-drop-zone-enabled="{{ isset($user) ? 'false' : 'true' }}"

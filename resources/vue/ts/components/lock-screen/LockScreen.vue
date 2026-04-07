@@ -18,7 +18,7 @@
 
 
                     <div class='form-group mt-5'>
-                        <label for='pwd'>Password</label>
+                        <label for='pwd' class="form-label">Password</label>
                         <input type='password' class='form-control w-100' id='lock_pwd' v-model="password" ref="password_field" required />
                         <span class="invalid-feedback" role="alert">
                             <strong>Wrong password</strong>
