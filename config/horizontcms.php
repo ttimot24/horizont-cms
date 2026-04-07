@@ -12,6 +12,8 @@ return [
 
 	'default_controller' => 'login',
 
+	'login_view' => 'auth.login',
+
 	'admin_logo' => 'resources/logo.png',
 	
 	'default_date_format' => env('HCMS_DEFAULT_DATE_FORMAT', 'Y.m.d H:i:s'),
