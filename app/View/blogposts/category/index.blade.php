@@ -73,7 +73,7 @@
                                                     style="cursor:pointer;">
                                                     <i class="fa-solid fa-ellipsis-vertical text-dark fs-5"></i>
                                                 </div>
-                                                <ul class="dropdown-menu text-dark">
+                                                <ul class="dropdown-menu text-dark bg-white">
                                                     @can('update', 'blogpostcategory')
                                                     <li>
                                                         <a href="{{ route('blogpostcategory.edit', ['blogpostcategory' => $each]) }}"

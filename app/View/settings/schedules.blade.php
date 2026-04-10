@@ -66,7 +66,7 @@
                                         <div data-bs-toggle="dropdown" aria-expanded="false" style="cursor:pointer;">
                                             <i class="fa-solid fa-ellipsis-vertical text-dark fs-5"></i>
                                         </div>
-                                        <ul class="dropdown-menu text-dark">
+                                        <ul class="dropdown-menu text-dark bg-white">
                                             <li>
                                                 <a data-bs-toggle='modal' data-bs-target=#delete_<?= $task->id ?>
                                                     class="dropdown-item text-danger text-decoration-none"
