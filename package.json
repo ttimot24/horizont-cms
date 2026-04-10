@@ -27,7 +27,7 @@
         "@vue/compiler-sfc": "^3.2.37",
         "@vue/composition-api": "^1.7.0",
         "@vue/runtime-dom": "^3.2.47",
-        "axios": "^1.9",
+        "axios": "^1.15",
         "axios-observable": "^2.1.0",
         "bootstrap": "^5.2.3",
         "bootstrap-fileinput": "^5.5.0",
