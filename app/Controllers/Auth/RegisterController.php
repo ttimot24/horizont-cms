@@ -8,6 +8,7 @@ use Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Contracts\View\View;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Support\Facades\Config;
 
 class RegisterController extends Controller
 {
@@ -25,13 +26,6 @@ class RegisterController extends Controller
     use RegistersUsers;
 
     /**
-     * Where to redirect users after login / registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/admin/login';
-
-    /**
      * Create a new controller instance.
      *
      * @return void
@@ -43,7 +37,17 @@ class RegisterController extends Controller
 
     public function showRegistrationForm(): View|Factory
     {
-        return view('auth.register');
+        return view(Config::get('horizontcms.auth_view', 'auth') . '.register');
+    }
+
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+    public function redirectTo(): string
+    {
+        return route('login');
     }
 
 

@@ -12,7 +12,7 @@ return [
 
 	'default_controller' => 'login',
 
-	'login_view' => 'auth.login',
+	'auth_view' => 'auth',
 
 	'admin_logo' => 'resources/logo.png',
 	

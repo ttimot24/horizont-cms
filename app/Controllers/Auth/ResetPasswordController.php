@@ -40,7 +40,7 @@ class ResetPasswordController extends Controller
 
     public function showResetForm(Request $request, $token = null): View|Factory
     {
-        return view('auth.passwords.reset', [
+        return view(Config::get('horizontcms.auth_view', 'auth') . '.passwords.reset', [
             'token' => $token,
             'email' => $request->email,
             'app_name' => Config::get('app.name'),

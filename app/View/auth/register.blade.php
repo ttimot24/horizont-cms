@@ -1,4 +1,4 @@
-@extends('layout', [
+@extends('auth.outer', [
     'title' => 'Register'
 ])
 

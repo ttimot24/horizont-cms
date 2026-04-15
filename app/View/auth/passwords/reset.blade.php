@@ -1,4 +1,4 @@
-@extends('outer', [
+@extends('auth.outer', [
     'title' => "Forgot password"
 ])
 

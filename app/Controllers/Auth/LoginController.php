@@ -66,7 +66,7 @@ class LoginController extends Controller
     public function showLoginForm(): View|Factory
     {
 
-        return view(Config::get('horizontcms.login_view', 'auth.login'), [
+        return view(Config::get('horizontcms.auth_view', 'auth') . '.login', [
             'app_name' => Config::get('app.name'),
             'admin_logo' => url(Config::get('horizontcms.admin_logo')),
         ]);

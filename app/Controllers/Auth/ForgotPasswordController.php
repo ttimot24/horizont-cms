@@ -35,7 +35,7 @@ class ForgotPasswordController extends Controller
 
     public function showLinkRequestForm(): View|Factory
     {
-        return view('auth.passwords.email', [
+        return view(Config::get('horizontcms.auth_view', 'auth') . '.passwords.email', [
             'app_name' => Config::get('app.name'),
             'admin_logo' => url(Config::get('horizontcms.admin_logo')),
         ]);

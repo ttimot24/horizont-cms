@@ -1,31 +1,6 @@
-@extends('layout', ['title' => trans("Install")])
+@extends('outer', ['title' => trans("Install")])
 
-@section('content')
-    <div>
-        <div class='jumbotron'>
-            <div class='container'>
-            <div class="p-5">
-                <h1>{{ config('app.name') }} <small style="font-size:22px;">by Timot Tarjani</small></h1>
-                <p>The CMS that fit exactly to your needs.</p></br>
-                <p>
-
-                    @if ($enable_continue)
-                        <a class='btn btn-primary btn-lg' href="{{route('install.show', 'step1')}}">
-                            Install {{ config('app.name') }} <i class="fa fa-download" aria-hidden="true"></i>
-                        </a>
-                    @else
-                        <a class='btn btn-success btn-lg' href=''>
-
-                            &nbsp&nbsp<i class='fa fa-refresh' aria-hidden='true'></i>&nbspRefresh&nbsp&nbsp&nbsp
-
-                        </a>
-                    @endif
-
-                </p>
-            </div>
-            </div>
-        </div>
-
+@section('content-outer')
         <div class='container'>
 
             <div class="row py-4">
@@ -59,6 +34,4 @@
                 </div>
             </div>
         </div>
-
-    </div>
 @endsection
