@@ -7,7 +7,7 @@
 
                     <div class="row">
 
-                        <div class='panel panel-default col-2 bg-dark p-3' style="min-height:600px;">
+                        <div class='panel panel-default col-12 col-md-2 bg-dark p-3' style="min-height:600px;">
                             <h4 class="p-2 bg-dark text-white">Disks</h4>
                             <ul class="list-group">
 
@@ -19,7 +19,7 @@
                             </ul>
                         </div>
 
-                        <div class="panel panel-default col-10 bg-dark">
+                        <div class="panel panel-default col-12 col-md-10 bg-dark">
                             <div class="panel-body">
                                 <div class="row p-0 m-0">
                                     <div class="col-md-2 m-0 p-0">
@@ -87,9 +87,8 @@
                                                         class="fa fa-trash"></i></a>
                                             </div>
 
-                                            <div clas='row'>
-                                                <img style="width:7rem;" src='resources/images/icons/dir.png'>
-                                               <!-- <i class="fa-solid fa-folder text-warning" style="font-size: 8rem;"></i>-->
+                                            <div class='row my-2'>
+                                               <i class="fa-solid fa-folder-closed text-warning" style="font-size: 6rem;"></i>
                                             </div>
                                             <b>{{ folder }}</b>
                                         </div>
@@ -110,9 +109,11 @@
                                                 <a class="me-1" v-on:click="deleteModal(file)"><i
                                                         class="fa fa-trash"></i></a>
                                             </div>
-                                            <img class="w-100 mb-3" v-if="isKnownExtension(file)"
+                                            <div class='row my-2'>
+                                                <img class="w-100" v-if="isKnownExtension(file)"
                                                 :src=" 'storage/' + currentDirectory + '/' + file " />
-                                            <img class="w-100 mb-3" v-else src="resources/images/icons/file.png" />
+                                                <i class="fa-regular fa-file-lines" v-else style="font-size: 6rem;"></i>
+                                            </div>
                                             <b>{{ file }}</b>
                                         </div>
                                     </div>

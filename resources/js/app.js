@@ -3742,32 +3742,33 @@ function _typeof(obj) {
         var file = files[i];
         formData.append('up_file[]', file, file.name);
       }
-      $.ajax({
-        url: event.target.action,
-        type: 'POST',
-        enctype: 'multipart/form-data',
-        data: formData,
-        async: false,
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function success(data) {
-          if (_typeof(data.success) !== undefined) {
-            console.log(data);
-            vm.modalUpload.hide();
-            fileSelect.val("");
-            //fileSelect.fileinput("clear");
-            for (var i = 0; i < data.uploadedFileNames.length; i++) {
-              console.log(vm.basename(data.uploadedFileNames[i]));
-              vm.files.push(vm.basename(data.uploadedFileNames[i]).concat('.').concat(vm.getFileExtension(data.uploadedFileNames[i])));
-            }
-          } else {
-            console.log("Error" + data);
-          }
-        },
-        error: function error() {
-          console.log("Error in ajax form submission");
+      vm.http.post(event.target.action, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
+      }).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_3__.retry)(_environments_environment__WEBPACK_IMPORTED_MODULE_1__.environment.API_RETRY), (0,rxjs__WEBPACK_IMPORTED_MODULE_5__.catchError)(function (error) {
+        console.error(error);
+        return (0,rxjs__WEBPACK_IMPORTED_MODULE_7__.of)(error);
+      })).subscribe(function (response) {
+        var _a;
+        var data = response.data;
+        if (_typeof(data.success) !== undefined) {
+          console.log(data);
+          vm.modalUpload.hide();
+          fileSelect.val("");
+          //fileSelect.fileinput("clear");
+          (_a = data.uploadedFileNames) === null || _a === void 0 ? void 0 : _a.forEach(function (uploaded) {
+            var base = vm.basename(uploaded);
+            var ext = vm.getFileExtension(uploaded);
+            console.log(base);
+            vm.files.push(base + '.' + ext);
+          });
+        } else {
+          console.log("Error" + data);
+        }
+      })["catch"](function (error) {
+        console.log("Error in axios form submission");
+        console.error(error);
       });
     },
     basename: function basename(url) {
@@ -54525,7 +54526,11 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "form-group col-12 mb-4" }, [
     _vm.label
-      ? _c("label", { attrs: { for: "sel1" } }, [_vm._v(_vm._s(_vm.label))])
+      ? _c(
+          "label",
+          { staticClass: "form-label", attrs: { for: "category_select" } },
+          [_vm._v(_vm._s(_vm.label))]
+        )
       : _vm._e(),
     _vm._v(" "),
     _c(
@@ -54690,7 +54695,7 @@ var render = function () {
             _c(
               "div",
               {
-                staticClass: "panel panel-default col-2 bg-dark p-3",
+                staticClass: "panel panel-default col-12 col-md-2 bg-dark p-3",
                 staticStyle: { "min-height": "600px" },
               },
               [
@@ -54730,399 +54735,414 @@ var render = function () {
               ]
             ),
             _vm._v(" "),
-            _c("div", { staticClass: "panel panel-default col-10 bg-dark" }, [
-              _c("div", { staticClass: "panel-body" }, [
-                _c("div", { staticClass: "row p-0 m-0" }, [
-                  _c("div", { staticClass: "col-md-2 m-0 p-0" }, [
-                    _c(
-                      "nav",
-                      { attrs: { "aria-label": "breadcrumb p-0 m-0" } },
-                      [
-                        _c(
-                          "ol",
-                          { staticClass: "breadcrumb bg-dark p-0 pt-3 m-0" },
-                          [
-                            _c("li", { staticClass: "breadcrumb-item" }, [
-                              _c(
-                                "a",
-                                {
-                                  attrs: { href: "storage" },
-                                  on: {
-                                    click: function ($event) {
-                                      $event.preventDefault()
-                                      return _vm.open("", false)
-                                    },
-                                  },
-                                },
-                                [_vm._v(_vm._s(_vm.currentDisk) + ": storage")]
-                              ),
-                            ]),
-                            _vm._v(" "),
-                            _vm._l(_vm.breadcrumb, function (bcrumb) {
-                              return _c(
-                                "li",
-                                { staticClass: "breadcrumb-item" },
-                                [
-                                  _c(
-                                    "a",
-                                    {
-                                      attrs: { href: bcrumb.link },
-                                      on: {
-                                        click: function ($event) {
-                                          $event.preventDefault()
-                                          return _vm.open(bcrumb.link, false)
-                                        },
+            _c(
+              "div",
+              { staticClass: "panel panel-default col-12 col-md-10 bg-dark" },
+              [
+                _c("div", { staticClass: "panel-body" }, [
+                  _c("div", { staticClass: "row p-0 m-0" }, [
+                    _c("div", { staticClass: "col-md-2 m-0 p-0" }, [
+                      _c(
+                        "nav",
+                        { attrs: { "aria-label": "breadcrumb p-0 m-0" } },
+                        [
+                          _c(
+                            "ol",
+                            { staticClass: "breadcrumb bg-dark p-0 pt-3 m-0" },
+                            [
+                              _c("li", { staticClass: "breadcrumb-item" }, [
+                                _c(
+                                  "a",
+                                  {
+                                    attrs: { href: "storage" },
+                                    on: {
+                                      click: function ($event) {
+                                        $event.preventDefault()
+                                        return _vm.open("", false)
                                       },
                                     },
-                                    [_vm._v(_vm._s(bcrumb.text))]
-                                  ),
-                                ]
-                              )
-                            }),
-                          ],
-                          2
-                        ),
-                      ]
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-8" }, [
-                    _c("div", { staticClass: "col text-end mt-2" }, [
-                      _c("div", { staticClass: "row" }, [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "col-md-4 offset-md-3 col-sm-7 col-xs-7 text-end",
-                          },
-                          [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.filter,
-                                  expression: "filter",
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(_vm.currentDisk) + ": storage"
+                                    ),
+                                  ]
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _vm._l(_vm.breadcrumb, function (bcrumb) {
+                                return _c(
+                                  "li",
+                                  { staticClass: "breadcrumb-item" },
+                                  [
+                                    _c(
+                                      "a",
+                                      {
+                                        attrs: { href: bcrumb.link },
+                                        on: {
+                                          click: function ($event) {
+                                            $event.preventDefault()
+                                            return _vm.open(bcrumb.link, false)
+                                          },
+                                        },
+                                      },
+                                      [_vm._v(_vm._s(bcrumb.text))]
+                                    ),
+                                  ]
+                                )
+                              }),
+                            ],
+                            2
+                          ),
+                        ]
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-8" }, [
+                      _c("div", { staticClass: "col text-end mt-2" }, [
+                        _c("div", { staticClass: "row" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "col-md-4 offset-md-3 col-sm-7 col-xs-7 text-end",
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.filter,
+                                    expression: "filter",
+                                  },
+                                ],
+                                staticClass: "form-control input-sm",
+                                attrs: {
+                                  type: "text",
+                                  id: "filter",
+                                  placeholder: "Filter",
                                 },
-                              ],
-                              staticClass: "form-control input-sm",
-                              attrs: {
-                                type: "text",
-                                id: "filter",
-                                placeholder: "Filter",
-                              },
-                              domProps: { value: _vm.filter },
-                              on: {
-                                input: function ($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.filter = $event.target.value
-                                },
-                              },
-                            }),
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "col text-end" },
-                          [
-                            _vm._m(0),
-                            _vm._v(" "),
-                            _vm._l(_vm.newTypes, function (type) {
-                              return _c(
-                                "a",
-                                {
-                                  staticClass: "btn btn-sm btn-primary me-1",
-                                  attrs: {
-                                    "data-bs-toggle": "modal",
-                                    "data-bs-backdrop": "static",
-                                    "data-bs-target": ".new_" + type,
+                                domProps: { value: _vm.filter },
+                                on: {
+                                  input: function ($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.filter = $event.target.value
                                   },
                                 },
-                                [
-                                  _c("i", {
-                                    class: "fa fa-" + type,
-                                    attrs: { "aria-hidden": "true" },
-                                  }),
-                                  _vm._v(
-                                    " Create " +
-                                      _vm._s(type) +
-                                      "\n                                                "
-                                  ),
-                                ]
-                              )
-                            }),
-                          ],
-                          2
-                        ),
+                              }),
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "col text-end" },
+                            [
+                              _vm._m(0),
+                              _vm._v(" "),
+                              _vm._l(_vm.newTypes, function (type) {
+                                return _c(
+                                  "a",
+                                  {
+                                    staticClass: "btn btn-sm btn-primary me-1",
+                                    attrs: {
+                                      "data-bs-toggle": "modal",
+                                      "data-bs-backdrop": "static",
+                                      "data-bs-target": ".new_" + type,
+                                    },
+                                  },
+                                  [
+                                    _c("i", {
+                                      class: "fa fa-" + type,
+                                      attrs: { "aria-hidden": "true" },
+                                    }),
+                                    _vm._v(
+                                      " Create " +
+                                        _vm._s(type) +
+                                        "\n                                                "
+                                    ),
+                                  ]
+                                )
+                              }),
+                            ],
+                            2
+                          ),
+                        ]),
                       ]),
                     ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-2 text-end pt-3 pr-3" }, [
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col text-white " }, [
-                        _vm._v(
-                          "All: " +
-                            _vm._s(_vm.folders.length + _vm.files.length)
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _c(
-                          "a",
-                          {
-                            attrs: { href: "a" },
-                            on: {
-                              click: function ($event) {
-                                $event.preventDefault()
-                                return _vm.open(_vm.currentDirectory, false)
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-2 text-end pt-3 pr-3" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col text-white " }, [
+                          _vm._v(
+                            "All: " +
+                              _vm._s(_vm.folders.length + _vm.files.length)
+                          ),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _c(
+                            "a",
+                            {
+                              attrs: { href: "a" },
+                              on: {
+                                click: function ($event) {
+                                  $event.preventDefault()
+                                  return _vm.open(_vm.currentDirectory, false)
+                                },
                               },
                             },
-                          },
-                          [
-                            _c("i", {
-                              staticClass: "fa fa-refresh",
-                              staticStyle: { "font-size": "22px" },
-                              attrs: {
-                                onclick: "$(this).addClass('fa-spin');",
-                                "aria-hidden": "true",
-                              },
-                            }),
-                          ]
-                        ),
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-refresh",
+                                staticStyle: { "font-size": "22px" },
+                                attrs: {
+                                  onclick: "$(this).addClass('fa-spin');",
+                                  "aria-hidden": "true",
+                                },
+                              }),
+                            ]
+                          ),
+                        ]),
                       ]),
                     ]),
                   ]),
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "col-md-12 py-3 pe-5",
-                    attrs: { id: "workspace" },
-                  },
-                  [
-                    _vm.openError
-                      ? _c(
-                          "div",
-                          {
-                            staticClass:
-                              "alert alert-danger d-flex align-items-center",
-                            attrs: { role: "alert" },
-                          },
-                          [
-                            _c("i", {
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "col-md-12 py-3 pe-5",
+                      attrs: { id: "workspace" },
+                    },
+                    [
+                      _vm.openError
+                        ? _c(
+                            "div",
+                            {
                               staticClass:
-                                "fa-solid fa-circle-exclamation me-3",
-                            }),
-                            _vm._v(" "),
-                            _c("div", [
-                              _vm._v(
-                                "\n                                        Could not open folder: " +
-                                  _vm._s(_vm.openError.error) +
-                                  "\n                                    "
-                              ),
-                            ]),
-                          ]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    !_vm.openError
-                      ? _c(
-                          "div",
-                          { staticClass: "row text-white" },
-                          [
-                            _vm._l(_vm.folders, function (folder) {
-                              return _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "folder col-md-2 col-sm-4 col-xs-4 text-center text-white",
-                                  attrs: { id: folder },
-                                  on: {
-                                    click: function ($event) {
-                                      return _vm.select(folder)
-                                    },
-                                    dblclick: function ($event) {
-                                      return _vm.open(folder)
-                                    },
-                                  },
-                                },
-                                [
-                                  _c(
-                                    "div",
-                                    { staticClass: "file-nav text-end" },
-                                    [
-                                      _c(
-                                        "a",
-                                        {
-                                          staticClass: "me-1",
-                                          on: {
-                                            click: function ($event) {
-                                              return _vm.renameModal(folder)
-                                            },
-                                          },
-                                        },
-                                        [
-                                          _c("i", {
-                                            staticClass: "fa fa-pencil",
-                                          }),
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "a",
-                                        {
-                                          staticClass: "me-1",
-                                          on: {
-                                            click: function ($event) {
-                                              return _vm.deleteModal(folder)
-                                            },
-                                          },
-                                        },
-                                        [
-                                          _c("i", {
-                                            staticClass: "fa fa-trash",
-                                          }),
-                                        ]
-                                      ),
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _vm._m(1, true),
-                                  _vm._v(" "),
-                                  _c("b", [_vm._v(_vm._s(folder))]),
-                                ]
-                              )
-                            }),
-                            _vm._v(" "),
-                            _vm._l(_vm.files, function (file) {
-                              return _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "file col-md-2 col-sm-4 col-xs-4 text-center",
-                                  attrs: { id: file },
-                                  on: {
-                                    click: function ($event) {
-                                      _vm.mode === "embed"
-                                        ? _vm.returnFileUrl(
-                                            "storage/" +
-                                              _vm.currentDirectory +
-                                              "/" +
-                                              file
-                                          )
-                                        : _vm.select(file)
+                                "alert alert-danger d-flex align-items-center",
+                              attrs: { role: "alert" },
+                            },
+                            [
+                              _c("i", {
+                                staticClass:
+                                  "fa-solid fa-circle-exclamation me-3",
+                              }),
+                              _vm._v(" "),
+                              _c("div", [
+                                _vm._v(
+                                  "\n                                        Could not open folder: " +
+                                    _vm._s(_vm.openError.error) +
+                                    "\n                                    "
+                                ),
+                              ]),
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.openError
+                        ? _c(
+                            "div",
+                            { staticClass: "row text-white" },
+                            [
+                              _vm._l(_vm.folders, function (folder) {
+                                return _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "folder col-md-2 col-sm-4 col-xs-4 text-center text-white",
+                                    attrs: { id: folder },
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.select(folder)
+                                      },
+                                      dblclick: function ($event) {
+                                        return _vm.open(folder)
+                                      },
                                     },
                                   },
-                                },
-                                [
-                                  _c(
-                                    "div",
-                                    { staticClass: "file-nav text-end" },
-                                    [
-                                      _c(
-                                        "a",
-                                        {
-                                          staticClass: "me-1",
-                                          on: {
-                                            click: function ($event) {
-                                              return _vm.shareLink(file)
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "file-nav text-end" },
+                                      [
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass: "me-1",
+                                            on: {
+                                              click: function ($event) {
+                                                return _vm.renameModal(folder)
+                                              },
                                             },
                                           },
-                                        },
-                                        [_c("i", { staticClass: "fa fa-link" })]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "a",
-                                        {
-                                          staticClass: "me-1",
-                                          on: {
-                                            click: function ($event) {
-                                              return _vm.renameModal(file)
+                                          [
+                                            _c("i", {
+                                              staticClass: "fa fa-pencil",
+                                            }),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass: "me-1",
+                                            on: {
+                                              click: function ($event) {
+                                                return _vm.deleteModal(folder)
+                                              },
                                             },
                                           },
-                                        },
-                                        [
-                                          _c("i", {
-                                            staticClass: "fa fa-pencil",
-                                            attrs: { "aria-hidden": "true" },
-                                          }),
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "a",
-                                        {
-                                          staticClass: "me-1",
-                                          attrs: {
-                                            href:
+                                          [
+                                            _c("i", {
+                                              staticClass: "fa fa-trash",
+                                            }),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _vm._m(1, true),
+                                    _vm._v(" "),
+                                    _c("b", [_vm._v(_vm._s(folder))]),
+                                  ]
+                                )
+                              }),
+                              _vm._v(" "),
+                              _vm._l(_vm.files, function (file) {
+                                return _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "file col-md-2 col-sm-4 col-xs-4 text-center",
+                                    attrs: { id: file },
+                                    on: {
+                                      click: function ($event) {
+                                        _vm.mode === "embed"
+                                          ? _vm.returnFileUrl(
                                               "storage/" +
-                                              _vm.currentDirectory +
-                                              "/" +
-                                              file,
-                                          },
-                                        },
-                                        [
-                                          _c("i", {
-                                            staticClass: "fa fa-download",
-                                          }),
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "a",
-                                        {
-                                          staticClass: "me-1",
-                                          on: {
-                                            click: function ($event) {
-                                              return _vm.deleteModal(file)
+                                                _vm.currentDirectory +
+                                                "/" +
+                                                file
+                                            )
+                                          : _vm.select(file)
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "file-nav text-end" },
+                                      [
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass: "me-1",
+                                            on: {
+                                              click: function ($event) {
+                                                return _vm.shareLink(file)
+                                              },
                                             },
                                           },
-                                        },
-                                        [
-                                          _c("i", {
-                                            staticClass: "fa fa-trash",
+                                          [
+                                            _c("i", {
+                                              staticClass: "fa fa-link",
+                                            }),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass: "me-1",
+                                            on: {
+                                              click: function ($event) {
+                                                return _vm.renameModal(file)
+                                              },
+                                            },
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "fa fa-pencil",
+                                              attrs: { "aria-hidden": "true" },
+                                            }),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass: "me-1",
+                                            attrs: {
+                                              href:
+                                                "storage/" +
+                                                _vm.currentDirectory +
+                                                "/" +
+                                                file,
+                                            },
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "fa fa-download",
+                                            }),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass: "me-1",
+                                            on: {
+                                              click: function ($event) {
+                                                return _vm.deleteModal(file)
+                                              },
+                                            },
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "fa fa-trash",
+                                            }),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "row my-2" }, [
+                                      _vm.isKnownExtension(file)
+                                        ? _c("img", {
+                                            staticClass: "w-100",
+                                            attrs: {
+                                              src:
+                                                "storage/" +
+                                                _vm.currentDirectory +
+                                                "/" +
+                                                file,
+                                            },
+                                          })
+                                        : _c("i", {
+                                            staticClass:
+                                              "fa-regular fa-file-lines",
+                                            staticStyle: {
+                                              "font-size": "6rem",
+                                            },
                                           }),
-                                        ]
-                                      ),
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _vm.isKnownExtension(file)
-                                    ? _c("img", {
-                                        staticClass: "w-100 mb-3",
-                                        attrs: {
-                                          src:
-                                            "storage/" +
-                                            _vm.currentDirectory +
-                                            "/" +
-                                            file,
-                                        },
-                                      })
-                                    : _c("img", {
-                                        staticClass: "w-100 mb-3",
-                                        attrs: {
-                                          src: "resources/images/icons/file.png",
-                                        },
-                                      }),
-                                  _vm._v(" "),
-                                  _c("b", [_vm._v(_vm._s(file))]),
-                                ]
-                              )
-                            }),
-                          ],
-                          2
-                        )
-                      : _vm._e(),
-                  ]
-                ),
-              ]),
-            ]),
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("b", [_vm._v(_vm._s(file))]),
+                                  ]
+                                )
+                              }),
+                            ],
+                            2
+                          )
+                        : _vm._e(),
+                    ]
+                  ),
+                ]),
+              ]
+            ),
           ]),
         ]),
       ]),
@@ -55183,9 +55203,14 @@ var render = function () {
                     _c("div", { staticClass: "modal-body" }, [
                       _c("div", { staticClass: "form-group" }, [
                         _c("div", { staticClass: "form-group" }, [
-                          _c("label", { attrs: { for: "title" } }, [
-                            _vm._v("Name:"),
-                          ]),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "form-label",
+                              attrs: { for: "title" },
+                            },
+                            [_vm._v("Name")]
+                          ),
                           _vm._v(" "),
                           _c("input", {
                             staticClass: "form-control",
@@ -55329,10 +55354,10 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { attrs: { clas: "row" } }, [
-      _c("img", {
-        staticStyle: { width: "7rem" },
-        attrs: { src: "resources/images/icons/dir.png" },
+    return _c("div", { staticClass: "row my-2" }, [
+      _c("i", {
+        staticClass: "fa-solid fa-folder-closed text-warning",
+        staticStyle: { "font-size": "6rem" },
       }),
     ])
   },
@@ -55381,7 +55406,9 @@ var staticRenderFns = [
     return _c("div", { staticClass: "modal-body" }, [
       _c("div", { staticClass: "form-group" }, [
         _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "title" } }, [_vm._v("Selected:")]),
+          _c("label", { staticClass: "form-label", attrs: { for: "title" } }, [
+            _vm._v("Selected"),
+          ]),
           _vm._v(" "),
           _c("input", {
             staticClass: "form-control",
@@ -55397,7 +55424,9 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [
         _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "title" } }, [_vm._v("New name:")]),
+          _c("label", { staticClass: "form-label", attrs: { for: "title" } }, [
+            _vm._v("New name"),
+          ]),
           _vm._v(" "),
           _c("input", {
             staticClass: "form-control",
@@ -55462,7 +55491,9 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-body" }, [
       _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "file" } }, [_vm._v("Upload file:")]),
+        _c("label", { staticClass: "form-label", attrs: { for: "file" } }, [
+          _vm._v("Upload file"),
+        ]),
         _vm._v(" "),
         _c("input", {
           staticClass: "file",
@@ -55573,7 +55604,11 @@ var render = function () {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group mt-5" }, [
-              _c("label", { attrs: { for: "pwd" } }, [_vm._v("Password")]),
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "pwd" } },
+                [_vm._v("Password")]
+              ),
               _vm._v(" "),
               _c("input", {
                 directives: [
@@ -55665,7 +55700,9 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row p-3" }, [
     _c("div", { staticClass: "form-group col-xs-12 col-md-6" }, [
-      _c("label", { attrs: { for: "level" } }, [_vm._v(_vm._s(_vm.label))]),
+      _c("label", { staticClass: "form-label", attrs: { for: "level" } }, [
+        _vm._v(_vm._s(_vm.label)),
+      ]),
       _vm._v(" "),
       _c(
         "select",
@@ -55719,7 +55756,9 @@ var render = function () {
         attrs: { id: "submenus" },
       },
       [
-        _c("label", { attrs: { for: "submenus" } }, [_vm._v("Parent menu:")]),
+        _c("label", { staticClass: "form-label", attrs: { for: "submenus" } }, [
+          _vm._v("Parent menu"),
+        ]),
         _vm._v(" "),
         _c(
           "select",
@@ -66782,7 +66821,7 @@ module.exports = JSON.parse('{"actions.th_action":"Aktion","actions.save":"Speic
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"auth.failed":"Invalid email/username or password.","auth.password":"The provided password is incorrect.","auth.throttle":"Too many login attempts. Please try again in :seconds seconds.","pagination.previous":"&laquo; Previous","pagination.next":"Next &raquo;","passwords.reset":"Your password has been reset!","passwords.sent":"We have e-mailed your password reset link!","passwords.throttled":"Please wait before retrying.","passwords.token":"This password reset token is invalid.","passwords.user":"We can\'t find a user with that e-mail address.","validation.accepted":"The :attribute must be accepted.","validation.accepted_if":"The :attribute field must be accepted when :other is :value.","validation.active_url":"The :attribute is not a valid URL.","validation.after":"The :attribute must be a date after :date.","validation.after_or_equal":"The :attribute field must be a date after or equal to :date.","validation.alpha":"The :attribute may only contain letters.","validation.alpha_dash":"The :attribute may only contain letters, numbers, and dashes.","validation.alpha_num":"The :attribute may only contain letters and numbers.","validation.array":"The :attribute must be an array.","validation.ascii":"The :attribute field must only contain single-byte alphanumeric characters and symbols.","validation.before":"The :attribute must be a date before :date.","validation.before_or_equal":"The :attribute field must be a date before or equal to :date.","validation.between.array":"The :attribute must have between :min and :max items.","validation.between.file":"The :attribute must be between :min and :max kilobytes.","validation.between.numeric":"The :attribute must be between :min and :max.","validation.between.string":"The :attribute must be between :min and :max characters.","validation.boolean":"The :attribute field must be true or false.","validation.can":"The :attribute field contains an unauthorized value.","validation.confirmed":"The :attribute confirmation does not match.","validation.contains":"The :attribute field is missing a required value.","validation.current_password":"The password is incorrect.","validation.date":"The :attribute is not a valid date.","validation.date_equals":"The :attribute field must be a date equal to :date.","validation.date_format":"The :attribute does not match the format :format.","validation.decimal":"The :attribute field must have :decimal decimal places.","validation.declined":"The :attribute field must be declined.","validation.declined_if":"The :attribute field must be declined when :other is :value.","validation.different":"The :attribute and :other must be different.","validation.digits":"The :attribute must be :digits digits.","validation.digits_between":"The :attribute must be between :min and :max digits.","validation.dimensions":"The :attribute has invalid image dimensions.","validation.distinct":"The :attribute field has a duplicate value.","validation.doesnt_end_with":"The :attribute field must not end with one of the following: :values.","validation.doesnt_start_with":"The :attribute field must not start with one of the following: :values.","validation.email":"The :attribute must be a valid email address.","validation.ends_with":"The :attribute field must end with one of the following: :values.","validation.enum":"The selected :attribute is invalid.","validation.exists":"The selected :attribute is invalid.","validation.extensions":"The :attribute field must have one of the following extensions: :values.","validation.file":"The :attribute must be a file.","validation.filled":"The :attribute field is required.","validation.gt.array":"The :attribute field must have more than :value items.","validation.gt.file":"The :attribute field must be greater than :value kilobytes.","validation.gt.numeric":"The :attribute field must be greater than :value.","validation.gt.string":"The :attribute field must be greater than :value characters.","validation.gte.array":"The :attribute field must have :value items or more.","validation.gte.file":"The :attribute field must be greater than or equal to :value kilobytes.","validation.gte.numeric":"The :attribute field must be greater than or equal to :value.","validation.gte.string":"The :attribute field must be greater than or equal to :value characters.","validation.hex_color":"The :attribute field must be a valid hexadecimal color.","validation.image":"The :attribute must be an image.","validation.in":"The selected :attribute is invalid.","validation.in_array":"The :attribute field does not exist in :other.","validation.integer":"The :attribute must be an integer.","validation.ip":"The :attribute must be a valid IP address.","validation.ipv4":"The :attribute field must be a valid IPv4 address.","validation.ipv6":"The :attribute field must be a valid IPv6 address.","validation.json":"The :attribute must be a valid JSON string.","validation.list":"The :attribute field must be a list.","validation.lowercase":"The :attribute field must be lowercase.","validation.lt.array":"The :attribute field must have less than :value items.","validation.lt.file":"The :attribute field must be less than :value kilobytes.","validation.lt.numeric":"The :attribute field must be less than :value.","validation.lt.string":"The :attribute field must be less than :value characters.","validation.lte.array":"The :attribute field must not have more than :value items.","validation.lte.file":"The :attribute field must be less than or equal to :value kilobytes.","validation.lte.numeric":"The :attribute field must be less than or equal to :value.","validation.lte.string":"The :attribute field must be less than or equal to :value characters.","validation.mac_address":"The :attribute field must be a valid MAC address.","validation.max.array":"The :attribute may not have more than :max items.","validation.max.file":"The :attribute may not be greater than :max kilobytes.","validation.max.numeric":"The :attribute may not be greater than :max.","validation.max.string":"The :attribute may not be greater than :max characters.","validation.max_digits":"The :attribute field must not have more than :max digits.","validation.mimes":"The :attribute must be a file of type: :values.","validation.mimetypes":"The :attribute must be a file of type: :values.","validation.min.array":"The :attribute must have at least :min items.","validation.min.file":"The :attribute must be at least :min kilobytes.","validation.min.numeric":"The :attribute must be at least :min.","validation.min.string":"The :attribute must be at least :min characters.","validation.min_digits":"The :attribute field must have at least :min digits.","validation.missing":"The :attribute field must be missing.","validation.missing_if":"The :attribute field must be missing when :other is :value.","validation.missing_unless":"The :attribute field must be missing unless :other is :value.","validation.missing_with":"The :attribute field must be missing when :values is present.","validation.missing_with_all":"The :attribute field must be missing when :values are present.","validation.multiple_of":"The :attribute field must be a multiple of :value.","validation.not_in":"The selected :attribute is invalid.","validation.not_regex":"The :attribute field format is invalid.","validation.numeric":"The :attribute must be a number.","validation.password.letters":"The :attribute field must contain at least one letter.","validation.password.mixed":"The :attribute field must contain at least one uppercase and one lowercase letter.","validation.password.numbers":"The :attribute field must contain at least one number.","validation.password.symbols":"The :attribute field must contain at least one symbol.","validation.password.uncompromised":"The given :attribute has appeared in a data leak. Please choose a different :attribute.","validation.present":"The :attribute field must be present.","validation.present_if":"The :attribute field must be present when :other is :value.","validation.present_unless":"The :attribute field must be present unless :other is :value.","validation.present_with":"The :attribute field must be present when :values is present.","validation.present_with_all":"The :attribute field must be present when :values are present.","validation.prohibited":"The :attribute field is prohibited.","validation.prohibited_if":"The :attribute field is prohibited when :other is :value.","validation.prohibited_if_accepted":"The :attribute field is prohibited when :other is accepted.","validation.prohibited_if_declined":"The :attribute field is prohibited when :other is declined.","validation.prohibited_unless":"The :attribute field is prohibited unless :other is in :values.","validation.prohibits":"The :attribute field prohibits :other from being present.","validation.regex":"The :attribute format is invalid.","validation.required":"The :attribute field is required.","validation.required_array_keys":"The :attribute field must contain entries for: :values.","validation.required_if":"The :attribute field is required when :other is :value.","validation.required_if_accepted":"The :attribute field is required when :other is accepted.","validation.required_if_declined":"The :attribute field is required when :other is declined.","validation.required_unless":"The :attribute field is required unless :other is in :values.","validation.required_with":"The :attribute field is required when :values is present.","validation.required_with_all":"The :attribute field is required when :values is present.","validation.required_without":"The :attribute field is required when :values is not present.","validation.required_without_all":"The :attribute field is required when none of :values are present.","validation.same":"The :attribute and :other must match.","validation.size.array":"The :attribute must contain :size items.","validation.size.file":"The :attribute must be :size kilobytes.","validation.size.numeric":"The :attribute must be :size.","validation.size.string":"The :attribute must be :size characters.","validation.starts_with":"The :attribute field must start with one of the following: :values.","validation.string":"The :attribute must be a string.","validation.timezone":"The :attribute must be a valid zone.","validation.unique":"The :attribute has already been taken.","validation.uploaded":"The :attribute failed to upload.","validation.uppercase":"The :attribute field must be uppercase.","validation.url":"The :attribute format is invalid.","validation.ulid":"The :attribute field must be a valid ULID.","validation.uuid":"The :attribute field must be a valid UUID.","validation.custom.attribute-name.rule-name":"custom-message","actions.th_action":"Action","actions.save":"Save","actions.publish":"Publish","actions.draft":"Draft","actions.save_draft":"Save as draft","actions.add":"Add","actions.edit":"Edit","actions.options":"Options","actions.create":"Create","actions.update":"Update","actions.delete":"Delete","actions.remove":"Remove","actions.cancel":"Cancel","actions.set":"Set","actions.yes":"Yes","actions.no":"No","actions.close":"Close","actions.next":"Next","actions.previous":"Previous","actions.back":"Back","actions.upload":"Upload","actions.unlock":"Unlock","actions.are_you_sure":"Are you sure?","actions.delete_this":"Delete this :content_type","actions.upload_image":"Upload image","actions.deactivate":"Deactivate","actions.select":"Select","auth.acces_denied":"Access denied","auth.access_denied_message":"You are not allowed to perform this action. Please contact the administrator if you think this is a mistake.","blogpost.blogposts":"Blogposts","blogpost.post":"Post","blogpost.new_post_button":"New post","blogpost.new_blogpost":"New Blogpost","blogpost.edit_blogpost":"Edit blogpost","blogpost.title":"Title","blogpost.view_blogpost":"View blogpost","blogpost.summary":"Summary","blogpost.all":"All","blogpost.select_category":"Select category","blogpost.primary":"Primary","blogpost.comments":"Comments","blogpost.th_id":"Id","blogpost.th_image":"Image","blogpost.th_title":"Title","blogpost.th_comment":"Comment","blogpost.th_comments":"Comments","blogpost.th_date":"Date","blogpost.th_author":"Author","blogpost.th_category":"Category","blogpost.th_action":"Action","blogpost.author":"Author","blogpost.slug":"Slug","blogpost.published_on":"Published on","blogpost.last_updated_at":"Last updated at","blogpost.category":"Category","blogpost.characters":"Characters","blogpost.words":"Words","blogpost.reading_time":"Reading Time","blogpost.removed_user":"Removed user","category.category":"Blogpost categories","category.add_category":"Add category","category.edit_category":"Edit category","category.th_id":"Id","category.th_image":"Image","category.th_category":"Category","category.th_posts":"Posts","category.view_category_blogposts":"Blogposts in the category","comment.moderator":"Moderator","comment.comments_not_enabled":"<strong>Warning!</strong> Comments are not enabled to this post!","comment.enable_comments_button":"Enable comments","comment.disable_comments_button":"Disable comments","comment.write_comment_button":"Write comment","comment.all_comments":"All comments","comment.send":"Send","comment.write_as":"Write as","comment.th_image":"Image","comment.th_name":"Username","comment.th_comment":"Comment","comment.th_date":"Date","dashboard.content":"Content","dashboard.title":"Dashboard","dashboard.server_ip":"Server ip: ","dashboard.client_ip":"Your ip: ","dashboard.disk_usage":"Disk usage","dashboard.search_bar":"Search blogposts, users, files..","dashboard.welcome_message":"Welcome in HorizontCMS!","dashboard.posted_news_count":"Posted news","dashboard.registered_users_count":"Registered users","dashboard.visits_count":"Visits","dashboard.update_available":"Update available!","dashboard.update_message":"There\'s a new version available of HorizontCMS!","dashboard.update_now":"Update now","file.files":"Files","file.filemanager":"File manager","login.email":"Email","login.enter_email":"Enter email address","login.username":"Username","login.enter_username":"Enter username","login.password":"Password","login.enter_password":"Enter password","login.remember_me":"Remember me","login.forgot_password":"Forgot Your Password?","login.login":"Login","message.something_went_wrong":"Something went wrong!","message.validation_failed":"Validation failed!","message.successfully_created_blogpost":"Blogpost created successfully!","message.successfully_updated_blogpost":"Blogpost successfully updated!","message.successfully_deleted_blogpost":"Blogpost deleted successfully!","message.successfully_created_blogpost_category":"Blogpost category created successfully!","message.successfully_updated_blogpost_category":"Blogpost category successfully updated!","message.successfully_deleted_blogpost_category":"Blogpost category deleted successfully!","message.successfully_created_blogpost_comment":"Commented successfully!","message.successfully_updated_blogpost_comment":"Comment successfully updated!","message.successfully_deleted_blogpost_comment":"Comment deleted successfully!","message.successfully_created_user":"User created successfully!","message.successfully_updated_user":"User successfully updated!","message.successfully_deleted_user":"User deleted successfully!","message.successfully_created_page":"Page created successfully!","message.successfully_updated_page":"Page successfully updated!","message.successfully_deleted_page":"Page deleted successfully!","message.successfully_saved_settings":"Settings saved successfully!","message.successfully_changed_theme":"Theme changed successfully","message.successfully_enabled_blogpost":"Comments enabled successfully","message.successfully_disabled_blogpost":"Comments disabled successfully","message.successfully_set_homepage":"Homepage has been changed successfully!","message.successfully_added_headerimage":"Header image added successfully!","message.successfully_logged_in":"Successfully logged in!","navbar.dashboard":"Dashboard","navbar.news":"Blog","navbar.users":"Users","navbar.pages":"Pages","navbar.media":"Media","navbar.themes_apps":"Themes & Apps","navbar.posted_news":"Blogpost list","navbar.create_post":"Create post","navbar.categories":"Categories","navbar.user_list":"User list","navbar.user_add":"Add user","navbar.user_groups":"User groups","navbar.page_list":"Page list","navbar.page_add":"Add page","navbar.header_images":"Header Images","navbar.filemanager":"Files","navbar.gallery":"Gallery","navbar.theme":"Themes","navbar.plugin":"Plugins","navbar.develop":"Develop","navbar.profile_view":"View profile","navbar.profile_settings":"Profile settings","navbar.lock_screen":"Lock Screen","navbar.visit_site":"Visit :site_name","navbar.logout":"Logout","navbar.about":"About","page.pages":"Pages","page.new_page":"New page","page.create_page_button":"Create page","page.edit_page":"Edit page","page.view_page":"View page","page.all":"All","page.visible":"Visible","page.invisible":"Invisible","page.order":"Order","page.change_homepage":"Change Homepage","page.are_you_sure_to_set":"Are you sure you want to set <b>:page_name</b> as HomePage?","page.menu_type1":"Main","page.menu_type2":"Submenu <i>of</i></br><b>:parent_menu</b>","page.add_new_page_title":"Add new page","page.menu_name":"Menu","page.semantic_url":"Semantic url","page.page_template":"Page template","page.default_template":"Default","page.page_level":"Level","page.main_menu":"Main menu","page.submenu":"Submenu","page.parent_menu":"Parent menu","page.none":"None","page.visibility":"Visibility","page.page_content":"Page content","page.th_id":"Id","page.th_image":"Image","page.th_name":"Name","page.th_template":"Template","page.th_visibility":"Visibility","page.th_type":"Type","page.th_child_links":"Child links","passwords.password":"Passwords must be at least six characters and match the confirmation.","plugin.not_compatible_with_core":"This plugin is incompatible with core! Minimum required core version is :min_core_ver","schedules.th_id":"Id","schedules.th_name":"Name","schedules.th_command":"Command","schedules.th_arguments":"Arguments","schedules.th_frequency":"Frequency","schedules.th_ping_before":"Ping before","schedules.th_ping_after":"Ping after","schedules.th_action":"Actions","search.title":"Search results","search.found_matches":"We found <a> :quantity </a> matches for the keyword \'<a>:search_word</a>\'","settings.settings":"Settings","settings.website":"Website","settings.admin_area":"Admin Area","settings.update_center":"Update Center","settings.server":"Server","settings.email":"Email","settings.social_media":"Social Media","settings.database":"Database","settings.scheduler":"Scheduler","settings.spread":"Spread","settings.uninstall":"Uninstall","settings.adminarea_settings":"AdminArea settings","settings.adminarea_theme":"Admin theme","settings.adminarea_dashboard_logo":"Dashboard logo","settings.adminarea_language":"Language","settings.adminarea_date_format":"Date format","settings.adminarea_auto_update_check":"Automatically check for updates","settings.adminarea_broadcast_message":"Broadcast message","settings.adminarea_select_logo":"Select logo","settings.adminarea_save_settings":"Save settings","theme.options":"Options","theme.active":"Active","theme.activate":"Activate","theme.deactivate":"Deactivate","theme.current_theme":"Current Theme","theme.no_themes":"No themes found","theme.upload_theme":"Upload Theme","theme.download_themes":"Download Theme","theme.themes":"Themes","theme.upload_theme_button":"Upload theme","theme.version":"version","theme.is_the_current_theme":"is the currently active theme","theme.author":"author","theme.website":"website","theme.all":"All","theme.supported_lang":"Supported languages","user.users":"Users","user.view_user":"View user","user.edit_user":"Edit user","user.create_user":"Create user","user.registered_users":"Registered users","user.all":"All","user.active":"Active","user.inactive":"Inactive","user.new_user_button":"New user","user.logins":"Logins","user.pws_not_equal":"Passwords doesn\'t match!","user.inactive_about":"This user is inactive about :day_count!","user.th_id":"Id","user.th_image":"Image","user.th_name":"Name","user.th_username":"Username","user.th_email":"Email","user.th_rank":"Rank","user.th_session":"Session","user.create_name":"Name","user.create_upload_image":"Upload image","user.create_username":"Username","user.create_password":"Password","user.create_password_again":"Password again","user.create_email":"Email","user.create_phone":"Phone","user.create_emailnotify":"Notify about registration","user.create_select_rank":"Select rank","user.create_add_user_button":"Add user","user.view_full_name":"Full name","user.view_user_name":"Username","user.view_rank":"Rank","user.view_email":"Email","user.view_phone":"Phone","user.view_registered_on":"Registered on","user.view_logins":"Logins"}');
+module.exports = JSON.parse('{"auth.failed":"Invalid email/username or password.","auth.password":"The provided password is incorrect.","auth.throttle":"Too many login attempts. Please try again in :seconds seconds.","pagination.previous":"&laquo; Previous","pagination.next":"Next &raquo;","passwords.reset":"Your password has been reset!","passwords.sent":"We have e-mailed your password reset link!","passwords.throttled":"Please wait before retrying.","passwords.token":"This password reset token is invalid.","passwords.user":"We can\'t find a user with that e-mail address.","validation.accepted":"The :attribute must be accepted.","validation.accepted_if":"The :attribute field must be accepted when :other is :value.","validation.active_url":"The :attribute is not a valid URL.","validation.after":"The :attribute must be a date after :date.","validation.after_or_equal":"The :attribute field must be a date after or equal to :date.","validation.alpha":"The :attribute may only contain letters.","validation.alpha_dash":"The :attribute may only contain letters, numbers, and dashes.","validation.alpha_num":"The :attribute may only contain letters and numbers.","validation.array":"The :attribute must be an array.","validation.ascii":"The :attribute field must only contain single-byte alphanumeric characters and symbols.","validation.before":"The :attribute must be a date before :date.","validation.before_or_equal":"The :attribute field must be a date before or equal to :date.","validation.between.array":"The :attribute must have between :min and :max items.","validation.between.file":"The :attribute must be between :min and :max kilobytes.","validation.between.numeric":"The :attribute must be between :min and :max.","validation.between.string":"The :attribute must be between :min and :max characters.","validation.boolean":"The :attribute field must be true or false.","validation.can":"The :attribute field contains an unauthorized value.","validation.confirmed":"The :attribute confirmation does not match.","validation.contains":"The :attribute field is missing a required value.","validation.current_password":"The password is incorrect.","validation.date":"The :attribute is not a valid date.","validation.date_equals":"The :attribute field must be a date equal to :date.","validation.date_format":"The :attribute does not match the format :format.","validation.decimal":"The :attribute field must have :decimal decimal places.","validation.declined":"The :attribute field must be declined.","validation.declined_if":"The :attribute field must be declined when :other is :value.","validation.different":"The :attribute and :other must be different.","validation.digits":"The :attribute must be :digits digits.","validation.digits_between":"The :attribute must be between :min and :max digits.","validation.dimensions":"The :attribute has invalid image dimensions.","validation.distinct":"The :attribute field has a duplicate value.","validation.doesnt_end_with":"The :attribute field must not end with one of the following: :values.","validation.doesnt_start_with":"The :attribute field must not start with one of the following: :values.","validation.email":"The :attribute must be a valid email address.","validation.ends_with":"The :attribute field must end with one of the following: :values.","validation.enum":"The selected :attribute is invalid.","validation.exists":"The selected :attribute is invalid.","validation.extensions":"The :attribute field must have one of the following extensions: :values.","validation.file":"The :attribute must be a file.","validation.filled":"The :attribute field is required.","validation.gt.array":"The :attribute field must have more than :value items.","validation.gt.file":"The :attribute field must be greater than :value kilobytes.","validation.gt.numeric":"The :attribute field must be greater than :value.","validation.gt.string":"The :attribute field must be greater than :value characters.","validation.gte.array":"The :attribute field must have :value items or more.","validation.gte.file":"The :attribute field must be greater than or equal to :value kilobytes.","validation.gte.numeric":"The :attribute field must be greater than or equal to :value.","validation.gte.string":"The :attribute field must be greater than or equal to :value characters.","validation.hex_color":"The :attribute field must be a valid hexadecimal color.","validation.image":"The :attribute must be an image.","validation.in":"The selected :attribute is invalid.","validation.in_array":"The :attribute field does not exist in :other.","validation.integer":"The :attribute must be an integer.","validation.ip":"The :attribute must be a valid IP address.","validation.ipv4":"The :attribute field must be a valid IPv4 address.","validation.ipv6":"The :attribute field must be a valid IPv6 address.","validation.json":"The :attribute must be a valid JSON string.","validation.list":"The :attribute field must be a list.","validation.lowercase":"The :attribute field must be lowercase.","validation.lt.array":"The :attribute field must have less than :value items.","validation.lt.file":"The :attribute field must be less than :value kilobytes.","validation.lt.numeric":"The :attribute field must be less than :value.","validation.lt.string":"The :attribute field must be less than :value characters.","validation.lte.array":"The :attribute field must not have more than :value items.","validation.lte.file":"The :attribute field must be less than or equal to :value kilobytes.","validation.lte.numeric":"The :attribute field must be less than or equal to :value.","validation.lte.string":"The :attribute field must be less than or equal to :value characters.","validation.mac_address":"The :attribute field must be a valid MAC address.","validation.max.array":"The :attribute may not have more than :max items.","validation.max.file":"The :attribute may not be greater than :max kilobytes.","validation.max.numeric":"The :attribute may not be greater than :max.","validation.max.string":"The :attribute may not be greater than :max characters.","validation.max_digits":"The :attribute field must not have more than :max digits.","validation.mimes":"The :attribute must be a file of type: :values.","validation.mimetypes":"The :attribute must be a file of type: :values.","validation.min.array":"The :attribute must have at least :min items.","validation.min.file":"The :attribute must be at least :min kilobytes.","validation.min.numeric":"The :attribute must be at least :min.","validation.min.string":"The :attribute must be at least :min characters.","validation.min_digits":"The :attribute field must have at least :min digits.","validation.missing":"The :attribute field must be missing.","validation.missing_if":"The :attribute field must be missing when :other is :value.","validation.missing_unless":"The :attribute field must be missing unless :other is :value.","validation.missing_with":"The :attribute field must be missing when :values is present.","validation.missing_with_all":"The :attribute field must be missing when :values are present.","validation.multiple_of":"The :attribute field must be a multiple of :value.","validation.not_in":"The selected :attribute is invalid.","validation.not_regex":"The :attribute field format is invalid.","validation.numeric":"The :attribute must be a number.","validation.password.letters":"The :attribute field must contain at least one letter.","validation.password.mixed":"The :attribute field must contain at least one uppercase and one lowercase letter.","validation.password.numbers":"The :attribute field must contain at least one number.","validation.password.symbols":"The :attribute field must contain at least one symbol.","validation.password.uncompromised":"The given :attribute has appeared in a data leak. Please choose a different :attribute.","validation.present":"The :attribute field must be present.","validation.present_if":"The :attribute field must be present when :other is :value.","validation.present_unless":"The :attribute field must be present unless :other is :value.","validation.present_with":"The :attribute field must be present when :values is present.","validation.present_with_all":"The :attribute field must be present when :values are present.","validation.prohibited":"The :attribute field is prohibited.","validation.prohibited_if":"The :attribute field is prohibited when :other is :value.","validation.prohibited_if_accepted":"The :attribute field is prohibited when :other is accepted.","validation.prohibited_if_declined":"The :attribute field is prohibited when :other is declined.","validation.prohibited_unless":"The :attribute field is prohibited unless :other is in :values.","validation.prohibits":"The :attribute field prohibits :other from being present.","validation.regex":"The :attribute format is invalid.","validation.required":"The :attribute field is required.","validation.required_array_keys":"The :attribute field must contain entries for: :values.","validation.required_if":"The :attribute field is required when :other is :value.","validation.required_if_accepted":"The :attribute field is required when :other is accepted.","validation.required_if_declined":"The :attribute field is required when :other is declined.","validation.required_unless":"The :attribute field is required unless :other is in :values.","validation.required_with":"The :attribute field is required when :values is present.","validation.required_with_all":"The :attribute field is required when :values is present.","validation.required_without":"The :attribute field is required when :values is not present.","validation.required_without_all":"The :attribute field is required when none of :values are present.","validation.same":"The :attribute and :other must match.","validation.size.array":"The :attribute must contain :size items.","validation.size.file":"The :attribute must be :size kilobytes.","validation.size.numeric":"The :attribute must be :size.","validation.size.string":"The :attribute must be :size characters.","validation.starts_with":"The :attribute field must start with one of the following: :values.","validation.string":"The :attribute must be a string.","validation.timezone":"The :attribute must be a valid zone.","validation.unique":"The :attribute has already been taken.","validation.uploaded":"The :attribute failed to upload.","validation.uppercase":"The :attribute field must be uppercase.","validation.url":"The :attribute format is invalid.","validation.ulid":"The :attribute field must be a valid ULID.","validation.uuid":"The :attribute field must be a valid UUID.","validation.custom.attribute-name.rule-name":"custom-message","actions.th_action":"Action","actions.save":"Save","actions.publish":"Publish","actions.draft":"Draft","actions.save_draft":"Save as draft","actions.add":"Add","actions.edit":"Edit","actions.options":"Options","actions.create":"Create","actions.update":"Update","actions.delete":"Delete","actions.remove":"Remove","actions.cancel":"Cancel","actions.set":"Set","actions.yes":"Yes","actions.no":"No","actions.close":"Close","actions.next":"Next","actions.previous":"Previous","actions.back":"Back","actions.upload":"Upload","actions.unlock":"Unlock","actions.are_you_sure":"Are you sure?","actions.delete_this":"Delete this :content_type","actions.upload_image":"Upload image","actions.deactivate":"Deactivate","actions.select":"Select","auth.acces_denied":"Access denied","auth.access_denied_message":"You are not allowed to perform this action. Please contact the administrator if you think this is a mistake.","blogpost.blogposts":"Blogposts","blogpost.post":"Post","blogpost.new_post_button":"New post","blogpost.new_blogpost":"New Blogpost","blogpost.edit_blogpost":"Edit blogpost","blogpost.title":"Title","blogpost.view_blogpost":"View blogpost","blogpost.summary":"Summary","blogpost.all":"All","blogpost.select_category":"Select category","blogpost.primary":"Primary","blogpost.comments":"Comments","blogpost.th_id":"Id","blogpost.th_image":"Image","blogpost.th_title":"Title","blogpost.th_comment":"Comment","blogpost.th_comments":"Comments","blogpost.th_date":"Date","blogpost.th_author":"Author","blogpost.th_category":"Category","blogpost.th_action":"Action","blogpost.author":"Author","blogpost.slug":"Slug","blogpost.published_on":"Published on","blogpost.last_updated_at":"Last updated at","blogpost.category":"Category","blogpost.characters":"Characters","blogpost.words":"Words","blogpost.reading_time":"Reading Time","blogpost.removed_user":"Removed user","category.category":"Blogpost categories","category.add_category":"Add category","category.edit_category":"Edit category","category.th_id":"Id","category.th_image":"Image","category.th_category":"Category","category.th_posts":"Posts","category.view_category_blogposts":"Blogposts in the category","comment.moderator":"Moderator","comment.comments_not_enabled":"<strong>Warning!</strong> Comments are not enabled to this post!","comment.enable_comments_button":"Enable comments","comment.disable_comments_button":"Disable comments","comment.write_comment_button":"Write comment","comment.all_comments":"All comments","comment.send":"Send","comment.write_as":"Write as","comment.th_image":"Image","comment.th_name":"Username","comment.th_comment":"Comment","comment.th_date":"Date","dashboard.content":"Content","dashboard.title":"Dashboard","dashboard.server_ip":"Server ip: ","dashboard.client_ip":"Your ip: ","dashboard.disk_usage":"Disk usage","dashboard.search_bar":"Search blogposts, users, files..","dashboard.welcome_message":"Welcome in HorizontCMS!","dashboard.posted_news_count":"Posted news","dashboard.registered_users_count":"Registered users","dashboard.visits_count":"Visits","dashboard.update_available":"Update available!","dashboard.update_message":"There\'s a new version available of HorizontCMS!","dashboard.update_now":"Update now","file.files":"Files","file.filemanager":"File manager","login.email":"Email","login.enter_email":"Enter email address","login.username":"Username","login.enter_username":"Enter username","login.password":"Password","login.enter_password":"Enter password","login.remember_me":"Remember me","login.forgot_password":"Forgot Your Password?","login.login":"Login","message.something_went_wrong":"Something went wrong!","message.validation_failed":"Validation failed!","message.successfully_created_blogpost":"Blogpost created successfully!","message.successfully_updated_blogpost":"Blogpost successfully updated!","message.successfully_deleted_blogpost":"Blogpost deleted successfully!","message.successfully_created_blogpost_category":"Blogpost category created successfully!","message.successfully_updated_blogpost_category":"Blogpost category successfully updated!","message.successfully_deleted_blogpost_category":"Blogpost category deleted successfully!","message.successfully_created_blogpost_comment":"Commented successfully!","message.successfully_updated_blogpost_comment":"Comment successfully updated!","message.successfully_deleted_blogpost_comment":"Comment deleted successfully!","message.successfully_created_user":"User created successfully!","message.successfully_updated_user":"User successfully updated!","message.successfully_deleted_user":"User deleted successfully!","message.successfully_created_page":"Page created successfully!","message.successfully_updated_page":"Page successfully updated!","message.successfully_deleted_page":"Page deleted successfully!","message.successfully_saved_settings":"Settings saved successfully!","message.successfully_changed_theme":"Theme changed successfully","message.successfully_enabled_blogpost":"Comments enabled successfully","message.successfully_disabled_blogpost":"Comments disabled successfully","message.successfully_set_homepage":"Homepage has been changed successfully!","message.successfully_added_headerimage":"Header image added successfully!","message.successfully_logged_in":"Successfully logged in!","navbar.dashboard":"Dashboard","navbar.news":"Blog","navbar.users":"Users","navbar.pages":"Pages","navbar.media":"Media","navbar.themes_apps":"Themes & Apps","navbar.posted_news":"Blogpost list","navbar.create_post":"Create post","navbar.categories":"Categories","navbar.user_list":"User list","navbar.user_add":"Add user","navbar.user_groups":"User groups","navbar.page_list":"Page list","navbar.page_add":"Add page","navbar.header_images":"Header Images","navbar.filemanager":"Files","navbar.gallery":"Gallery","navbar.theme":"Themes","navbar.plugin":"Plugins","navbar.develop":"Develop","navbar.profile_view":"View profile","navbar.profile_settings":"Profile settings","navbar.lock_screen":"Lock Screen","navbar.visit_site":"Visit :site_name","navbar.logout":"Logout","navbar.about":"About","page.pages":"Pages","page.new_page":"New page","page.create_page_button":"Create page","page.edit_page":"Edit page","page.view_page":"View page","page.all":"All","page.visible":"Visible","page.invisible":"Invisible","page.order":"Order","page.change_homepage":"Change Homepage","page.are_you_sure_to_set":"Are you sure you want to set <b>:page_name</b> as HomePage?","page.menu_type1":"Main","page.menu_type2":"Submenu <i>of</i></br><b>:parent_menu</b>","page.add_new_page_title":"Add new page","page.menu_name":"Menu","page.semantic_url":"Semantic url","page.page_template":"Page template","page.default_template":"Default","page.page_level":"Level","page.main_menu":"Main menu","page.submenu":"Submenu","page.parent_menu":"Parent menu","page.none":"None","page.visibility":"Visibility","page.page_content":"Page content","page.th_id":"Id","page.th_image":"Image","page.th_name":"Name","page.th_template":"Template","page.th_visibility":"Visibility","page.th_type":"Type","page.th_child_links":"Child links","passwords.password":"Passwords must be at least six characters and match the confirmation.","plugin.not_compatible_with_core":"This plugin is incompatible with core! Minimum required core version is :min_core_ver","schedules.th_id":"Id","schedules.th_name":"Name","schedules.th_command":"Command","schedules.th_arguments":"Arguments","schedules.th_frequency":"Frequency","schedules.th_ping_before":"Ping before","schedules.th_ping_after":"Ping after","schedules.th_action":"Actions","search.title":"Search results","search.found_matches":"We found <a> :quantity </a> matches for the keyword \'<a>:search_word</a>\'","settings.settings":"Settings","settings.website":"Website","settings.admin_area":"Admin Area","settings.update_center":"Update Center","settings.server":"Server","settings.email":"Email","settings.social_media":"Social Media","settings.database":"Database","settings.scheduler":"Scheduler","settings.spread":"Spread","settings.uninstall":"Uninstall","settings.adminarea_settings":"AdminArea settings","settings.adminarea_theme":"Admin theme","settings.adminarea_dashboard_logo":"Dashboard logo","settings.adminarea_language":"Language","settings.adminarea_date_format":"Date format","settings.adminarea_auto_update_check":"Automatically check for updates","settings.adminarea_broadcast_message":"Broadcast message","settings.adminarea_select_logo":"Select logo","settings.adminarea_save_settings":"Save settings","theme.options":"Options","theme.active":"Active","theme.activate":"Activate","theme.deactivate":"Deactivate","theme.current_theme":"Current Theme","theme.no_themes":"No themes found","theme.upload_theme":"Upload Theme","theme.download_themes":"Download Theme","theme.themes":"Themes","theme.upload_theme_button":"Upload theme","theme.version":"version","theme.is_the_current_theme":"is the currently active theme","theme.author":"author","theme.website":"website","theme.all":"All","theme.supported_lang":"Supported languages","user.users":"Users","user.view_user":"View user","user.edit_user":"Edit user","user.create_user":"Create user","user.registered_users":"Registered users","user.all":"All","user.active":"Active","user.inactive":"Inactive","user.new_user_button":"New user","user.logins":"Logins","user.pws_not_equal":"Passwords doesn\'t match!","user.inactive_about":"This user is inactive about :day_count!","user.th_id":"Id","user.th_image":"Image","user.th_name":"Name","user.th_username":"Username","user.th_email":"Email","user.th_rank":"Rank","user.th_session":"Session","user.create_name":"Name","user.create_upload_image":"Upload image","user.create_username":"Username","user.create_password":"Password","user.create_password_again":"Password again","user.create_email":"Email","user.create_phone":"Phone","user.create_emailnotify":"Notify about registration","user.create_select_rank":"Select role","user.create_add_user_button":"Add user","user.view_full_name":"Full name","user.view_user_name":"Username","user.view_rank":"Rank","user.view_email":"Email","user.view_phone":"Phone","user.view_registered_on":"Registered on","user.view_logins":"Logins"}');
 
 /***/ }),
 
