@@ -3897,13 +3897,20 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      selectedField: null,
+      selectedField: this.filterOptions.length > 0 ? this.filterOptions[0].value : null,
       queryValue: null
     };
   },
   computed: {
     actualName: function actualName() {
       return "filter[".concat(this.selectedField, "]");
+    },
+    selectedFieldType: function selectedFieldType() {
+      var _this = this;
+      var selectedOption = this.filterOptions.find(function (option) {
+        return option.value === _this.selectedField;
+      });
+      return selectedOption ? selectedOption.type : 'text';
     }
   }
 }));
@@ -55719,32 +55726,100 @@ var render = function () {
             domProps: { value: _vm.queryValue },
           }),
           _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.queryValue,
-                expression: "queryValue",
-              },
-            ],
-            staticClass: "form-control",
-            attrs: {
-              type: "text",
-              name: "query",
-              id: "searchInput",
-              placeholder: _vm.$t("actions.search") + "...",
-            },
-            domProps: { value: _vm.queryValue },
-            on: {
-              input: function ($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.queryValue = $event.target.value
-              },
-            },
-          }),
+          _vm.selectedFieldType === "checkbox"
+            ? _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.queryValue,
+                    expression: "queryValue",
+                  },
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  name: "query",
+                  id: "searchInput",
+                  placeholder: _vm.$t("actions.search") + "...",
+                  type: "checkbox",
+                },
+                domProps: {
+                  checked: Array.isArray(_vm.queryValue)
+                    ? _vm._i(_vm.queryValue, null) > -1
+                    : _vm.queryValue,
+                },
+                on: {
+                  change: function ($event) {
+                    var $$a = _vm.queryValue,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 && (_vm.queryValue = $$a.concat([$$v]))
+                      } else {
+                        $$i > -1 &&
+                          (_vm.queryValue = $$a
+                            .slice(0, $$i)
+                            .concat($$a.slice($$i + 1)))
+                      }
+                    } else {
+                      _vm.queryValue = $$c
+                    }
+                  },
+                },
+              })
+            : _vm.selectedFieldType === "radio"
+            ? _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.queryValue,
+                    expression: "queryValue",
+                  },
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  name: "query",
+                  id: "searchInput",
+                  placeholder: _vm.$t("actions.search") + "...",
+                  type: "radio",
+                },
+                domProps: { checked: _vm._q(_vm.queryValue, null) },
+                on: {
+                  change: function ($event) {
+                    _vm.queryValue = null
+                  },
+                },
+              })
+            : _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.queryValue,
+                    expression: "queryValue",
+                  },
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  name: "query",
+                  id: "searchInput",
+                  placeholder: _vm.$t("actions.search") + "...",
+                  type: _vm.selectedFieldType,
+                },
+                domProps: { value: _vm.queryValue },
+                on: {
+                  input: function ($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.queryValue = $event.target.value
+                  },
+                },
+              }),
         ]),
         _vm._v(" "),
         _c(

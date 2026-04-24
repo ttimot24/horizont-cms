@@ -11,7 +11,7 @@
                 <input type="hidden" :name="actualName" :value="queryValue" id="actualFilterInput">
 
                   <!-- Search input -->
-                <input type="text" class="form-control" name="query" id="searchInput" v-model="queryValue" :placeholder="$t('actions.search') + '...'">
+                <input :type="selectedFieldType" class="form-control" name="query" id="searchInput" v-model="queryValue" :placeholder="$t('actions.search') + '...'">
             </div>
               
                 <!-- Submit button -->
