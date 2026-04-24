@@ -28,6 +28,6 @@ return [
 	'delete_this' => 'Delete this :content_type',
 	'upload_image' => 'Upload image',
 	'deactivate' => 'Deactivate',
-	'select' => 'Select'
-
+	'select' => 'Select',
+	'search' => 'Search'
 ];

@@ -28,4 +28,5 @@ return [
     'upload_image' => 'Subir imagen',
     'deactivate' => 'Desactivar',
     'select' => 'Seleccionar',
+    'search' => 'Buscar'
 ];

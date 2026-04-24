@@ -28,5 +28,6 @@ return [
 	'delete_this' => 'Törlöd ezt a(z) :content_type -t',
 	'upload_image' => 'Kép feltöltés',
 	'deactivate' => 'Tiltás',
-	'select' => 'Kiválaszt'
+	'select' => 'Kiválaszt',
+	'search' => 'Keresés'
 ];

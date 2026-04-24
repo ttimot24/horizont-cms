@@ -27,5 +27,6 @@ return [
 	'delete_this' => 'Dieses :content_type löschen',
 	'upload_image' => 'Bild hochladen',
 	'deactivate' => 'Deaktivieren',
-	'select' => 'Auswählen'
+	'select' => 'Auswählen',
+	'search' => 'Suchen'
 ];
