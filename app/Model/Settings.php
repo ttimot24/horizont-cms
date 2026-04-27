@@ -34,23 +34,17 @@ class Settings extends Model {
 	}
 
 	public static function has(string $setting): bool {
-		if(self::$static_settings==null){
-			self::$static_settings = self::getAll();	
-		}
 
-		return array_key_exists($setting, self::$static_settings);
+		return array_key_exists($setting, self::getAll());
 	}
 
 
 	public static function getAll(): array {
-
-		$array = [];
-
-		foreach(self::all() as $each){
-			$array[$each->setting] = $each->value;
+		if(self::$static_settings==null){
+			self::$static_settings = self::query()->pluck('value', 'setting')->all();	
 		}
-
-		return $array;
+		
+		return self::$static_settings;
 	}
 
 
