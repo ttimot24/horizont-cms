@@ -32,6 +32,8 @@ class SettingsMiddleware
             $this->settings->assignAll();
             $request->settings = json_decode(json_encode($this->settings->settings), true);
            
+            config(['settings' => $this->settings::getAll()]);
+
             View::share('settings', $this->settings::getAll());
         }
 
