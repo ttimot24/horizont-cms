@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\View;
 use \App\Services\Theme;
 use \App\Model\Settings;
 
@@ -36,6 +37,8 @@ class ThemeServiceProvider extends ServiceProvider
 
             $this->registerThemeRoutes($theme);
 
+            $this->registerThemeProviders($theme);
+
         }
     }
 
@@ -65,7 +68,7 @@ class ThemeServiceProvider extends ServiceProvider
 
     protected function registerThemeViews(Theme $theme): void
     {
-        \View::addNamespace('theme', [
+        View::addNamespace('theme', [
             $theme->getPath() . "app" . DIRECTORY_SEPARATOR . "View",
             $theme->getPath() . "resources" . DIRECTORY_SEPARATOR . "views",
         ]);
@@ -93,6 +96,14 @@ class ThemeServiceProvider extends ServiceProvider
                 }
             );
         }
+    }
+
+    private function registerThemeProviders(Theme $theme): void
+    {
+        foreach($theme->getProviders() as $provider){
+            $this->app->register($provider);
+        }
+
     }
 
     /**

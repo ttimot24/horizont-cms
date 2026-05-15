@@ -88,6 +88,10 @@ class Theme
 		});
 	}
 
+	public function getProviders(): array {
+		return config("theme:theme.providers", []);
+	}
+
 	public function getImage(): string
 	{
 		return $this->getPath() . "preview.jpg";
