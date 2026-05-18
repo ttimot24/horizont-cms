@@ -77,9 +77,6 @@ jobs:
         run: |
           echo "DB_CONNECTION=sqlite" >> .env
           echo "DB_DATABASE=database/database.sqlite" >> .env
-      - name: Generate key
-        run: php artisan key:generate
-
       - name: Run migrations
         run: php artisan migrate --force
       - name: Generate OpenAPI
