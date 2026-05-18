@@ -14,7 +14,7 @@ permissions:
 jobs:
 
   lint:
-    runs-on: ubuntu-latest
+    runs-on: alpine-latest
     steps:
       - uses: actions/checkout@v4
       - uses: php-actions/composer@v6
@@ -24,7 +24,7 @@ jobs:
         uses: overtrue/phplint@9.4.1
 
   phpstan: 
-    runs-on: ubuntu-latest
+    runs-on: alpine-latest
     steps:
       - uses: actions/checkout@v4
       - uses: php-actions/composer@v6
@@ -34,7 +34,7 @@ jobs:
         run: ./vendor/bin/phpstan analyse app bootstrap config database routes --level 0
             
   test:
-    runs-on: ubuntu-latest 
+    runs-on: alpine-latest 
     steps:
       - uses: actions/checkout@v4
       - uses: php-actions/composer@v6
@@ -65,7 +65,7 @@ jobs:
         php-versions: ['8.1', '8.2', '8.3', '8.4', '8.5']
 
   frontend:
-    runs-on: ubuntu-latest
+    runs-on: alpine-latest
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js 22.x
@@ -77,7 +77,7 @@ jobs:
     - run: npm run build
     
   docker_image:
-    runs-on: ubuntu-latest
+    runs-on: alpine-latest
     steps:
     - uses: actions/checkout@v4
     - name: Log in to Docker Hub
