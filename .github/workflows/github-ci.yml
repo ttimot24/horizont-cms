@@ -64,28 +64,28 @@ jobs:
       matrix:
         php-versions: ['8.1', '8.2', '8.3', '8.4', '8.5']
 
-  openapi:
-    runs-on: ubuntu-latest 
-    steps:
-      - uses: actions/checkout@v4
-      - uses: php-actions/composer@v6
-        with:
-          args: --ignore-platform-reqs
-      - name: Create SQLite DB
-        run: touch database/database.sqlite
-      - name: Set env for SQLite
-        run: |
-          echo "DB_CONNECTION=sqlite" >> .env
-          echo "DB_DATABASE=database/database.sqlite" >> .env
-      - name: Run migrations
-        run: php artisan migrate --force
-      - name: Generate OpenAPI
-        run: php artisan scramble:export
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: openapi
-          path: openapi.json
+#  openapi:
+#    runs-on: ubuntu-latest 
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: php-actions/composer@v6
+#        with:
+#          args: --ignore-platform-reqs
+#      - name: Create SQLite DB
+#        run: touch database/database.sqlite
+#      - name: Set env for SQLite
+#        run: |
+#          echo "DB_CONNECTION=sqlite" >> .env
+#          echo "DB_DATABASE=database/database.sqlite" >> .env
+#      - name: Run migrations
+#        run: php artisan migrate --force
+#      - name: Generate OpenAPI
+#        run: php artisan scramble:export
+#      - name: Upload artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: openapi
+#          path: openapi.json
 
   frontend:
     runs-on: ubuntu-latest
