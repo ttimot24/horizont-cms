@@ -48,8 +48,8 @@
                                     name='search' id='exampleInputAmount' style='min-width:250px;'
                                     placeholder="{{ trans('dashboard.search_bar') }}" required>
 
-                                <div class="input-group-prepend">
-                                    <button type='submit' class='btn btn-link btn-sm border-0 p-0'>
+                                <div class="input-group-text bg-dark">
+                                    <button type='submit' class='btn text-center btn-link p-0'>
                                         <span class='fa fa-search text-white' aria-hidden='true'></span>
                                     </button>
                                 </div>
