@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Collection;
+use App\Model\Settings;
 
 class Theme
 {
@@ -59,7 +60,7 @@ class Theme
 
 	public function isCurrentTheme(): bool
 	{
-		return $this->root_dir == \Settings::get('theme');
+		return $this->root_dir == Settings::get('theme');
 	}
 
 	public function getName(): string
