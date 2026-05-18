@@ -112,19 +112,6 @@ body {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 }
 
-
-.input-group-prepend {
-    padding: 7px 16px;
-    font-size: 15px;
-    font-weight: normal;
-    line-height: 1;
-    color: #2b3e50;
-    text-align: center;
-    background-color: #1f1f1f;
-    border: 1px solid transparent;
-    border-radius: 0;
-}
-
 .progress {
     overflow: hidden;
     height: 21px;
@@ -391,10 +378,6 @@ small {
 
 pre {
     color: black;
-}
-
-i.bi {
-    font-size: 1.5em;
 }
 
 .accordion-button::after,
