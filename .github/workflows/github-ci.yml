@@ -97,7 +97,10 @@ jobs:
         node-version: '22.x'
         cache: 'npm'
     - run: npm install --force
-    - run: npm run build
+    - name: Run Vitest 
+      run: npm run test
+    - name: Build Vue
+      run: npm run build
     
   docker_image:
     runs-on: ubuntu-latest
