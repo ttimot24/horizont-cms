@@ -72,7 +72,7 @@ jobs:
         with:
           args: --ignore-platform-reqs
       - name: Install swagger
-        run: composer require darkaonline/l5-swagger
+        run: composer install darkaonline/l5-swagger --ignore-platform-reqs
       - name: Generate OpenAPI
         run: php artisan l5-swagger:generate
       - name: Upload artifact
