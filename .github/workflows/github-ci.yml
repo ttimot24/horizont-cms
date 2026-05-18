@@ -68,11 +68,8 @@ jobs:
     runs-on: ubuntu-latest 
     steps:
       - uses: actions/checkout@v4
-      - uses: php-actions/composer@v6
-        with:
-          args: --ignore-platform-reqs
       - name: Install swagger
-        run: composer install darkaonline/l5-swagger --ignore-platform-reqs
+        run: composer require-dev darkaonline/l5-swagger --no-interaction --prefer-dist --ignore-platform-reqs && composer install --no-interaction --prefer-dist --ignore-platform-reqs
       - name: Generate OpenAPI
         run: php artisan l5-swagger:generate
       - name: Upload artifact
