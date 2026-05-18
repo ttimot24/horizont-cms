@@ -53,7 +53,7 @@ class Theme
 		} else if (file_exists($file_without_extension . ".xml")) {
 			$this->info = simplexml_load_file($file_without_extension . ".xml");
 		} else {
-			$this->info = NULL;
+			$this->info = null;
 		}
 	}
 
@@ -97,9 +97,9 @@ class Theme
 		return $this->getPath() . "preview.jpg";
 	}
 
-	public function getInfo($info)
+	public function getInfo(string $info, $default = null)
 	{
-		return isset($this->info->{$info}) ? $this->info->{$info} : NULL;
+		return isset($this->info->{$info}) ? $this->info->{$info} : $default;
 	}
 
 	public function has404Template(): bool

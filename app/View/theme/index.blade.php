@@ -50,7 +50,7 @@
                                 <p style='font-size:1em'>{{ trans('theme.author') }}: {{ $active_theme->getInfo('author') }}
                                     |
                                     {{ trans('theme.website') }}: 
-                                    <a target='_blank' href='{{  UrlManager::http_protocol($active_theme->getInfo('author_url')) }} '>{{ $active_theme->getInfo('author_url') }}</a></p>
+                                    <a target='_blank' href='{{  UrlManager::http_protocol($active_theme->getInfo('author_url', '')) }} '>{{ $active_theme->getInfo('author_url') }}</a></p>
                             </div>
                         </div>
                     </div>

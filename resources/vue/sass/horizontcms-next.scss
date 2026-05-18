@@ -38,12 +38,6 @@ body {
     background-color: #F5F5F5;
 }
 
-.card-header{
-    h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
-        margin-top: 1rem !important;
-    }
-}
-
 .dropdown-menu[data-bs-popper] {
     left: auto;
 }
@@ -185,8 +179,7 @@ body {
     margin-bottom: 1rem;
 }
 
-.table>tbody>tr>td {
-    font-size: 0.8rem;
+.table > tbody > tr > td {
     vertical-align: middle;
 
     a:not(.btn) {
@@ -298,10 +291,6 @@ h4 {
 
 .text-muted {
     color: #42494f !important;
-}
-
-table tr {
-    font-size: 13px !important;
 }
 
 .badge {
