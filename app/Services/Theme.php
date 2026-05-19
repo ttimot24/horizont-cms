@@ -5,8 +5,6 @@ namespace App\Services;
 use Illuminate\Support\Collection;
 use App\Model\Settings;
 
-use App\Model\Settings;
-
 class Theme
 {
 	private string $root_dir;
