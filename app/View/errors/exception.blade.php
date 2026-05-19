@@ -9,9 +9,9 @@
 
 <body>
 
-    <div class='jumbotron' style='background-color:#e0b50b'><br>
-        <h1 class='container text-dark'>
-            <i class="fa fa-envira text-success" aria-hidden="true"></i> <b><i>HorizontCMS Exception</i></b>
+    <div style='background-color:#e0b50b' class="py-5 mb-5">
+        <h1 class='container text-dark hero-title my-5' >
+            <i class="fab fa-envira text-success" aria-hidden="true"></i> <b>{{ config('app.name') }} Exception</b>
         </h1>
     </div>
     <div class='container p-4'>

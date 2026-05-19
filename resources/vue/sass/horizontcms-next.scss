@@ -213,38 +213,7 @@ body {
 
 }
 
-.jumbotron {
-    padding-top: 30px;
-    padding-bottom: 30px;
-    margin-bottom: 30px;
-    color: $white;
-    border-radius: 0 !important;
-    background-color: $dark;
-
-    p {
-        margin-bottom: 15px;
-        font-size: 23px;
-        font-weight: 200;
-    }
-
-}
-
 @media screen and (min-width:768px) {
-    .jumbotron {
-        padding-top: 48px;
-        padding-bottom: 48px;
-    }
-
-    .container .jumbotron,
-    .container-fluid .jumbotron {
-        padding-left: 60px;
-        padding-right: 60px;
-    }
-
-    .jumbotron h1,
-    .jumbotron .h1 {
-        font-size: 68px;
-    }
 
     .navbar-nav.ml-auto .dropdown-menu {
         left: auto;
