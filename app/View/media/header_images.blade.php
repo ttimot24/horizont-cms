@@ -24,7 +24,7 @@
 
             <div class="card-body">
 
-                <div class='jumbotron text-white' style='padding:3rem;background-color:#31708F;'>
+                <div class="card shadow-sm rounded-1 border-0 bg-info text-white p-5 mb-5">
                     <h4>Currently on the slider:</h4>
 
                     <div class="row">
@@ -35,7 +35,7 @@
                                     <a class='d-flex justify-content-end me-2 mb-4' data-bs-toggle='modal'
                                         data-bs-target='#headline-image-{{ $each->id }}'>
                                         <span class='fa fa-pencil' aria-hidden='true'
-                                            style=' font-size: 1.4em;z-index:15;top:3px;right:3px;margin-bottom:-15px;'></span>
+                                            style='font-size: 1.4em;z-index:15;top:3px;right:3px;margin-bottom:-15px;cursor:pointer'></span>
                                     </a>
 
                                     @if($each->getFeaturedMediaType()==='video')

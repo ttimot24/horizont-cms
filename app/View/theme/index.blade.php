@@ -31,7 +31,7 @@
 
             <div class="col-12">
 
-                <div class="card shadow-sm border-0 bg-info text-white p-4 mb-5">
+                <div class="card shadow-sm rounded-1 border-0 bg-info text-white p-4 mb-5">
 
                     <div class="row g-0">
                         <div class="col-12 col-md-5">

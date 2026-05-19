@@ -30769,6 +30769,26 @@ select + .select2-container--bootstrap-5 {
   right: 1rem;
 }
 
+.file-preview > .fileinput-remove {
+  display: none;
+}
+
+.file-caption-icon {
+  display: none !important;
+}
+
+.file-caption.icon-visible .file-caption-name {
+  padding: none;
+}
+
+.file-caption .file-caption-name {
+  width: unset;
+}
+.file-caption .input-group-append {
+  width: 100%;
+  text-align: right;
+}
+
 @font-face {
   font-family: "Font Awesome 6 Free";
   font-weight: 900;
@@ -30790,10 +30810,6 @@ select + .select2-container--bootstrap-5 {
 body {
   color: #1f1f1f;
   background-color: #F5F5F5;
-}
-
-.card-header h6, .card-header .h6, .card-header h5, .card-header .h5, .card-header h4, .card-header .h4, .card-header h3, .card-header .h3, .card-header h2, .card-header .h2, .card-header h1, .card-header .h1 {
-  margin-top: 1rem !important;
 }
 
 .dropdown-menu[data-bs-popper] {
@@ -30861,18 +30877,6 @@ body {
 .dropdown-menu {
   font-size: 0.75rem;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-}
-
-.input-group-prepend {
-  padding: 7px 16px;
-  font-size: 15px;
-  font-weight: normal;
-  line-height: 1;
-  color: #2b3e50;
-  text-align: center;
-  background-color: #1f1f1f;
-  border: 1px solid transparent;
-  border-radius: 0;
 }
 
 .progress {
@@ -30945,7 +30949,6 @@ body {
 }
 
 .table > tbody > tr > td {
-  font-size: 0.8rem;
   vertical-align: middle;
 }
 .table > tbody > tr > td a:not(.btn) {
@@ -30961,6 +30964,15 @@ body {
   color: white;
 }
 
+.hero-title {
+  font-size: 1.75rem;
+}
+
+@media (min-width: 960px) {
+  .hero-title {
+    font-size: 4.25rem;
+  }
+}
 .jumbotron {
   padding-top: 30px;
   padding-bottom: 30px;
@@ -31045,10 +31057,6 @@ h4, .h4 {
   color: #42494f !important;
 }
 
-table tr {
-  font-size: 13px !important;
-}
-
 .badge {
   padding: 5px !important;
   margin-top: 5px !important;
@@ -31125,10 +31133,6 @@ pre {
   color: black;
 }
 
-i.bi {
-  font-size: 1.5em;
-}
-
 .accordion-button::after,
 .accordion-button:not(.collapsed)::after {
   background-image: unset;
@@ -31153,10 +31157,6 @@ tr #hidden-home a:hover {
 
 .close.fileinput-remove {
   display: none;
-}
-
-.file-caption .file-caption-name {
-  width: unset;
 }
 
 .was-validated .input-group > .form-control:not(:focus):valid,
