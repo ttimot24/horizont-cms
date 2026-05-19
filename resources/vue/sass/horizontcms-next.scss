@@ -9,6 +9,8 @@
 @import "../../../node_modules/select2/dist/css/select2.min.css";
 @import "../../../node_modules/select2-bootstrap-5-theme/src/include-all";
 
+@import "./file-input.scss"
+
 @font-face {
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
@@ -393,10 +395,6 @@ tr #hidden-home a:hover {
 
 .close.fileinput-remove {
     display: none;
-}
-
-.file-caption .file-caption-name {
-    width: unset;
 }
 
 .was-validated .input-group>.form-control:not(:focus):valid,

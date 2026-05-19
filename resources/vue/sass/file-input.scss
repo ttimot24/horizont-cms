@@ -1,0 +1,23 @@
+.file-preview > .fileinput-remove {
+    display: none;
+}
+
+.file-caption-icon {
+    display: none !important;
+}
+
+.file-caption.icon-visible .file-caption-name {
+    padding: none;
+}
+
+.file-caption {
+
+    .file-caption-name {
+        width: unset;
+    }
+    
+    .input-group-append {
+        width:100%;
+        text-align: right;
+    }
+}
