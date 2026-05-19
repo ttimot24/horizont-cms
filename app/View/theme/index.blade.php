@@ -29,31 +29,68 @@
 
             <div class="card-body">
 
-                <div class='col-md-12'>
-                    <div class='jumbotron' style='background-color:#31708F;'>
-                        <div class='row'>
-                            <div class='col-xs-12 col-md-5'>
-                                <div class='thumbnail pt-3'>
-                                    <img class="img img-thumbnail w-100" src="{{ $active_theme->getImage() }}" />
-                                </div>
+            <div class="col-12">
+
+                <div class="card shadow-sm border-0 bg-info text-white p-4 mb-5">
+
+                    <div class="row g-0">
+                        <div class="col-12 col-md-5">
+                            <div class="p-3">
+                                <img src="{{ $active_theme->getImage() }}" class="img-fluid rounded border w-100" alt="{{ $active_theme->getName() }}" >
                             </div>
-                            <div class='col-xs-12 col-md-7'>
-                                <h1>{{ $active_theme->getName() }}</h1>
-                                <h4 class="text-muted">{{ trans('theme.version') }}: {{ $active_theme->getInfo('version') }}
-                                </h4>
-                                <h4>{{ trans('theme.is_the_current_theme') }}</h4>
-                                <p>{{ $active_theme->getInfo('description') }}</p>
+                        </div>
+
+
+                        <div class="col-12 col-md-7">
+                            <div class="card-body h-100 d-flex flex-column">
+
+                                <h1 class="card-title mb-2" style="font-size: 4rem;">
+                                    {{ $active_theme->getName() }}
+                                </h1>
+
+                                <h6 class="text-body-secondary mb-3">
+                                    {{ trans('theme.version') }}:
+                                    {{ $active_theme->getInfo('version') }}
+                                </h6>
+
+                                <div class="alert alert-success py-2 mb-3">
+                                    {{ trans('theme.is_the_current_theme') }}
+                                </div>
+
+                                <p class="card-text">
+                                    {{ $active_theme->getInfo('description') }}
+                                </p>
+
                                 @if ($active_theme->getSupportedLanguages()->count() > 0)
-                                    <p style='font-size:1em'>{{ trans('theme.supported_lang') }}:
-                                        {{ implode(', ', $active_theme->getSupportedLanguages()->toArray()) }}</p>
+                                    <p class="mb-2">
+                                        <strong>
+                                            {{ trans('theme.supported_lang') }}:
+                                        </strong>
+                                        {{ implode(', ', $active_theme->getSupportedLanguages()->toArray()) }}
+                                    </p>
                                 @endif
-                                <p style='font-size:1em'>{{ trans('theme.author') }}: {{ $active_theme->getInfo('author') }}
-                                    |
-                                    {{ trans('theme.website') }}: 
-                                    <a target='_blank' href='{{  UrlManager::http_protocol($active_theme->getInfo('author_url', '')) }} '>{{ $active_theme->getInfo('author_url') }}</a></p>
+
+                                <p class="mb-0">
+                                    <strong>
+                                        {{ trans('theme.author') }}:
+                                    </strong>
+                                    {{ $active_theme->getInfo('author') }}
+                                    <span class="mx-2 text-body-secondary">|</span>
+                                    <strong>
+                                        {{ trans('theme.website') }}:
+                                    </strong>
+                                    <a
+                                        target="_blank"
+                                        href="{{ UrlManager::http_protocol($active_theme->getInfo('author_url', '')) }}"
+                                    >
+                                        {{ $active_theme->getInfo('author_url') }}
+                                    </a>
+                                </p>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
 
                     <div class="container row">
