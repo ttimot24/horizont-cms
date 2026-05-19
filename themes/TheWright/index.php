@@ -1,6 +1,6 @@
 <header>
 
-	<section class="jumbotron rounded-0" style="<?= Website::$_HEADER_IMAGES->count()>0 ? "background-image:url(storage/images/header_images/".Website::$_HEADER_IMAGES->first()->image.");" : ""; ?> background-size:cover;text-align:center;padding:125px 0px 125px 0px;margin:0px;">
+	<section class="rounded-0" style="<?= Website::$_HEADER_IMAGES->count()>0 ? "background-image:url(storage/images/header_images/".Website::$_HEADER_IMAGES->first()->image.");" : ""; ?> background-size:cover;text-align:center;padding:125px 0px 125px 0px;margin:0px;">
 		<div class="d-flex justify-content-center">
 			<?php Website::require_theme_file("messages.php"); ?>
 		</div>

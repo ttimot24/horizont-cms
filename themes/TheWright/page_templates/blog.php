@@ -45,7 +45,11 @@ if (isset(Website::$_SLUGS[1])) {
 					<div class="col">
 						<img class="img img-rounded col-md-12 w-100" src="<?= $blogpost->getImage() ?>" style="object-fit:cover;margin-bottom:15px;">
 						<h2><a href="<?= Website::$_REQUESTED_PAGE->getSlug() . '/' . $blogpost->getSlug() ?>"><?= $blogpost->title ?></a></h2>
-						<p style="padding-left:5px;">Written by <a href="#"><?= $blogpost->author->username ?></a> on <a href="#"><?= $blogpost->created_at->diffForHumans() ?></a> in <a href="#"><?= $blogpost->category->name ?></a></p>
+						<p style="padding-left:5px;">Written by <a href="#"><?= $blogpost->author->username ?></a> on <a href="#"><?= $blogpost->created_at->diffForHumans() ?></a> in 
+						
+						<?php foreach($blogpost->categories as $category): ?>
+						<a href="#"><?= $category->name ?></a></p>
+						<?php endforeach ?>
 						<p><b><?= $blogpost->getExcerpt() ?></b></p>
 					</div>
 				</div>
@@ -58,7 +62,12 @@ if (isset(Website::$_SLUGS[1])) {
 						</div>
 						<div class="col-md-7 pt-2">
 							<h2><a href="<?= Website::$_REQUESTED_PAGE->getSlug() . '/' . $blogpost->getSlug() ?>"><?= $blogpost->title ?></a></h2>
-							<p class="pl-1" style="padding-left:5px;">Written by <a href="#"><?= $blogpost->author->username ?></a> on <a href="#"><?= $blogpost->created_at->diffForHumans() ?></a> in <a href="#"><?= $blogpost->category->name ?></a></p>
+							<p class="pl-1" style="padding-left:5px;">Written by <a href="#"><?= $blogpost->author->username ?></a> on <a href="#"><?= $blogpost->created_at->diffForHumans() ?></a> in 
+						
+							<?php foreach($blogpost->categories as $category): ?>
+							<a href="#"><?= $category->name ?></a></p>
+							<?php endforeach ?>
+						</p>
 							<p><b><?= $blogpost->getExcerpt() ?></b></p>
 						</div>
 					</div>
