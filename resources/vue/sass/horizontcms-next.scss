@@ -201,6 +201,18 @@ body {
 
 }
 
+.hero-title {
+    font-size: 1.75rem;
+}
+
+@media (min-width: 960px) {
+
+    .hero-title {
+        font-size: 4.25rem;
+    }
+
+}
+
 .jumbotron {
     padding-top: 30px;
     padding-bottom: 30px;
