@@ -1,12 +1,9 @@
 @extends('layout', ['title' => trans("Install")])
 
 @section('content')
-    <div class='jumbotron'>
-        <div class='container'>
-            <h1><small>Installing {{ config('app.name') }}</small></h1>
-
-
-
+    <div class="bg-dark text-white py-5">
+        <div class='container py-5'>
+            <h1 style="font-size:3rem;">Installing {{ config('app.name') }}</h1>
 
             <div class='progress'>
                 <div class='progress-bar progress-bar-striped active' role='progressbar' aria-valuenow='40' aria-valuemin='0'
