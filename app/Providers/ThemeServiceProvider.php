@@ -81,7 +81,7 @@ class ThemeServiceProvider extends ServiceProvider
 
             Route::group(
                 ['middleware' => 'web'],
-                function ($router) use ($theme) {
+                function ($router) use ($theme): void {
                     require base_path($theme->getPath() . '/routes/web.php');
                 }
             );
@@ -91,7 +91,7 @@ class ThemeServiceProvider extends ServiceProvider
 
             Route::group(
                 ['middleware' => 'api'],
-                function ($router) use ($theme) {
+                function ($router) use ($theme): void {
                     require base_path($theme->getPath() . '/routes/api.php');
                 }
             );

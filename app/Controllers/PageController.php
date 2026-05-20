@@ -3,22 +3,21 @@
 namespace App\Controllers;
 
 use App\Controllers\Trait\UploadsImage;
+use App\Model\Page;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use App\Model\Page;
 
 class PageController extends Controller
 {
-
     use UploadsImage;
 
     protected $imagePath = 'images/pages';
 
     public function before()
     {
-        \File::ensureDirectoryExists($this->imagePath . '/thumbs');
+        File::ensureDirectoryExists($this->imagePath.'/thumbs');
     }
 
     /**
@@ -31,9 +30,10 @@ class PageController extends Controller
         $pages = Page::orderBy('queue')->paginateSortAndFilter();
 
         if ($request->wantsJson()) {
-            foreach($request->get('with', []) as $relation) {
+            foreach ($request->get('with', []) as $relation) {
                 $pages->load($relation);
             }
+
             return response()->json($pages);
         }
 
@@ -61,15 +61,14 @@ class PageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $request->validate(Page::$rules);
-        
+
         $page = new Page($request->all());
-        $page->slug = str_slug($request->input('name'), "-");
+        $page->slug = str_slug($request->input('name'), '-');
         $page->parent_id = $request->input('parent_select') == 0 ? null : $request->input('parent_id');
         $page->queue = 99;
         $page->page = clean($request->input('page'));
@@ -77,10 +76,10 @@ class PageController extends Controller
 
         $this->uploadImage($page);
 
-        if($page->save()) {
-            return redirect(route("page.edit", ['page' => $page]))->withMessage(['success' => trans('message.successfully_created_page')]);
-        } 
-            
+        if ($page->save()) {
+            return redirect(route('page.edit', ['page' => $page]))->withMessage(['success' => trans('message.successfully_created_page')]);
+        }
+
         return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong')]);
     }
 
@@ -93,9 +92,10 @@ class PageController extends Controller
     public function show(Request $request, Page $page)
     {
         if ($request->wantsJson()) {
-            foreach($request->get('with', []) as $relation) {
+            foreach ($request->get('with', []) as $relation) {
                 $page->load($relation);
             }
+
             return response()->json($page);
         }
 
@@ -121,14 +121,13 @@ class PageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Page $page)
     {
 
-        if($request->has("duplicate")){
+        if ($request->has('duplicate')) {
             $page = $page->replicate();
             $page->queue = 999;
             $page->visibility = 0;
@@ -139,8 +138,8 @@ class PageController extends Controller
 
             $page->fill($request->all());
 
-            $page->slug = str_slug($request->input('name'), "-");
-            $page->parent_id = $request->input('parent_select') == 0 ? NULL : $request->input('parent_id');
+            $page->slug = str_slug($request->input('name'), '-');
+            $page->parent_id = $request->input('parent_select') == 0 ? null : $request->input('parent_id');
             $page->page = clean($request->input('page'));
 
             $this->uploadImage($page);
@@ -148,8 +147,8 @@ class PageController extends Controller
         }
 
         if ($page->save()) {
-            return redirect(route("page.edit", ['page' => $page]))->withMessage(['success' => trans('message.successfully_updated_page')]);
-        } 
+            return redirect(route('page.edit', ['page' => $page]))->withMessage(['success' => trans('message.successfully_updated_page')]);
+        }
 
         return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong')]);
     }
@@ -157,17 +156,16 @@ class PageController extends Controller
     /**
      * Remove the specified resource from database.
      *
-     * @param  \App\Model\Page  $page
      * @return \Illuminate\Http\Response
      */
     public function destroy(Page $page)
     {
 
         if ($page->delete()) {
-            return redirect(route("page.index"))->withMessage(['success' => trans('message.successfully_deleted_page')]);
+            return redirect(route('page.index'))->withMessage(['success' => trans('message.successfully_deleted_page')]);
         }
 
-        return redirect(route("page.index"))->withMessage(['danger' => trans('message.something_went_wrong')]);
+        return redirect(route('page.index'))->withMessage(['danger' => trans('message.something_went_wrong')]);
     }
 
     public function reorder(Request $request)
@@ -175,14 +173,14 @@ class PageController extends Controller
 
         $request->validate([
             'order' => 'required|array',
-            'order.*' => 'integer|exists:pages,id'
+            'order.*' => 'integer|exists:pages,id',
         ]);
 
         $order = $request->input('order');
 
         try {
 
-            DB::transaction(function () use ($order) {
+            DB::transaction(function () use ($order): void {
                 foreach ($order as $index => $pageId) {
                     $page = Page::findOrFail($pageId);
                     $page->queue = $index;
@@ -192,13 +190,13 @@ class PageController extends Controller
 
             return response()->json([
                 'message' => 'Pages reordered successfully.',
-                'data' => $order
+                'data' => $order,
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Failed to reorder pages.',
-                'details' => $e->getMessage()
+                'details' => $e->getMessage(),
             ], 500);
         }
     }

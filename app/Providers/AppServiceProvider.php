@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
                 \DB::connection()->enableQueryLog();
 
                 if ( $this->app->request->has('sql-debug') ) {
-                    \Event::listen(RequestHandled::class, function(RequestHandled $event) {
+                    \Event::listen(RequestHandled::class, function(RequestHandled $event): void {
                             $queries = \DB::getQueryLog();
                             dd($queries);
                     });

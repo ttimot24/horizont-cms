@@ -187,7 +187,7 @@ class PluginServiceProvider extends ServiceProvider
 
                 Route::group(
                     $plugin->getRegister('webRouteOptions', ['middleware' => 'web']),
-                    function ($router) use ($plugin) {
+                    function ($router) use ($plugin): void {
                         require base_path($plugin->getPath() . '/routes/web.php');
                     }
                 );
@@ -198,7 +198,7 @@ class PluginServiceProvider extends ServiceProvider
 
                 Route::group(
                     $plugin->getRegister('apiRouteOptions', ['middleware' => 'api']),
-                    function ($router) use ($plugin) {
+                    function ($router) use ($plugin): void {
                         require base_path($plugin->getPath() . '/routes/api.php');
                     }
                 );
