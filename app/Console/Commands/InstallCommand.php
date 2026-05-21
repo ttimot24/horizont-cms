@@ -113,7 +113,7 @@ class InstallCommand extends Command
         $administrator->active = 1;
 
         if (! $administrator->save()) {
-            $this->error('Could not create admin user!');
+            $this->line('Could not create admin user!');
         }
 
         $this->info('3. Generating .env file...');

@@ -58,7 +58,7 @@ class UpgradeCommand extends Command
                     return self::SUCCESS;
                 }
 
-                $this->error('Update failed: '.$result.'!');
+                $this->line('Update failed: '.$result.'!');
 
                 return self::FAILURE;
             } else {
@@ -67,7 +67,7 @@ class UpgradeCommand extends Command
                 return self::SUCCESS;
             }
         } catch (\Exception $e) {
-            $this->error('Could not check for updates! '.$e->getMessage());
+            $this->line('Could not check for updates! '.$e->getMessage());
 
             return self::FAILURE;
         }

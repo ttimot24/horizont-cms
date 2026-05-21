@@ -68,28 +68,28 @@ class PluginCommand extends Command
     private function install(string $selectedPlugin): int
     {
 
-        echo 'Install...'.PHP_EOL;
+        $this->line('Install...');
         throw new \Exception('This function is not supported yet!');
     }
 
     private function uninstall(string $selectedPlugin): int
     {
 
-        echo 'Uninstall...'.PHP_EOL;
+        $this->line('Uninstall...');
         throw new \Exception('This function is not supported yet!');
     }
 
     private function activate(string $selectedPlugin): int
     {
 
-        echo 'Activate...'.PHP_EOL;
+        $this->line('Activate...');
 
-        if (\App\Model\Plugin::where('root_dir', $selectedPlugin)->update(['active' => 1])) {
-            echo 'Plugin successfully activated!'.PHP_EOL;
+        if (\App\Model\Plugin::rootDir($selectedPlugin)->update(['active' => 1])) {
+            $this->line('Plugin successfully activated!');
 
             return self::SUCCESS;
         } else {
-            echo 'Could not activate the plugin!'.PHP_EOL;
+            $this->line('Could not activate the plugin!');
 
             return self::FAILURE;
         }
@@ -98,14 +98,14 @@ class PluginCommand extends Command
     private function deactivate(string $selectedPlugin): int
     {
 
-        echo 'Deactivate...'.PHP_EOL;
+        $this->line('Deactivate...');
 
-        if (\App\Model\Plugin::where('root_dir', $selectedPlugin)->update(['active' => 0])) {
-            echo 'Plugin successfully deactivated!'.PHP_EOL;
+        if (\App\Model\Plugin::rootDir($selectedPlugin)->update(['active' => 0])) {
+            $this->line('Plugin successfully deactivated!');
 
             return self::SUCCESS;
         } else {
-            echo 'Could not deactivate the plugin!'.PHP_EOL;
+            $this->line('Could not deactivate the plugin!');
 
             return self::FAILURE;
         }
