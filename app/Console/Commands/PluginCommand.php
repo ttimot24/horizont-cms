@@ -30,87 +30,84 @@ class PluginCommand extends Command
         parent::__construct();
     }
 
-    public function handle(): void
+    public function handle(): int
     {
 
         $selectedPlugin = $this->argument('plugin');
 
-        echo PHP_EOL.'Selected plugin: '.$selectedPlugin.PHP_EOL.PHP_EOL;
+        $this->line('');
+        $this->line("Selected plugin: {$selectedPlugin}");
+        $this->line('');
 
-        if ($this->option('download')) {
-            $this->download($selectedPlugin);
-        }
+        return match (true) {
+            $this->option('download') => $this->download($selectedPlugin),
+            $this->option('install') => $this->install($selectedPlugin),
+            $this->option('activate') => $this->activate($selectedPlugin),
+            $this->option('deactivate') => $this->deactivate($selectedPlugin),
+            $this->option('uninstall') => $this->uninstall($selectedPlugin),
+            $this->option('remove') => $this->remove($selectedPlugin),
 
-        if ($this->option('install')) {
-            $this->install($selectedPlugin);
-        }
-
-        if ($this->option('activate')) {
-            $this->activate($selectedPlugin);
-        }
-
-        if ($this->option('deactivate')) {
-            $this->deactivate($selectedPlugin);
-        }
-
-        if ($this->option('uninstall')) {
-            $this->uninstall($selectedPlugin);
-        }
-
-        if ($this->option('remove')) {
-            $this->remove($selectedPlugin);
-        }
+            default => self::INVALID,
+        };
     }
 
-    private function download(string $selectedPlugin): void
+    private function download(string $selectedPlugin): int
     {
 
-        echo 'Download...'.PHP_EOL;
+        $this->line('Download...');
         throw new \Exception('This function is not supported yet!');
     }
 
-    private function remove(string $selectedPlugin): void
+    private function remove(string $selectedPlugin): int
     {
 
-        echo 'Remove...'.PHP_EOL;
+        $this->line('Remove...');
         throw new \Exception('This function is not supported yet!');
     }
 
-    private function install(string $selectedPlugin): void
+    private function install(string $selectedPlugin): int
     {
 
         echo 'Install...'.PHP_EOL;
         throw new \Exception('This function is not supported yet!');
     }
 
-    private function uninstall(string $selectedPlugin): void
+    private function uninstall(string $selectedPlugin): int
     {
 
         echo 'Uninstall...'.PHP_EOL;
         throw new \Exception('This function is not supported yet!');
     }
 
-    private function activate(string $selectedPlugin): void
+    private function activate(string $selectedPlugin): int
     {
 
         echo 'Activate...'.PHP_EOL;
 
         if (\App\Model\Plugin::where('root_dir', $selectedPlugin)->update(['active' => 1])) {
             echo 'Plugin successfully activated!'.PHP_EOL;
+
+            return self::SUCCESS;
         } else {
             echo 'Could not activate the plugin!'.PHP_EOL;
+
+            return self::FAILURE;
         }
     }
 
-    private function deactivate(string $selectedPlugin): void
+    private function deactivate(string $selectedPlugin): int
     {
 
         echo 'Deactivate...'.PHP_EOL;
 
         if (\App\Model\Plugin::where('root_dir', $selectedPlugin)->update(['active' => 0])) {
             echo 'Plugin successfully deactivated!'.PHP_EOL;
+
+            return self::SUCCESS;
         } else {
             echo 'Could not deactivate the plugin!'.PHP_EOL;
+
+            return self::FAILURE;
         }
     }
 }

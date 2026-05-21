@@ -35,7 +35,7 @@ class UpgradeCommand extends Command
         $this->updateManager = $updater;
     }
 
-    public function handle(): void
+    public function handle(): int
     {
 
         try {
@@ -45,19 +45,31 @@ class UpgradeCommand extends Command
                 $latestVersion = $this->updateManager->source()->getVersionAvailable();
 
                 // Install new update
-                echo 'New Version: '.$latestVersion.'<br>';
-                echo 'Installing Updates: <br>';
+                $this->line('New Version: '.$latestVersion);
+                $this->line('Installing Updates: ');
 
                 $release = $this->updateManager->source()->fetch($latestVersion);
 
                 $result = $this->updateManager->source()->update($release);
 
-                echo $result ? 'Update successful<br>' : 'Update failed: '.$result.'!<br>';
+                if ($result) {
+                    $this->line('Update successful!');
+
+                    return self::SUCCESS;
+                }
+
+                $this->error('Update failed: '.$result.'!');
+
+                return self::FAILURE;
             } else {
-                echo 'Current Version is up to date<br>';
+                $this->line('Current Version is up to date');
+
+                return self::SUCCESS;
             }
         } catch (\Exception $e) {
-            exit('Could not check for updates! '.$e->getMessage());
+            $this->error('Could not check for updates! '.$e->getMessage());
+
+            return self::FAILURE;
         }
     }
 }

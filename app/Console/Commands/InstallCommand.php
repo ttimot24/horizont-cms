@@ -37,7 +37,7 @@ class InstallCommand extends Command
      *
      * @return mixed
      */
-    public function handle(): void
+    public function handle(): int
     {
         echo "
  _  _         _            _    ___ __  __ ___    ___ _    ___ 
@@ -55,7 +55,7 @@ class InstallCommand extends Command
             if ($continue === 'no') {
                 $this->info('Quit installer');
 
-                return;
+                return self::SUCCESS;
             }
         }
 
@@ -134,5 +134,7 @@ class InstallCommand extends Command
         $this->call('key:generate', ['--no-interaction' => true, '--force' => true]);
 
         $this->info("\r\n".Config::get('app.name')." successfully installed!\r\n");
+
+        return self::SUCCESS;
     }
 }

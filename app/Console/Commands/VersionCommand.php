@@ -46,12 +46,14 @@ Closer to the WEB";
      *
      * @return mixed
      */
-    public function handle(): void
+    public function handle(): int
     {
         if (! $this->option('no-banner')) {
             $this->info(PHP_EOL.str_replace('app.name', Config::get('app.name'), str_replace('{app.version}', Config::get('horizontcms.version'), $this->banner)).PHP_EOL);
         } else {
             $this->info(PHP_EOL.Config::get('app.name').' - '.Config::get('horizontcms.version').PHP_EOL);
         }
+
+        return self::SUCCESS;
     }
 }

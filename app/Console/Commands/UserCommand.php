@@ -31,7 +31,7 @@ class UserCommand extends Command
 
     }
 
-    public function handle(): void
+    public function handle(): int
     {
 
         $this->line('*****Administrator creation*****'.PHP_EOL);
@@ -39,7 +39,7 @@ class UserCommand extends Command
         if (! \App\HorizontCMS::isInstalled()) {
             $this->info('HorizontCMS is not installed!');
 
-            return;
+            return self::FAILURE;
         }
 
         $admin['name'] = empty($this->option('name')) ? $this->ask('Name') : $this->option('name');
@@ -58,9 +58,12 @@ class UserCommand extends Command
             $user->save();
 
             $this->info('User '.$user->username.' created successfully!');
+
+            return self::SUCCESS;
         } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
 
+        return self::FAILURE;
     }
 }

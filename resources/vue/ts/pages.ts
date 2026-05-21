@@ -13,7 +13,7 @@ axios.defaults.headers.common['Authorization'] = 'Bearer ' + apiToken.getAttribu
 
 function readURL(input: HTMLInputElement) {
   if (input.files && input.files[0]) {
-    var reader = new FileReader();
+    const reader = new FileReader();
 
     reader.onload = function (e) {
       $('#preview-i').attr('src', (e?.target?.result as string) || null);

@@ -60,7 +60,7 @@ export default defineComponent({
     },
     watch: {
         filter: function (filter: string) {
-            var vm = this;
+            const vm = this;
 
             if (filter != null && filter != "") {
                 vm.folders = vm.folders.filter((folder: string) => folder.includes(filter));
@@ -75,16 +75,16 @@ export default defineComponent({
             text: any,
             link: string
         }[] {
-            var vm = this;
+            const vm = this;
 
-            var here = vm.currentDirectory.split('/');
+            const here = vm.currentDirectory.split('/');
 
-            var parts = [];
+            const parts = [];
 
-            for (var i = 0; i < here.length; i++) {
-                var part = here[i];
-                var text = part;
-                var link = '' + here.slice(0, i + 1).join('/');
+            for (let i = 0; i < here.length; i++) {
+                const part = here[i];
+                const text = part;
+                const link = '' + here.slice(0, i + 1).join('/');
                 parts.push({ "text": text, "link": link });
             }
 
@@ -101,7 +101,7 @@ export default defineComponent({
             this.open('', false);
         },
         select: function (file: string): void {
-            var vm = this;
+            const vm = this;
 
             vm.selected = (event?.currentTarget as any).id;
             $(".file").removeClass('selected');
@@ -164,10 +164,10 @@ export default defineComponent({
         },
         createNew: function (event: any, type: string): void {
 
-            var vm = this;
+            const vm = this;
 
-            var dirPath = vm.currentDirectory;
-            var newName = $('[name="new_'+type+'_name"]').val();
+            const dirPath = vm.currentDirectory;
+            const newName = $('[name="new_'+type+'_name"]').val();
 
             this.http.put(environment.REST_API_BASE + '/file-manager/new-'+type, {
                  _token: vm.csrfToken,
@@ -208,26 +208,26 @@ export default defineComponent({
 
             event.preventDefault();
 
-            var vm = this;
+            const vm = this;
 
             console.log("Uploading ...");
 
-            var dirPath = vm.currentDirectory;
+            const dirPath = vm.currentDirectory;
 
-            var fileSelect = ($('#input-2') as any);
-            var files = fileSelect[0].files;
+            const fileSelect = ($('#input-2') as any);
+            const files = fileSelect[0].files;
 
             if (!files) {
                 console.log("No file is selected");
                 return;
             }
 
-            var formData = new FormData();
+            const formData = new FormData();
             formData.append('_token', vm.csrfToken);
             formData.append('dir_path', dirPath);
 
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
                 formData.append('up_file[]', file, file.name);
             }
 
@@ -271,7 +271,7 @@ export default defineComponent({
             return url.substring(url.lastIndexOf('/') + 1);
         },
         deleteModal: function (file: string): void {
-            var vm = this;
+            const vm = this;
 
             $('#content-name').text(vm.basename(file));
 
@@ -281,16 +281,16 @@ export default defineComponent({
 
         },
         renameModal: function (file: string): void {
-            var vm = this;
+            const vm = this;
 
             vm.select(file);
             $("#selected").val(file);
             vm.modalRename.show();
         },
         renameFile: function (event: any): void {
-            var vm = this;
+            const vm = this;
 
-            var file = vm.currentDirectory.concat('/').concat($('[name="old_name"]').val());
+            const file = vm.currentDirectory.concat('/').concat($('[name="old_name"]').val());
             console.log(file);
 
             this.http.put(environment.REST_API_BASE + '/file-manager/rename', {
@@ -328,9 +328,9 @@ export default defineComponent({
         },
         deleteFile: function (): void {
 
-            var vm = this;
+            const vm = this;
 
-            var deleteSubmit = $("#delete-submit");
+            const deleteSubmit = $("#delete-submit");
 
             const file = vm.currentDirectory.concat('/').concat(deleteSubmit.data('file'));
 
@@ -353,9 +353,9 @@ export default defineComponent({
 
         },
         getUrlVar: function (location: string, vary: any): any {
-            var vars = [], hash;
-            var hashes = location.slice(location.indexOf('?') + 1).split('&');
-            for (var i = 0; i < hashes.length; i++) {
+            let vars = [], hash;
+            const hashes = location.slice(location.indexOf('?') + 1).split('&');
+            for (let i = 0; i < hashes.length; i++) {
                 hash = hashes[i].split('=');
                 vars.push(hash[0]);
                 vars[(hash[0] as any)] = hash[1];
@@ -363,8 +363,8 @@ export default defineComponent({
             return vars[vary];
         },
         getUrlParam: function (paramName: string): number {
-            var reParam = new RegExp('(?:[\?&]|&)' + paramName + '=([^&]+)', 'i');
-            var match = window.location.search.match(reParam);
+            const reParam = new RegExp('(?:[\?&]|&)' + paramName + '=([^&]+)', 'i');
+            const match = window.location.search.match(reParam);
 
             return Number((match && match.length > 1) ? match[1] : null);
         },
@@ -372,8 +372,8 @@ export default defineComponent({
 
             try {
                 // Simulate user action of selecting a file to be returned to CKEditor.
-                var funcNum: number = this.getUrlParam("CKEditorFuncNum");
-                var fileUrl: string = window.location.protocol + '//' +window.location.host+'/'+filepath;
+                const funcNum: number = this.getUrlParam("CKEditorFuncNum");
+                const fileUrl: string = window.location.protocol + '//' +window.location.host+'/'+filepath;
                 window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl, '');
                 window.close();
             } catch (e) {
@@ -385,7 +385,7 @@ export default defineComponent({
             return fileName.substring(fileName.lastIndexOf('.') + 1);
         },
         isKnownExtension: function (fileName: string): boolean {
-            var vm = this;
+            const vm = this;
 
             return vm.knownFileExtensions.includes(vm.getFileExtension(fileName).toLowerCase());
         }

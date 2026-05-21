@@ -30,7 +30,7 @@ class ThemeCommand extends Command
         parent::__construct();
     }
 
-    public function handle(): void
+    public function handle(): int
     {
 
         $selectedTheme = $this->argument('theme');
@@ -38,21 +38,29 @@ class ThemeCommand extends Command
         echo PHP_EOL.'Selected theme: '.$selectedTheme.PHP_EOL.PHP_EOL;
 
         if ($this->option('set')) {
-            $this->set($selectedTheme);
+            return $this->set($selectedTheme);
         }
+
+        return self::INVALID;
     }
 
-    private function set(string $theme): void
+    private function set(string $theme): int
     {
         if (file_exists(base_path('themes'.DIRECTORY_SEPARATOR.$theme))) {
 
             if (\App\Model\Settings::where('setting', 'theme')->update(['value' => $theme])) {
                 echo $theme.' successfully set as current theme!'.PHP_EOL;
+
+                return self::SUCCESS;
             } else {
                 echo 'Could not set theme!';
+
+                return self::FAILURE;
             }
         } else {
             echo "The selected theme doesn't exists.";
+
+            return self::INVALID;
         }
     }
 }

@@ -19,7 +19,7 @@ export default defineComponent({
     },
     mounted: function () {
 
-        var vm = this;
+        const vm = this;
 
         vm.modal = new Modal(vm.$refs.lock_screen);
 
@@ -38,18 +38,18 @@ export default defineComponent({
     },
     methods: {
         lock: function (): void {
-            var vm = this;
+            const vm = this;
             vm.modal = new Modal(document.getElementById('lock_screen') as HTMLElement);
             vm.modal.show();
             localStorage.locksession = 'true';
             vm.invalid_pw = false;
         },
         unlock: function (): void {
-            var vm = this;
+            const vm = this;
 
             console.log(vm);
 
-            var password_field: any = $("#lock_pwd");
+            let password_field: any = $("#lock_pwd");
 
             this.http.post(environment.REST_API_BASE+'/lock-up',
                 {
