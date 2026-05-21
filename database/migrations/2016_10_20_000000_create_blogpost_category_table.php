@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateBlogpostCategoryTable extends Migration
 {
@@ -12,10 +12,12 @@ class CreateBlogpostCategoryTable extends Migration
      * @return void
      */
     private string $table_name = 'blogpost_categories';
-    
+
     public function up(): void
     {
-        if (Schema::hasTable($this->table_name)) { return; }
+        if (Schema::hasTable($this->table_name)) {
+            return;
+        }
 
         Schema::create($this->table_name, function (Blueprint $table) {
             $table->increments('id');
@@ -29,8 +31,6 @@ class CreateBlogpostCategoryTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

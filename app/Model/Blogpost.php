@@ -2,21 +2,20 @@
 
 namespace App\Model;
 
-use \Illuminate\Database\Eloquent\Model;
-use \App\Model\Trait\HasAuthor;
-use \App\Model\Trait\Draftable;
+use App\Model\Trait\Draftable;
+use App\Model\Trait\HasAuthor;
 use App\Model\Trait\HasImage;
 use App\Model\Trait\IsActive;
 use App\Model\Trait\PaginateSortAndFilter;
+use Illuminate\Database\Eloquent\Model;
 
 class Blogpost extends Model
 {
-
-    use HasImage;
-    use HasAuthor;
     use Draftable;
-    use PaginateSortAndFilter;
+    use HasAuthor;
+    use HasImage;
     use IsActive;
+    use PaginateSortAndFilter;
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +23,7 @@ class Blogpost extends Model
      * @var array
      */
     protected $fillable = [
-        'title','slug', 'summary', 'text', 'language', 'author_id', 'comments_enabled', 'active',
+        'title', 'slug', 'summary', 'text', 'language', 'author_id', 'comments_enabled', 'active',
     ];
 
     protected $appends = ['category_ids'];
@@ -36,23 +35,22 @@ class Blogpost extends Model
         'category_ids.*' => 'exists:blogpost_categories,id',
     ];
 
-    protected $filterableFields  = ['title', 'summary', 'text'];
+    protected $filterableFields = ['title', 'summary', 'text'];
 
-    protected $defaultImage = "resources/images/icons/newspaper.png";
-    
+    protected $defaultImage = 'resources/images/icons/newspaper.png';
 
-    //TODO Use https://github.com/spatie/laravel-sluggable
+    // TODO Use https://github.com/spatie/laravel-sluggable
     public static function findBySlug($slug): ?Blogpost
     {
 
         $blogpost = self::where('slug', $slug)->first();
 
-        if(!empty($blogpost)) {
+        if (! empty($blogpost)) {
             return $blogpost;
         } else {
 
-            //FIXME Use find
-            foreach (self::where('slug', null)->orWhere('slug', "")->get() as $blogpost) {
+            // FIXME Use find
+            foreach (self::where('slug', null)->orWhere('slug', '')->get() as $blogpost) {
                 if (str_slug($blogpost->title) == $slug) {
                     return $blogpost;
                 }
@@ -64,22 +62,22 @@ class Blogpost extends Model
 
     public function getCategoryIdsAttribute()
     {
-        return $this->categories()->pluck('blogpost_categories.id'); 
+        return $this->categories()->pluck('blogpost_categories.id');
     }
 
-    //TODO Use local scope
+    // TODO Use local scope
     public static function getPublished($num = null, $order = 'ASC')
     {
         return self::active()->orderBy('created_at', $order)->paginate($num);
     }
 
-    //TODO Use local scope
+    // TODO Use local scope
     public static function getDrafts($num = null, $order = 'ASC')
     {
         return self::inactive()->get()->orderBy('created_at', $order)->paginate($num);
     }
 
-    //TODO Use local scope
+    // TODO Use local scope
     public static function getFeatured($num = null, $order = 'ASC')
     {
         return self::where('active', 2)->orderBy('created_at', $order)->paginate($num);

@@ -3,301 +3,295 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-
 use Illuminate\Support\Facades\DB;
 
 class SettingsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run(): void
     {
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'title',
-            'value' => "Your title",
-            
+            'value' => 'Your title',
+
         ]);
 
-
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'site_name',
-            'value' => "Your site",
-            
+            'value' => 'Your site',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'slogan',
-            'value' => "Your awesome slogan",
-            
+            'value' => 'Your awesome slogan',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'favicon',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'scroll_text',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'default_email',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'address',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'default_phone',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'contact',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'theme',
             'value' => 'TheWright',
-            
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'language',
             'value' => 'en',
-            
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'date_format',
-            'value' => "Y.m.d H:i:s",
-            
+            'value' => 'Y.m.d H:i:s',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'home_page',
             'value' => 1,
-            
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'website_down',
-            'value' => "0",
-            
+            'value' => '0',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'logo',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'favicon',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'admin', 
+            'group' => 'admin',
             'setting' => 'admin_logo',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'website_debug',
-            'value' => "0",
-            
+            'value' => '0',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'admin', 
+            'group' => 'admin',
             'setting' => 'admin_debug',
-            'value' => "0",
-            
+            'value' => '0',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'admin', 
+            'group' => 'admin',
             'setting' => 'admin_broadcast',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'website_type',
-            'value' => "website",
-            
+            'value' => 'website',
+
         ]);
-        
+
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'blogposts_on_page',
-            'value' => "5",
-            
+            'value' => '5',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'admin', 
+            'group' => 'admin',
             'setting' => 'default_user_role',
-            'value' => "2",
-            
+            'value' => '2',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'admin', 
+            'group' => 'admin',
             'setting' => 'auto_upgrade_check',
-            'value' => "1",
-            
+            'value' => '1',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'use_https',
-            'value' => "0",
-            
+            'value' => '0',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'social_link_facebook',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'social_link_youtube',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'social_link_twitter',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'social_link_instagram',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'social_link_google',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'social_link_linkedin',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'social_link_pinterest',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'social_link_github',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'social_link_gitlab',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'social_link_spotify',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'social_link_soundcloud',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'social_link_tiktok',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'social_link_steam',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
         DB::table('settings')->insert([
-            'group' => 'website', 
+            'group' => 'website',
             'setting' => 'social_link_reddit',
-            'value' => "",
-            
+            'value' => '',
+
         ]);
 
-
         DB::table('settings')->insert([
-            'group' => 'admin', 
+            'group' => 'admin',
             'setting' => 'scheduler',
-            'value' => "not configured",
-            
+            'value' => 'not configured',
+
         ]);
 
     }
 }
-

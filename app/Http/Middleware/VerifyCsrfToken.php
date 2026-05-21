@@ -12,7 +12,6 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-    	'admin/file-manager/upload*',
+        'admin/file-manager/upload*',
     ];
-
 }

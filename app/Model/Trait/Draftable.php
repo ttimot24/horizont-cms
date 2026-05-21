@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Model\Trait;
- 
-trait Draftable {
 
+trait Draftable
+{
     public function isDraft(): bool
     {
         return $this->active == 0;
     }
-
 }

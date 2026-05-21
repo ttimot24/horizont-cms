@@ -3,12 +3,11 @@
 namespace App\Controllers;
 
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class FileManagerController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -21,21 +20,20 @@ class FileManagerController extends Controller
 
         $disk = request()->get('disk', 'local');
 
-        $current_dir = str_replace_first("storage/", "", request()->has('path')? ltrim(request()->get('path'), "/") : "");
+        $current_dir = str_replace_first('storage/', '', request()->has('path') ? ltrim(request()->get('path'), '/') : '');
 
         $data = [
-            'old_path' => ($current_dir == "" ? "" : $current_dir . "/"),
+            'old_path' => ($current_dir == '' ? '' : $current_dir.'/'),
             'current_dir' => $current_dir,
             'dirs' => collect(Storage::disk($disk)->directories($current_dir))
-                        ->map(fn ($dir) => basename($dir))->values()->toArray(),
-            'files' =>  collect(Storage::disk($disk)->files($current_dir))
-                        ->map(fn ($dir) => basename($dir))->values()->toArray(),
+                ->map(fn ($dir) => basename($dir))->values()->toArray(),
+            'files' => collect(Storage::disk($disk)->files($current_dir))
+                ->map(fn ($dir) => basename($dir))->values()->toArray(),
             'allowed_extensions' => [
-                'image' => ['jpg', 'png', 'jpeg', 'webp', 'gif']
+                'image' => ['jpg', 'png', 'jpeg', 'webp', 'gif'],
             ],
             'mode' => $mode,
         ];
-
 
         if (request()->wantsJson()) {
             return response()->json($data);
@@ -60,19 +58,19 @@ class FileManagerController extends Controller
 
             if (request()->hasFile('up_file')) {
 
-                $dir = str_replace("storage/", "", request()->input('dir_path'));
+                $dir = str_replace('storage/', '', request()->input('dir_path'));
 
                 foreach (request()->up_file as $file) {
-                    if (!\Security::isExecutable($file)) {
+                    if (! \Security::isExecutable($file)) {
 
-                        $images[] = config("horizontcms.upload_file_rename") ?
+                        $images[] = config('horizontcms.upload_file_rename') ?
                             $file->store($dir) :
                             $file->storeAs($dir, $file->getClientOriginalName());
                     }
                 }
 
                 if (request()->wantsJson()) {
-                    return response()->json(['success' => 'Files uploaded successfully!', 'uploadedFileNames' => $images, "uploaded" => 1, "url" => asset('storage/'. $images[0])]);
+                    return response()->json(['success' => 'Files uploaded successfully!', 'uploadedFileNames' => $images, 'uploaded' => 1, 'url' => asset('storage/'.$images[0])]);
                 }
 
                 return redirect()->back()->withMessage(['success' => 'Files uploaded successfully!']);
@@ -102,7 +100,7 @@ class FileManagerController extends Controller
      */
     public function update($id)
     {
-        if (!auth()->user()->isAdmin()) {
+        if (! auth()->user()->isAdmin()) {
             if (request()->wantsJson()) {
                 return response()->json(['warning' => 'Unauthorized!']);
             }
@@ -110,18 +108,18 @@ class FileManagerController extends Controller
             return redirect()->back()->withMessage(['warning' => 'Unauthorized!']);
         }
 
-        if($id == "new-folder") {
+        if ($id == 'new-folder') {
             return $this->newFolder();
         }
 
-        if($id == "new-file") {
+        if ($id == 'new-file') {
             return $this->newFile();
         }
 
-        if($id == "rename") {
-            $new_file = trim(request()->input('new_file'), "/");
+        if ($id == 'rename') {
+            $new_file = trim(request()->input('new_file'), '/');
 
-            if (!\Security::isExecutable($new_file) && Storage::move(request()->input('old_file'), $new_file)) {
+            if (! \Security::isExecutable($new_file) && Storage::move(request()->input('old_file'), $new_file)) {
                 if (request()->wantsJson()) {
                     return response()->json(['success' => trans('File successfully renamed!')]);
                 }
@@ -156,7 +154,6 @@ class FileManagerController extends Controller
         return redirect()->back()->withMessage(['warning' => 'Bad request!']);
     }
 
-
     /**
      * Store a newly created resource in storage.
      *
@@ -168,9 +165,9 @@ class FileManagerController extends Controller
 
         if (request()->isMethod('POST') || request()->isMethod('PUT')) {
 
-            $directory = "storage/" . str_replace("storage/", "", request()->input('dir_path')) . "/" . request()->input('new_folder_name');
+            $directory = 'storage/'.str_replace('storage/', '', request()->input('dir_path')).'/'.request()->input('new_folder_name');
 
-            if (!file_exists($directory)) {
+            if (! file_exists($directory)) {
                 File::makeDirectory($directory, $mode = 0777, true, true);
 
                 if (request()->wantsJson()) {
@@ -191,7 +188,6 @@ class FileManagerController extends Controller
         return redirect()->back()->withMessage(['danger' => 'Invalid HTTP method!']);
     }
 
-
     /**
      * Create a new file.
      *
@@ -202,9 +198,9 @@ class FileManagerController extends Controller
 
         if (request()->isMethod('POST') || request()->isMethod('PUT')) {
 
-            $file = "storage/" . str_replace("storage/", "", request()->input('dir_path')) . "/" . request()->input('new_file_name', 'new_file.txt');
+            $file = 'storage/'.str_replace('storage/', '', request()->input('dir_path')).'/'.request()->input('new_file_name', 'new_file.txt');
 
-            if (!file_exists($file)) {
+            if (! file_exists($file)) {
                 File::put($file, '');
 
                 if (request()->wantsJson()) {
@@ -225,7 +221,6 @@ class FileManagerController extends Controller
         return redirect()->back()->withMessage(['danger' => 'Invalid HTTP method!']);
     }
 
-
     /**
      * Remove the specified resource from database.
      *
@@ -235,25 +230,24 @@ class FileManagerController extends Controller
     public function destroy()
     {
 
-        $toDelete = str_replace("storage/", "", request()->input('file'));
+        $toDelete = str_replace('storage/', '', request()->input('file'));
 
-        if (!file_exists('storage/' . $toDelete)) {
+        if (! file_exists('storage/'.$toDelete)) {
             if (request()->wantsJson()) {
-                return response()->json(['warning' => trans("File " . $toDelete . " doesn't exists")]);
+                return response()->json(['warning' => trans('File '.$toDelete." doesn't exists")]);
             }
 
-            return redirect()->back()->withMessage(['warning' => trans("File " . $toDelete . " doesn't exists")]);
+            return redirect()->back()->withMessage(['warning' => trans('File '.$toDelete." doesn't exists")]);
         }
 
-
-        if (!is_dir('storage/' . $toDelete) && Storage::delete($toDelete)) {
+        if (! is_dir('storage/'.$toDelete) && Storage::delete($toDelete)) {
 
             if (request()->wantsJson()) {
                 return response()->json(['success' => trans('File deleted successfully')]);
             }
 
             return redirect()->back()->withMessage(['success' => trans('File deleted successfully')]);
-        } else if (is_dir('storage/' . $toDelete) && Storage::deleteDirectory($toDelete)) {
+        } elseif (is_dir('storage/'.$toDelete) && Storage::deleteDirectory($toDelete)) {
 
             if (request()->wantsJson()) {
                 return response()->json(['success' => trans('Directory deleted successfully')]);
@@ -269,5 +263,4 @@ class FileManagerController extends Controller
             return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong')]);
         }
     }
-
 }

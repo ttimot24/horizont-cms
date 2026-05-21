@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -20,8 +20,6 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
     public function boot(): void
     {
@@ -32,39 +30,39 @@ class AuthServiceProvider extends ServiceProvider
         $prefix = Config::get('horizontcms.backend_prefix');
 
         if (
-            $this->app->request->is($prefix . '*') && !$this->app->request->is($prefix . '/install*')
-            && !$this->app->request->is($prefix . '/login*')
+            $this->app->request->is($prefix.'*') && ! $this->app->request->is($prefix.'/install*')
+            && ! $this->app->request->is($prefix.'/login*')
         ) {
 
             Gate::define('global-authorization', function ($user) use ($prefix) {
                 $request = app()->request;
 
-                if ($request->segment(2) === null || $request->is($prefix . '/dashboard*')) {
+                if ($request->segment(2) === null || $request->is($prefix.'/dashboard*')) {
                     return true;
                 }
 
-                $isPluginRun = $request->is($prefix . '/plugin/run/*');
+                $isPluginRun = $request->is($prefix.'/plugin/run/*');
 
-                $segment = $isPluginRun? $request->segment(4): $request->segment(2);
+                $segment = $isPluginRun ? $request->segment(4) : $request->segment(2);
 
                 $segment = str_replace('-', '', $segment);
 
                 $action = $request->route()?->getActionMethod(); // index, show, create, store, edit, update, destroy
 
                 $actionMap = [
-                    'index'   => 'view',
-                    'show'    => 'view',
-                    'create'  => 'create',
-                    'store'   => 'create',
-                    'edit'    => 'update',
-                    'update'  => 'update',
+                    'index' => 'view',
+                    'show' => 'view',
+                    'create' => 'create',
+                    'store' => 'create',
+                    'edit' => 'update',
+                    'update' => 'update',
                     'destroy' => 'delete',
-                    'delete'  => 'delete',
+                    'delete' => 'delete',
                 ];
 
                 $mappedAction = $actionMap[$action] ?? null;
 
-                if (!$mappedAction) {
+                if (! $mappedAction) {
                     return false;
                 }
 
@@ -72,8 +70,8 @@ class AuthServiceProvider extends ServiceProvider
 
                 $hasPermission = in_array($permissionKey, $user->role->rights);
 
-                if(!$hasPermission){
-                    Log::warning("Access denied: ".$user->username."[".$user->id.'|'.$user->role->name."] does not have access[".$permissionKey."] to: ".$request->url());
+                if (! $hasPermission) {
+                    Log::warning('Access denied: '.$user->username.'['.$user->id.'|'.$user->role->name.'] does not have access['.$permissionKey.'] to: '.$request->url());
                 }
 
                 return $hasPermission;

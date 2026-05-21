@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'file'), //or database
+    'driver' => env('SESSION_DRIVER', 'file'), // or database
 
     /*
     |--------------------------------------------------------------------------
@@ -122,7 +122,7 @@ return [
     |
     */
 
-   // 'cookie' => 'hcmssession',
+    // 'cookie' => 'hcmssession',
     'cookie' => env(
         'SESSION_COOKIE',
         str_slug(env('APP_NAME', 'laravel'), '_').'_session'

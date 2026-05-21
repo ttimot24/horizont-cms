@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Route;
 class SpaThemeEngine implements ThemeEngineInterface
 {
     protected ?\App\Services\Theme $theme = null;
+
     protected string $page_template = 'index';
+
     public \Illuminate\Http\Request $request;
 
     private $folders = [
@@ -40,54 +42,53 @@ class SpaThemeEngine implements ThemeEngineInterface
 
     public function defaultTemplateExists(string $template): bool
     {
-        return file_exists($this->theme->getPath() . $template . '.php');
+        return file_exists($this->theme->getPath().$template.'.php');
     }
 
     public function templateExists(string $template): bool
     {
-        return file_exists($this->theme->getPath() . "page_templates" . DIRECTORY_SEPARATOR . $template . '.php');
+        return file_exists($this->theme->getPath().'page_templates'.DIRECTORY_SEPARATOR.$template.'.php');
     }
 
     public function boot(): void
     {
         if ($this->theme === null) {
-            throw new \Exception("<b>Theme is not set!</b>");
+            throw new \Exception('<b>Theme is not set!</b>');
         }
 
-        foreach($this->folders as $folder) {
+        foreach ($this->folders as $folder) {
 
-             if(!is_dir(base_path($this->theme->getPath() . $folder))){
+            if (! is_dir(base_path($this->theme->getPath().$folder))) {
                 continue;
-             }
+            }
 
-            foreach(\File::allFiles($this->theme->getPath().$folder) as $file) {
+            foreach (\File::allFiles($this->theme->getPath().$folder) as $file) {
 
-                $realtive_path = str_replace($this->theme->getRootDir().''. DIRECTORY_SEPARATOR.'themes/'.$this->theme->getRootDir().$folder, '', $file->getPathname());
+                $realtive_path = str_replace($this->theme->getRootDir().''.DIRECTORY_SEPARATOR.'themes/'.$this->theme->getRootDir().$folder, '', $file->getPathname());
 
-                Route::get('/'.$realtive_path, function() use ($file){
-                    return redirect(str_replace($this->theme->getRootDir().''. DIRECTORY_SEPARATOR, '', $file->getPathname()));
+                Route::get('/'.$realtive_path, function () use ($file) {
+                    return redirect(str_replace($this->theme->getRootDir().''.DIRECTORY_SEPARATOR, '', $file->getPathname()));
                 });
 
             }
         }
 
-
     }
 
-    public function render(array $data = null): string
+    public function render(?array $data = null): string
     {
         if ($this->theme === null) {
-            throw new \Exception("Theme is not set!");
+            throw new \Exception('Theme is not set!');
         }
 
         ob_start();
 
-        foreach($this->folders as $folder) {
-            if(!is_dir(base_path($this->theme->getPath() . $folder))){
-             continue;
+        foreach ($this->folders as $folder) {
+            if (! is_dir(base_path($this->theme->getPath().$folder))) {
+                continue;
             }
 
-            echo $this->require_file($folder . '/index.html');
+            echo $this->require_file($folder.'/index.html');
         }
 
         $output = ob_get_contents();
@@ -96,9 +97,9 @@ class SpaThemeEngine implements ThemeEngineInterface
         return trim($output);
     }
 
-    private function require_file(string $file): string|null
+    private function require_file(string $file): ?string
     {
-        $filePath = base_path($this->theme->getPath() . $file);
+        $filePath = base_path($this->theme->getPath().$file);
         if (file_exists($filePath)) {
             return file_get_contents($filePath);
         }
@@ -108,7 +109,7 @@ class SpaThemeEngine implements ThemeEngineInterface
 
     private function injectScripts(): void
     {
-        $script = config('theme:theme.scripts', []); //TODO
+        $script = config('theme:theme.scripts', []); // TODO
 
     }
 

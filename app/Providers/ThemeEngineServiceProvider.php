@@ -8,8 +8,6 @@ class ThemeEngineServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
     public function boot(): void
     {
@@ -18,7 +16,7 @@ class ThemeEngineServiceProvider extends ServiceProvider
 
             $theme = app()->make(\App\Services\Theme::class);
 
-            $engine = new (config()->get('horizontcms.theme_engines.' . config('horizontcms.default_theme_engine')))($this->app->request);
+            $engine = new (config()->get('horizontcms.theme_engines.'.config('horizontcms.default_theme_engine')))($this->app->request);
 
             $engine->setTheme($theme);
 
@@ -28,10 +26,6 @@ class ThemeEngineServiceProvider extends ServiceProvider
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register(): void
-    {
-    }
+    public function register(): void {}
 }

@@ -2,20 +2,18 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Request;
+use App\Model\Settings;
+use App\Services\Theme;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
-use \App\Services\Theme;
-use \App\Model\Settings;
+use Illuminate\Support\ServiceProvider;
 
 class ThemeServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
     public function boot(): void
     {
@@ -23,7 +21,7 @@ class ThemeServiceProvider extends ServiceProvider
 
             $theme = new Theme(Settings::get('theme'));
 
-            $this->app->singleton(Theme::class, function ($app) use($theme) {
+            $this->app->singleton(Theme::class, function ($app) use ($theme) {
                 return $theme;
             });
 
@@ -44,9 +42,9 @@ class ThemeServiceProvider extends ServiceProvider
 
     private function registerThemeAutoLoader(Theme $theme): void
     {
-        $autoloader =  base_path($theme->getPath() . "/vendor/autoload.php");
+        $autoloader = base_path($theme->getPath().'/vendor/autoload.php');
         if (file_exists($autoloader)) {
-            require_once($autoloader);
+            require_once $autoloader;
         }
     }
 
@@ -58,41 +56,40 @@ class ThemeServiceProvider extends ServiceProvider
 
     }
 
-
     protected function registerTranslations(Theme $theme): void
     {
-        if (!Request::is(Config::get('horizontcms.backend_prefix') . "/*")) {
-            $this->loadJsonTranslationsFrom(base_path($theme->getPath() . "resources/lang"));
+        if (! Request::is(Config::get('horizontcms.backend_prefix').'/*')) {
+            $this->loadJsonTranslationsFrom(base_path($theme->getPath().'resources/lang'));
         }
     }
 
     protected function registerThemeViews(Theme $theme): void
     {
         View::addNamespace('theme', [
-            $theme->getPath() . "app" . DIRECTORY_SEPARATOR . "View",
-            $theme->getPath() . "resources" . DIRECTORY_SEPARATOR . "views",
+            $theme->getPath().'app'.DIRECTORY_SEPARATOR.'View',
+            $theme->getPath().'resources'.DIRECTORY_SEPARATOR.'views',
         ]);
     }
 
     protected function registerThemeRoutes(Theme $theme): void
     {
 
-        if (file_exists($theme->getPath() . 'routes/web.php')) {
+        if (file_exists($theme->getPath().'routes/web.php')) {
 
             Route::group(
                 ['middleware' => 'web'],
                 function ($router) use ($theme): void {
-                    require base_path($theme->getPath() . '/routes/web.php');
+                    require base_path($theme->getPath().'/routes/web.php');
                 }
             );
         }
 
-        if (file_exists($theme->getPath() . 'routes/api.php')) {
+        if (file_exists($theme->getPath().'routes/api.php')) {
 
             Route::group(
                 ['middleware' => 'api'],
                 function ($router) use ($theme): void {
-                    require base_path($theme->getPath() . '/routes/api.php');
+                    require base_path($theme->getPath().'/routes/api.php');
                 }
             );
         }
@@ -100,7 +97,7 @@ class ThemeServiceProvider extends ServiceProvider
 
     private function registerThemeProviders(Theme $theme): void
     {
-        foreach($theme->getProviders() as $provider){
+        foreach ($theme->getProviders() as $provider) {
             $this->app->register($provider);
         }
 
@@ -108,10 +105,6 @@ class ThemeServiceProvider extends ServiceProvider
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register(): void
-    {
-    }
+    public function register(): void {}
 }

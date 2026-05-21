@@ -2,15 +2,13 @@
 
 namespace App\Controllers;
 
+use App\Model\ScheduledTask;
+use App\Model\Settings;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-use App\Model\ScheduledTask;
-use App\Model\Settings;
-
 class ScheduleController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -20,15 +18,13 @@ class ScheduleController extends Controller
     {
 
         return view('settings.schedules', [
-            'commands' => rescue(fn() => \Artisan::all(), fn() => []),
+            'commands' => rescue(fn () => \Artisan::all(), fn () => []),
             'scheduled_tasks' => \App\Model\ScheduledTask::all(),
-            'scheduler' => Settings::firstOrNew(['setting' => 'scheduler'], ['value' => 'not configured'])
+            'scheduler' => Settings::firstOrNew(['setting' => 'scheduler'], ['value' => 'not configured']),
         ]);
     }
 
-    public function create()
-    {
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -49,15 +45,11 @@ class ScheduleController extends Controller
         }
     }
 
-    public function edit()
-    {
-    }
+    public function edit() {}
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, int $id)
@@ -74,11 +66,10 @@ class ScheduleController extends Controller
     public function destroy(ScheduledTask $schedule)
     {
 
-
         if ($schedule->delete()) {
             return redirect()->back()->withMessage(['success' => trans('Successfully deleted the task!')]);
         }
 
-        return redirect(route("settings.show", ['setting' => 'schedules']))->withMessage(['danger' => trans('message.something_went_wrong')]);
+        return redirect(route('settings.show', ['setting' => 'schedules']))->withMessage(['danger' => trans('message.something_went_wrong')]);
     }
 }

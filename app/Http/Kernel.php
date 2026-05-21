@@ -47,7 +47,7 @@ class Kernel extends HttpKernel
             \Illuminate\Http\Middleware\HandleCors::class,
         ],
 
-        'admin' =>[
+        'admin' => [
             \Illuminate\Auth\Middleware\Authenticate::class,
             \App\Http\Middleware\AdminMiddleware::class,
             \App\Http\Middleware\MenuMiddleware::class,

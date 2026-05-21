@@ -2,10 +2,10 @@
 
 namespace App\Controllers\Auth;
 
-use Illuminate\Routing\Controller;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
-use \Illuminate\Contracts\View\View;
-use \Illuminate\Contracts\View\Factory;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Config;
 
 class ForgotPasswordController extends Controller
@@ -35,7 +35,7 @@ class ForgotPasswordController extends Controller
 
     public function showLinkRequestForm(): View|Factory
     {
-        return view(Config::get('horizontcms.auth_view', 'auth') . '.passwords.email', [
+        return view(Config::get('horizontcms.auth_view', 'auth').'.passwords.email', [
             'app_name' => Config::get('app.name'),
             'admin_logo' => url(Config::get('horizontcms.admin_logo')),
         ]);

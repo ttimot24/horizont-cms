@@ -12,12 +12,12 @@ class PermissionsGate
             return $user->hasPermission($permission);
         });
 
-        Gate::define('view', fn($user, $resource) => $user->hasPermission("{$resource}.view"));
-        Gate::define('create', fn($user, $resource) => $user->hasPermission("{$resource}.create"));
-        Gate::define('update', fn($user, $resource) => $user->hasPermission("{$resource}.update"));
-        Gate::define('delete', fn($user, $resource) => $user->hasPermission("{$resource}.delete"));
+        Gate::define('view', fn ($user, $resource) => $user->hasPermission("{$resource}.view"));
+        Gate::define('create', fn ($user, $resource) => $user->hasPermission("{$resource}.create"));
+        Gate::define('update', fn ($user, $resource) => $user->hasPermission("{$resource}.update"));
+        Gate::define('delete', fn ($user, $resource) => $user->hasPermission("{$resource}.delete"));
 
-        Gate::define('admin-area',function($user) {
+        Gate::define('admin-area', function ($user) {
             return $user->isAdmin() && $user->isActive() && $user->hasPermission('admin_area');
         });
 

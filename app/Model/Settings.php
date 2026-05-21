@@ -2,72 +2,77 @@
 
 namespace App\Model;
 
-use \Illuminate\Database\Eloquent\Model;
-use \Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
-class Settings extends Model {
-  
+class Settings extends Model
+{
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'setting', 'value', 'more'
+        'setting', 'value', 'more',
     ];
 
-  	protected $table = 'settings';
-  	public $settings;
-  	private static $static_settings = null;
+    protected $table = 'settings';
 
-	public static function get(string $setting, $default = null, bool $valueCheck = false){
+    public $settings;
 
-		if(!$valueCheck && self::has($setting)){
-			return self::$static_settings[$setting];
-		}
+    private static $static_settings = null;
 
-		if($valueCheck && self::has($setting) && !empty(self::$static_settings[$setting])){
-			return self::$static_settings[$setting];
-		}
-		
-		return $default;
-	}
+    public static function get(string $setting, $default = null, bool $valueCheck = false)
+    {
 
-	public static function has(string $setting): bool {
+        if (! $valueCheck && self::has($setting)) {
+            return self::$static_settings[$setting];
+        }
 
-		return array_key_exists($setting, self::getAll());
-	}
+        if ($valueCheck && self::has($setting) && ! empty(self::$static_settings[$setting])) {
+            return self::$static_settings[$setting];
+        }
 
+        return $default;
+    }
 
-	public static function getAll(): array {
-		if(self::$static_settings==null){
-			self::$static_settings = self::query()->pluck('value', 'setting')->all();	
-		}
-		
-		return self::$static_settings;
-	}
+    public static function has(string $setting): bool
+    {
 
+        return array_key_exists($setting, self::getAll());
+    }
 
-	public function assignAll(): void {
-		$settings = self::all();
+    public static function getAll(): array
+    {
+        if (self::$static_settings == null) {
+            self::$static_settings = self::query()->pluck('value', 'setting')->all();
+        }
 
-		$this->settings = new \stdClass();
+        return self::$static_settings;
+    }
 
-		foreach($settings as $each){
+    public function assignAll(): void
+    {
+        $settings = self::all();
 
-			if(!empty($each->setting)){
-				$this->settings->{$each->setting} = $each->value;
-			}
-		
-		}
-	}
+        $this->settings = new \stdClass;
 
-	public function scopeGroup(Builder $query, string $group): Builder {
-		return $query->where('group', $group);
-	}
+        foreach ($settings as $each) {
 
-	public function scopeKey(Builder $query, string $key): Builder {
-		return $query->where('setting', $key);
-	}
+            if (! empty($each->setting)) {
+                $this->settings->{$each->setting} = $each->value;
+            }
 
+        }
+    }
+
+    public function scopeGroup(Builder $query, string $group): Builder
+    {
+        return $query->where('group', $group);
+    }
+
+    public function scopeKey(Builder $query, string $key): Builder
+    {
+        return $query->where('setting', $key);
+    }
 }

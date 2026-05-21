@@ -4,218 +4,215 @@ namespace App\Model;
 
 use App\Model\Trait\HasImage;
 use App\Model\Trait\IsActive;
-use \Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class Plugin extends Model
 {
+    use HasImage;
+    use IsActive;
 
-	use HasImage;
-	use IsActive;
+    protected $fillable = ['id', 'root_dir', 'version', 'area', 'permission', 'table_name', 'active'];
 
-	protected $fillable = ['id', 'root_dir', 'version', 'area', 'permission', 'table_name', 'active'];
+    private $info = null;
 
-	private $info = null;
+    protected $imageDir;
 
-	protected $imageDir;
-
-	public function __construct($root_dir = null)
-	{
-		$this->image = "icon.jpg";
-
-		if (isset($root_dir) && !is_array($root_dir)) {
-
-			// FIXME Use first
-			$eloquent = self::rootDir($root_dir)->first();
-
-			if (isset($eloquent)) {
-				parent::__construct($eloquent->attributes);
-			}
-
-			isset($this->root_dir) ?: $this->setRootDir($root_dir);
-
-			$this->imageDir = $this->getPath();
-
-		}
-		
-	}
-
-	public function getDefaultImage(): string
+    public function __construct($root_dir = null)
     {
-        return "resources/images/icons/plugin.png";
+        $this->image = 'icon.jpg';
+
+        if (isset($root_dir) && ! is_array($root_dir)) {
+
+            // FIXME Use first
+            $eloquent = self::rootDir($root_dir)->first();
+
+            if (isset($eloquent)) {
+                parent::__construct($eloquent->attributes);
+            }
+
+            isset($this->root_dir) ?: $this->setRootDir($root_dir);
+
+            $this->imageDir = $this->getPath();
+
+        }
+
     }
 
-	public function scopeRootDir(Builder $query, string $root_dir): Builder
-	{
-		return $query->where('root_dir', $root_dir);
-	}
+    public function getDefaultImage(): string
+    {
+        return 'resources/images/icons/plugin.png';
+    }
 
-	public function scopeActive(Builder $query): Builder
-	{
-		return $query->where('active', '1');
-	}
+    public function scopeRootDir(Builder $query, string $root_dir): Builder
+    {
+        return $query->where('root_dir', $root_dir);
+    }
 
-	public function setRootDir(string $root_dir): void
-	{
-		$this->root_dir = $root_dir;
-	}
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('active', '1');
+    }
 
-	public function exists(): bool
-	{
-		return file_exists($this->getPath());
-	}
+    public function setRootDir(string $root_dir): void
+    {
+        $this->root_dir = $root_dir;
+    }
 
-	public function isInstalled(): bool
-	{
-		return $this->exists() && isset($this->id);
-	}
+    public function exists(): bool
+    {
+        return file_exists($this->getPath());
+    }
 
-	public function isActive(): bool
-	{
-		return $this->isInstalled() && ($this->active == 1);
-	}
+    public function isInstalled(): bool
+    {
+        return $this->exists() && isset($this->id);
+    }
 
-	public function getConfig($config, $default = null)
-	{
+    public function isActive(): bool
+    {
+        return $this->isInstalled() && ($this->active == 1);
+    }
 
-		isset($this->config) ?: $this->config = file_exists($this->getPath() . "/config.php") ? require($this->getPath() . "/config.php") : null;
+    public function getConfig($config, $default = null)
+    {
 
-		return isset($this->config[$config]) ? $this->config[$config] : $default;
-	}
+        isset($this->config) ?: $this->config = file_exists($this->getPath().'/config.php') ? require ($this->getPath().'/config.php') : null;
 
-	public function getName(): string
-	{
-		return $this->getInfo('name') == null ? $this->root_dir : $this->getInfo('name');
-	}
+        return isset($this->config[$config]) ? $this->config[$config] : $default;
+    }
 
-	public function getNamespaceFor($for): string
-	{
-		return "\Plugin\\" . $this->root_dir . "\\App\\" . ucfirst($for) . "\\";
-	}
+    public function getName(): string
+    {
+        return $this->getInfo('name') == null ? $this->root_dir : $this->getInfo('name');
+    }
 
-	public function getSlug(): string
-	{
-		return namespace_to_slug($this->root_dir);
-	}
+    public function getNamespaceFor($for): string
+    {
+        return "\Plugin\\".$this->root_dir.'\\App\\'.ucfirst($for).'\\';
+    }
 
-	public function getPath(): string
-	{
-		return 'plugins' . DIRECTORY_SEPARATOR . $this->root_dir;
-	}
+    public function getSlug(): string
+    {
+        return namespace_to_slug($this->root_dir);
+    }
 
-	public function getDatabaseFilesPath(): string | null
-	{
+    public function getPath(): string
+    {
+        return 'plugins'.DIRECTORY_SEPARATOR.$this->root_dir;
+    }
 
-		$path_to_db = $this->getPath() . '/database';
+    public function getDatabaseFilesPath(): ?string
+    {
 
-		if (file_exists($path_to_db) && is_dir($path_to_db)) {
-			return $path_to_db;
-		}
+        $path_to_db = $this->getPath().'/database';
 
-		return null;
-	}
+        if (file_exists($path_to_db) && is_dir($path_to_db)) {
+            return $path_to_db;
+        }
 
-	private function loadInfoFromFile(): void
-	{
+        return null;
+    }
 
-		$file_without_extension = $this->getPath() . "/plugin_info";
+    private function loadInfoFromFile(): void
+    {
 
-		if (file_exists($file_without_extension . ".yml") && class_exists('\Symfony\Component\Yaml\Yaml')) {
-			$this->setAllInfo((object) \Symfony\Component\Yaml\Yaml::parse(
-				file_get_contents($file_without_extension . ".yml"),
-				\Symfony\Component\Yaml\Yaml::PARSE_OBJECT
-			));
-		} else if (file_exists($file_without_extension . ".json")) {
-			$this->setAllInfo(json_decode(file_get_contents($file_without_extension . ".json")));
-		} else if (file_exists($file_without_extension . ".xml")) {
-			$this->setAllInfo(simplexml_load_file($file_without_extension . ".xml"));
-		}
-	}
+        $file_without_extension = $this->getPath().'/plugin_info';
 
-	public function hasInfo(): bool
-	{
-		return isset($this->info);
-	}
+        if (file_exists($file_without_extension.'.yml') && class_exists('\Symfony\Component\Yaml\Yaml')) {
+            $this->setAllInfo((object) \Symfony\Component\Yaml\Yaml::parse(
+                file_get_contents($file_without_extension.'.yml'),
+                \Symfony\Component\Yaml\Yaml::PARSE_OBJECT
+            ));
+        } elseif (file_exists($file_without_extension.'.json')) {
+            $this->setAllInfo(json_decode(file_get_contents($file_without_extension.'.json')));
+        } elseif (file_exists($file_without_extension.'.xml')) {
+            $this->setAllInfo(simplexml_load_file($file_without_extension.'.xml'));
+        }
+    }
 
-	public function setAllInfo($all_info): void
-	{
-		$this->info = $all_info;
-	}
+    public function hasInfo(): bool
+    {
+        return isset($this->info);
+    }
 
-	public function getInfo($info)
-	{
+    public function setAllInfo($all_info): void
+    {
+        $this->info = $all_info;
+    }
 
-		if (!$this->hasInfo()) {
-			$this->loadInfoFromFile();
-		}
+    public function getInfo($info)
+    {
 
-		return isset($this->info->{$info}) ? $this->info->{$info} : null;
-	}
+        if (! $this->hasInfo()) {
+            $this->loadInfoFromFile();
+        }
 
-	public function getShortCode(): string
-	{
-		return "{[" . $this->root_dir . "]}";
-	}
+        return isset($this->info->{$info}) ? $this->info->{$info} : null;
+    }
 
+    public function getShortCode(): string
+    {
+        return '{['.$this->root_dir.']}';
+    }
 
-	public function hasRegisterClass(): bool
-	{
-		return class_exists($this->getRegisterClass());
-	}
+    public function hasRegisterClass(): bool
+    {
+        return class_exists($this->getRegisterClass());
+    }
 
-	public function getRegisterClass(): string
-	{
-		return "\Plugin\\" . $this->root_dir . "\Register";
-	}
+    public function getRegisterClass(): string
+    {
+        return "\Plugin\\".$this->root_dir."\Register";
+    }
 
-	public function hasRegister($register): bool
-	{
-		return method_exists($this->getRegisterClass(), $register);
-	}
+    public function hasRegister($register): bool
+    {
+        return method_exists($this->getRegisterClass(), $register);
+    }
 
+    public function getRegister($register, $default = null)
+    {
 
-	public function getRegister($register, $default = null)
-	{
+        $plugin_namespace = $this->getRegisterClass();
 
-		$plugin_namespace = $this->getRegisterClass();
+        if ($this->hasRegister($register)) {
 
-		if ($this->hasRegister($register)) {
+            $instance = new $plugin_namespace;
 
-			$instance = new $plugin_namespace();
+            if ($instance instanceof \App\Interfaces\PluginInterface) {
+                return $instance->$register();
+            }
+        }
 
-			if ($instance instanceof \App\Interfaces\PluginInterface) {
-				return $instance->$register();
-			}
-		}
+        return $default;
+    }
 
-		return $default;
-	}
+    public function isUpdatable(): bool
+    {
 
-	public function isUpdatable(): bool
-	{
+        if ($this->isInstalled()
+           && $this->isCompatibleWithCore()
+           && \Composer\Semver\Comparator::lessThan(ltrim(empty($this->version) ? '0.0' : $this->version, 'v'), ltrim($this->getInfo('version'), 'v'))
+        ) {
+            return true;
+        }
 
-		if($this->isInstalled()
-		   && $this->isCompatibleWithCore()
-		   && \Composer\Semver\Comparator::lessThan(ltrim(empty($this->version)? "0.0" : $this->version, 'v'), ltrim($this->getInfo('version'),'v')) 
-		){
-			return true;
-		}
-		
-		return false;
-	}
+        return false;
+    }
 
-	public function getRequirements()
-	{
-		return $this->getInfo('requires');
-	}
+    public function getRequirements()
+    {
+        return $this->getInfo('requires');
+    }
 
-	public function getRequiredCoreVersion(): string
-	{
-		return ltrim(empty($this->getInfo('requires')->core)? 'v0.0.0' : $this->getInfo('requires')->core, 'v');
-	}
+    public function getRequiredCoreVersion(): string
+    {
+        return ltrim(empty($this->getInfo('requires')->core) ? 'v0.0.0' : $this->getInfo('requires')->core, 'v');
+    }
 
-	public function isCompatibleWithCore(): bool
-	{
-		return \Composer\Semver\Comparator::greaterThanOrEqualTo(ltrim(config('horizontcms.version'), 'v'), $this->getRequiredCoreVersion());
-	}
+    public function isCompatibleWithCore(): bool
+    {
+        return \Composer\Semver\Comparator::greaterThanOrEqualTo(ltrim(config('horizontcms.version'), 'v'), $this->getRequiredCoreVersion());
+    }
 }

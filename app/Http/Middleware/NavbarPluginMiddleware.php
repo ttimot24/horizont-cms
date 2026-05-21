@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Lavary\Menu\Facade as Menu;
 
 class NavbarPluginMiddleware
@@ -12,13 +12,11 @@ class NavbarPluginMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
-        if (app()->plugins != null && !app()->plugins->isEmpty()) {
+        if (app()->plugins != null && ! app()->plugins->isEmpty()) {
 
             $main_menu = Menu::get('MainMenu');
             $right_menu = Menu::get('RightMenu');
@@ -28,7 +26,7 @@ class NavbarPluginMiddleware
                     $permissionKey = strtolower($plugin->root_dir);
 
                     // Használjuk a Gate-et a hozzáférés ellenőrzésére
-                    if (!Gate::allows('view', $permissionKey)) {
+                    if (! Gate::allows('view', $permissionKey)) {
                         continue;
                     }
 
@@ -37,11 +35,11 @@ class NavbarPluginMiddleware
                     foreach ($plugin_nav as $key => $item) {
 
                         $item['url'] = $item['url'] ?? rescue(
-                            fn() => route('plugin.' . str_slug($plugin->root_dir) . '.start.index'),
-                            fn() => plugin_link(namespace_to_slug($plugin->root_dir))
+                            fn () => route('plugin.'.str_slug($plugin->root_dir).'.start.index'),
+                            fn () => plugin_link(namespace_to_slug($plugin->root_dir))
                         );
 
-                        if (!isset($item['menu']) || $item['menu'] === 'main') {
+                        if (! isset($item['menu']) || $item['menu'] === 'main') {
                             if (isset($item['submenu_of'])) {
                                 $main_menu->find($item['submenu_of'])->add($item['label'], $item['url'])->id($key);
                             } else {
@@ -57,11 +55,11 @@ class NavbarPluginMiddleware
                     }
                 } catch (\Throwable $e) {
                     // Log the error or handle it as needed
-                   /* \Log::warning('Error processing plugin navigation: ' . $e->getMessage(), [
-                        'plugin' => $plugin->root_dir,
-                        'exception' => $e,
-                    ]); */
-                    
+                    /* \Log::warning('Error processing plugin navigation: ' . $e->getMessage(), [
+                         'plugin' => $plugin->root_dir,
+                         'exception' => $e,
+                     ]); */
+
                     // Optionally, you can continue or rethrow the exception based on your needs
                     continue;
                 }

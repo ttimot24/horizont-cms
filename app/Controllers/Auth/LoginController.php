@@ -2,15 +2,15 @@
 
 namespace App\Controllers\Auth;
 
-use Illuminate\Routing\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Contracts\View\View;
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Routing\Redirector;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
@@ -48,15 +48,12 @@ class LoginController extends Controller
     }
 
     /**
-     *
      * Returns if email or username is for authentication.
      */
-
     public function username(): string
     {
         return 'email';
     }
-
 
     /**
      * Show the application login form.
@@ -66,7 +63,7 @@ class LoginController extends Controller
     public function showLoginForm(): View|Factory
     {
 
-        return view(Config::get('horizontcms.auth_view', 'auth') . '.login', [
+        return view(Config::get('horizontcms.auth_view', 'auth').'.login', [
             'app_name' => Config::get('app.name'),
             'admin_logo' => url(Config::get('horizontcms.admin_logo')),
         ]);

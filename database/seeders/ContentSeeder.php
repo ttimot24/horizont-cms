@@ -2,18 +2,14 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-
-use Illuminate\Support\Facades\DB;
-
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ContentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run(): void
     {
@@ -23,14 +19,14 @@ class ContentSeeder extends Seeder
             'slug' => 'home',
             'url' => '',
             'visibility' => 1,
-            'parent_id' => NULL,
+            'parent_id' => null,
             'queue' => 1,
             'page' => 'Welcome on the homepage of your site!',
             'author_id' => 1,
             'image' => '',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            'updated_at' => NULL,
-            'active' => 1
+            'updated_at' => null,
+            'active' => 1,
         ]);
 
         DB::table('pages')->insert([
@@ -40,14 +36,14 @@ class ContentSeeder extends Seeder
             'language' => 'en',
             'url' => 'blog.php',
             'visibility' => 1,
-            'parent_id' => NULL,
+            'parent_id' => null,
             'queue' => 1,
             'page' => '',
             'author_id' => 1,
             'image' => '',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            'updated_at' => NULL,
-            'active' => 1
+            'updated_at' => null,
+            'active' => 1,
         ]);
 
         DB::table('blogposts')->insert([
@@ -61,8 +57,8 @@ class ContentSeeder extends Seeder
             'author_id' => 1,
             'image' => '',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            'updated_at' => NULL,
-            'active' => 1
+            'updated_at' => null,
+            'active' => 1,
         ]);
 
         DB::table('blogpost_categories')->insert([
@@ -72,7 +68,7 @@ class ContentSeeder extends Seeder
             'author_id' => 1,
             'image' => '',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            'updated_at' => NULL,
+            'updated_at' => null,
         ]);
 
         DB::table('blogpost_categories_pivot')->insert([
@@ -80,9 +76,8 @@ class ContentSeeder extends Seeder
             'blogpost_id' => 1,
             'blogpost_category_id' => 1,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            'updated_at' => NULL,
+            'updated_at' => null,
         ]);
-
 
         DB::table('header_images')->insert([
             'id' => 1,
@@ -90,9 +85,8 @@ class ContentSeeder extends Seeder
             'type' => 'image',
             'image' => 'abovethecity.jpg',
             'author_id' => 1,
-            'active' => 1
+            'active' => 1,
         ]);
-
 
     }
 }

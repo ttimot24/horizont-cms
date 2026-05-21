@@ -52,7 +52,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
-    
+
     'asset_url' => env('ASSET_URL', null),
 
     /*
@@ -66,7 +66,7 @@ return [
     |
     */
 
-    'timezone' => env('APP_TIMEZONE','UTC'),
+    'timezone' => env('APP_TIMEZONE', 'UTC'),
 
     /*
     |--------------------------------------------------------------------------
@@ -105,7 +105,7 @@ return [
     |
     */
 
-    'key' => env('APP_KEY','base64:cXatUDE+rFWEqFUVsp8mksGPWWnSLlb9FNHHWZ3sPe0='),
+    'key' => env('APP_KEY', 'base64:cXatUDE+rFWEqFUVsp8mksGPWWnSLlb9FNHHWZ3sPe0='),
 
     'cipher' => 'AES-256-CBC',
 
@@ -151,8 +151,7 @@ return [
         /*
          * Package Service Providers...
          */
-        //Barryvdh\Debugbar\ServiceProvider::class,
-
+        // Barryvdh\Debugbar\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -167,11 +166,11 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        
+
         Lavary\Menu\ServiceProvider::class,
 
         Madnest\Madzipper\MadzipperServiceProvider::class,
-        Jackiedo\LogReader\LogReaderServiceProvider::class
+        Jackiedo\LogReader\LogReaderServiceProvider::class,
     ],
 
     /*
@@ -220,7 +219,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        'Menu'       => Lavary\Menu\Facade::class,
+        'Menu' => Lavary\Menu\Facade::class,
         'Settings' => \App\Model\Settings::class,
         'Website' => \App\Services\Website::class,
         'Zipper' => Madnest\Madzipper\Madzipper::class,

@@ -2,25 +2,22 @@
 
 namespace App\Controllers;
 
+use App\Model\Settings;
+use App\Services\DashboardWidget;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Config;
-use App\Services\DashboardWidget;
-
-use App\Model\Settings;
 
 class SettingsController extends Controller
 {
-
     public function before()
     {
         File::ensureDirectoryExists('images/logos');
         File::ensureDirectoryExists('images/favicons');
     }
-
 
     public function store(Request $request)
     {
@@ -40,45 +37,45 @@ class SettingsController extends Controller
         return collect([
             DashboardWidget::builder()
                 ->setName(trans('settings.website'))
-                ->setIcon("fa fa-globe")
+                ->setIcon('fa fa-globe')
                 ->setLink(route('settings.show', ['setting' => 'website']))
                 ->build(),
             DashboardWidget::builder()
                 ->setName(trans('settings.admin_area'))
-                ->setIcon("fa fa-desktop")
+                ->setIcon('fa fa-desktop')
                 ->setLink(route('settings.show', ['setting' => 'adminarea']))
                 ->build(),
             DashboardWidget::builder()
                 ->setName(trans('settings.update_center'))
-                ->setIcon("fa fa-arrow-circle-up")
+                ->setIcon('fa fa-arrow-circle-up')
                 ->setLink(route('upgrade.index'))
                 ->build(),
             DashboardWidget::builder()
                 ->setName(trans('settings.server'))
-                ->setIcon("fa fa-server")
+                ->setIcon('fa fa-server')
                 ->setLink(route('settings.show', ['setting' => 'server']))
                 ->build(),
             DashboardWidget::builder()
                 ->setName(trans('settings.social_media'))
-                ->setIcon("fa fa-thumbs-up")
+                ->setIcon('fa fa-thumbs-up')
                 ->setLink(route('settings.show', ['setting' => 'socialmedia']))
                 ->build(),
             DashboardWidget::builder()
                 ->setName(trans('Log'))
-                ->setIcon("fa fa-bug")
+                ->setIcon('fa fa-bug')
                 ->setLink(route('log.index'))
                 ->build(),
             DashboardWidget::builder()
                 ->setName(trans('settings.database'))
-                ->setIcon("fa fa-database")
+                ->setIcon('fa fa-database')
                 ->setLink(route('settings.show', ['setting' => 'database']))
                 ->build(),
             DashboardWidget::builder()
                 ->setName(trans('settings.scheduler'))
-                ->setIcon("fa fa-clock")
+                ->setIcon('fa fa-clock')
                 ->setLink(route('schedule.index'))
-                ->build()
-            ]);
+                ->build(),
+        ]);
     }
 
     /**
@@ -107,9 +104,9 @@ class SettingsController extends Controller
     public function update(Request $request, $id)
     {
 
-        if (\App\Model\Settings::where("setting", $request->input("setting"))->update(['value' => $id])) {
+        if (\App\Model\Settings::where('setting', $request->input('setting'))->update(['value' => $id])) {
             return redirect()->back()->withMessage(['success' => trans('message.successfully_set_homepage')]);
-        } 
+        }
 
         return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong')]);
     }
@@ -123,7 +120,7 @@ class SettingsController extends Controller
     public function website()
     {
         return view('settings.website', [
-            'available_logos' => array_slice(scandir("storage/images/logos"), 2),
+            'available_logos' => array_slice(scandir('storage/images/logos'), 2),
             'user_roles' => \App\Model\UserRole::all(),
         ]);
     }
@@ -137,7 +134,7 @@ class SettingsController extends Controller
     public function adminarea()
     {
         return view('settings.adminarea', [
-            'available_logos' => array_slice(scandir("storage/images/logos"), 2),
+            'available_logos' => array_slice(scandir('storage/images/logos'), 2),
             'dateFormats' => ['Y.m.d H:i:s', 'Y-m-d H:i:s', 'Y. M. d H:i:s', 'd-m-Y H:i:s', 'd/m/Y H:i:s', 'm/d/Y H:i:s'],
         ]);
     }
@@ -148,7 +145,6 @@ class SettingsController extends Controller
             'server' => request()->server(),
         ]);
     }
-
 
     public function database()
     {
@@ -170,12 +166,10 @@ class SettingsController extends Controller
         }
 
         return view('settings.database', [
-            'tables' =>  $tables,
+            'tables' => $tables,
 
         ]);
     }
-
-
 
     public function socialmedia()
     {
@@ -183,5 +177,4 @@ class SettingsController extends Controller
             'all_socialmedia' => \SocialLink::all(),
         ]);
     }
-
 }

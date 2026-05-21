@@ -3,14 +3,12 @@
 namespace App\Controllers;
 
 use App\Controllers\Trait\UploadsImage;
+use App\Model\BlogpostCategory;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use \Illuminate\Http\Response;
-use App\Model\BlogpostCategory;
 
 class BlogpostCategoryController extends Controller
 {
-
     use UploadsImage;
 
     protected $itemPerPage = 25;
@@ -25,11 +23,11 @@ class BlogpostCategoryController extends Controller
 
         $all_categories = BlogpostCategory::paginateSortAndFilter();
 
-
         if ($request->wantsJson()) {
-            foreach($request->get('with', []) as $relation) {
+            foreach ($request->get('with', []) as $relation) {
                 $all_categories->load($relation);
             }
+
             return response()->json($all_categories);
         }
 
@@ -43,14 +41,14 @@ class BlogpostCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request) {
+    public function create(Request $request)
+    {
         return $this->index($request);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -78,9 +76,10 @@ class BlogpostCategoryController extends Controller
     {
 
         if ($request->wantsJson()) {
-            foreach($request->get('with', []) as $relation) {
+            foreach ($request->get('with', []) as $relation) {
                 $blogpostcategory->load($relation);
             }
+
             return response()->json($blogpostcategory);
         }
 
@@ -104,7 +103,6 @@ class BlogpostCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

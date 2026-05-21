@@ -2,15 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Model\BlogpostComment;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-use App\Model\BlogpostComment;
-
 class BlogpostCommentController extends Controller
 {
-
-
     /**
      * Show the form for creating a new resource.
      *
@@ -24,7 +21,6 @@ class BlogpostCommentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -54,7 +50,6 @@ class BlogpostCommentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -64,7 +59,6 @@ class BlogpostCommentController extends Controller
         $blogpost_comment->blogpost_id = $request->input('blogpost_id');
         $blogpost_comment->comment = $request->input('comment');
         $blogpost_comment->author()->associate($request->user());
-
 
         return redirect()->back()->withMessage(
             $blogpost_comment->save() ? ['success' => trans('message.successfully_updated_blogpost_comment')]
@@ -80,7 +74,6 @@ class BlogpostCommentController extends Controller
      */
     public function destroy(BlogpostComment $blogpostcomment)
     {
-
 
         return redirect()->back()->withMessage(
             $blogpostcomment->delete() ? ['success' => trans('message.successfully_deleted_blogpost_comment')]

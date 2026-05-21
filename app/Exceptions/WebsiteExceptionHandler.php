@@ -4,11 +4,9 @@ namespace App\Exceptions;
 
 use Exception;
 use Throwable;
-use \App\Exceptions\Handler;
 
 class WebsiteExceptionHandler extends Handler
 {
-
     /**
      * Render an exception into an HTTP response.
      *
@@ -19,7 +17,7 @@ class WebsiteExceptionHandler extends Handler
     public function render($request, Throwable $exception)
     {
 
-        if($request->settings['website_debug'] == 1 && view()->exists('theme::errors.exception')){
+        if ($request->settings['website_debug'] == 1 && view()->exists('theme::errors.exception')) {
             return response()->view('theme::errors.exception', ['exception' => $exception]);
         }
 

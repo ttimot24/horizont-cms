@@ -7,19 +7,16 @@ use Illuminate\Http\Request;
 
 class WebsiteMiddleware
 {
-
     private $widgets;
 
-    public function __construct(\App\Services\ShortCode $shortcode_engine){
+    public function __construct(\App\Services\ShortCode $shortcode_engine)
+    {
         $this->widgets = $shortcode_engine;
     }
-
 
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)

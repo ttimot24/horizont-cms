@@ -5,13 +5,12 @@ namespace App\Providers;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Config;
 
 class RouteServiceProvider extends ServiceProvider
 {
-
     /**
      * This namespace is applied to your controller routes.
      *
@@ -19,7 +18,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    //protected $namespace = 'App\Http\Controllers';
+    // protected $namespace = 'App\Http\Controllers';
     protected $namespace = 'App\Controllers';
 
     /**
@@ -46,5 +45,4 @@ class RouteServiceProvider extends ServiceProvider
 
         });
     }
-
 }

@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use Codedge\Updater\UpdaterManager;
+use Illuminate\Console\Command;
 
 class UpgradeCommand extends Command
 {
@@ -26,8 +26,7 @@ class UpgradeCommand extends Command
      *
      * @return void
      */
-
-    private UpdaterManager|null $updateManager = null;
+    private ?UpdaterManager $updateManager = null;
 
     public function __construct(UpdaterManager $updater)
     {
@@ -45,20 +44,20 @@ class UpgradeCommand extends Command
 
                 $latestVersion = $this->updateManager->source()->getVersionAvailable();
 
-                //Install new update
-                echo 'New Version: ' . $latestVersion . '<br>';
+                // Install new update
+                echo 'New Version: '.$latestVersion.'<br>';
                 echo 'Installing Updates: <br>';
 
                 $release = $this->updateManager->source()->fetch($latestVersion);
 
                 $result = $this->updateManager->source()->update($release);
 
-                echo $result ? 'Update successful<br>' : 'Update failed: ' . $result . '!<br>';
+                echo $result ? 'Update successful<br>' : 'Update failed: '.$result.'!<br>';
             } else {
                 echo 'Current Version is up to date<br>';
             }
         } catch (\Exception $e) {
-            die('Could not check for updates! ' . $e->getMessage());
+            exit('Could not check for updates! '.$e->getMessage());
         }
     }
 }

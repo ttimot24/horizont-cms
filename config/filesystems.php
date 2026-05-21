@@ -59,20 +59,17 @@ return [
             'visibility' => 'public',
         ],
 
-
         'plugins' => [
             'driver' => 'local',
             'root' => base_path('plugins'),
         ],
-
 
         'themes' => [
             'driver' => 'local',
             'root' => base_path('themes'),
         ],
 
-
-      /*  's3' => [
+        /*  's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),

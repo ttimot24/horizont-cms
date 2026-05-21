@@ -16,19 +16,14 @@ trait PaginateSortAndFilter
 
     /**
      * Get the filterable fields.
-     *
-     * @return array
      */
     public function getFilterableFields(): array
     {
-        return $this->filterableFields? $this->filterableFields : [];
+        return $this->filterableFields ? $this->filterableFields : [];
     }
 
     /**
      * Set the filterable fields.
-     *
-     * @param array $filterableFields
-     * @return void
      */
     public function setFilterableFields(array $filterableFields): void
     {
@@ -37,8 +32,6 @@ trait PaginateSortAndFilter
 
     /**
      * Get the default size for pagination.
-     *
-     * @return int
      */
     public function getDefaultSize(): int
     {
@@ -47,22 +40,16 @@ trait PaginateSortAndFilter
 
     /**
      * Set the default size for pagination.
-     *
-     * @param int $defaultSize
-     * @return void
      */
     public function setDefaultSize(int $defaultSize): void
     {
         $this->defaultSize = $defaultSize;
     }
 
-
     /**
      * Scope a query to paginate, sort, and filter results.
      *
-     * @param Builder $query
-     * @param Request|null $request
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @param  Request|null  $request
      */
     public function scopePaginateSortAndFilter(Builder $query, $paginateSortAndFilter = null): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
@@ -74,16 +61,16 @@ trait PaginateSortAndFilter
 
                 $value = trim($value);
 
-                if (!in_array($field, $this->getFilterableFields() ?? [])) {
+                if (! in_array($field, $this->getFilterableFields() ?? [])) {
                     continue; // Skip fields that are not enabled for filtering
                 }
                 if (is_array($value)) {
                     $query->whereIn($field, $value);
                 } else {
-                    if(isset($paginateSortAndFilter['relation']) && $paginateSortAndFilter['relation']==='or'){
-                        $query->orWhere($field, 'like', "%".$value."%");
+                    if (isset($paginateSortAndFilter['relation']) && $paginateSortAndFilter['relation'] === 'or') {
+                        $query->orWhere($field, 'like', '%'.$value.'%');
                     } else {
-                        $query->where($field, 'like', "%".$value."%");
+                        $query->where($field, 'like', '%'.$value.'%');
                     }
                 }
             }
@@ -100,6 +87,7 @@ trait PaginateSortAndFilter
 
         // Pagination
         $perPage = (int) ($paginateSortAndFilter['size'] ?? $this->defaultSize);
+
         return $query->paginate($perPage)->appends($paginateSortAndFilter);
     }
 }

@@ -2,21 +2,18 @@
 
 namespace App\Providers;
 
+use App\Model\Settings;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Request;
-use App\Model\Settings;
 
 class PluginServiceProvider extends ServiceProvider
 {
-
     protected $kernel;
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
     public function boot(\Illuminate\Contracts\Http\Kernel $kernel): void
     {
@@ -41,9 +38,9 @@ class PluginServiceProvider extends ServiceProvider
                 $this->registerPluginJSScripts();
             }
         } catch (\Exception $e) {
-            if (Settings::get('website_debug') == 1 && !Request::is(config('horizontcms.backend_prefix') . "*")) {
+            if (Settings::get('website_debug') == 1 && ! Request::is(config('horizontcms.backend_prefix').'*')) {
                 throw $e;
-            } else if (Settings::get('admin_debug') == 1 && Request::is(config('horizontcms.backend_prefix') . "*")) {
+            } elseif (Settings::get('admin_debug') == 1 && Request::is(config('horizontcms.backend_prefix').'*')) {
                 throw $e;
             }
         }
@@ -68,27 +65,24 @@ class PluginServiceProvider extends ServiceProvider
         foreach (app()->plugins as $plugin) {
 
             foreach ($plugin->getRegister('injectAdminJs', []) as $js) {
-                array_push($jsPlugins, $plugin->getPath() . '/' . $js);
+                array_push($jsPlugins, $plugin->getPath().'/'.$js);
             }
         }
 
         View::share('jsplugins', $jsPlugins);
     }
 
-
     private function registerPluginAutoLoaders(): void
     {
 
-
         foreach ($this->app->plugins as $plugin) {
 
-            $autoloader =  base_path($plugin->getPath() . "/vendor/autoload.php");
+            $autoloader = base_path($plugin->getPath().'/vendor/autoload.php');
             if (file_exists($autoloader)) {
-                require_once($autoloader);
+                require_once $autoloader;
             }
         }
     }
-
 
     private function registerPluginProviders(): void
     {
@@ -130,26 +124,23 @@ class PluginServiceProvider extends ServiceProvider
         }
     }
 
-
-
     private function registerPluginLanguage(): void
     {
 
-        if (Request::is(config('horizontcms.backend_prefix') . "/plugin/run/*")) {
+        if (Request::is(config('horizontcms.backend_prefix').'/plugin/run/*')) {
 
             $plugin = $this->app->plugins->get(studly_case(Request::segment(4)));
 
             if ($plugin != null) {
-                $this->loadTranslationsFrom(base_path($plugin->getPath() . "/resources/lang"), 'plugin');
+                $this->loadTranslationsFrom(base_path($plugin->getPath().'/resources/lang'), 'plugin');
             }
         }
     }
 
-
     private function registerPluginConsoleCommands(): void
     {
         foreach ($this->app->plugins as $plugin) {
-            if (!$plugin->isActive()) {
+            if (! $plugin->isActive()) {
                 continue;
             }
             foreach ($plugin->getRegister('cliCommands', []) as $command) {
@@ -161,15 +152,14 @@ class PluginServiceProvider extends ServiceProvider
     public function registerPluginViewPaths(): void
     {
 
-
         foreach ($this->app->plugins as $plugin) {
-            if (!$plugin->isActive()) {
+            if (! $plugin->isActive()) {
                 continue;
             }
 
             \View::addNamespace(str_slug($plugin->root_dir), [
-                $plugin->getPath() . DIRECTORY_SEPARATOR . "app" . DIRECTORY_SEPARATOR . "View",
-                $plugin->getPath() . DIRECTORY_SEPARATOR . "resources" . DIRECTORY_SEPARATOR . "views",
+                $plugin->getPath().DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'View',
+                $plugin->getPath().DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'views',
             ]);
         }
     }
@@ -177,29 +167,28 @@ class PluginServiceProvider extends ServiceProvider
     protected function registerPluginRoutes(): void
     {
 
-        if (!isset($this->app->plugins)) {
+        if (! isset($this->app->plugins)) {
             return;
         }
 
         foreach ($this->app->plugins as $plugin) {
 
-            if (file_exists($plugin->getPath() . '/routes/web.php')) {
+            if (file_exists($plugin->getPath().'/routes/web.php')) {
 
                 Route::group(
                     $plugin->getRegister('webRouteOptions', ['middleware' => 'web']),
                     function ($router) use ($plugin): void {
-                        require base_path($plugin->getPath() . '/routes/web.php');
+                        require base_path($plugin->getPath().'/routes/web.php');
                     }
                 );
             }
 
-
-            if (file_exists($plugin->getPath() . '/routes/api.php')) {
+            if (file_exists($plugin->getPath().'/routes/api.php')) {
 
                 Route::group(
                     $plugin->getRegister('apiRouteOptions', ['middleware' => 'api']),
                     function ($router) use ($plugin): void {
-                        require base_path($plugin->getPath() . '/routes/api.php');
+                        require base_path($plugin->getPath().'/routes/api.php');
                     }
                 );
             }
@@ -220,10 +209,6 @@ class PluginServiceProvider extends ServiceProvider
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register(): void
-    {
-    }
+    public function register(): void {}
 }

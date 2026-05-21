@@ -41,25 +41,25 @@ return [
 
     'repository_types' => [
         'github' => [
-            'type'                 => 'github',
-            'repository_vendor'    => env('SELF_UPDATER_REPO_VENDOR', 'ttimot24'),
-            'repository_name'      => env('SELF_UPDATER_REPO_NAME', 'HorizontCMS'),
-            'repository_url'       => 'https://github.com/ttimot24/HorizontCMS',
-            'download_path'        => env('SELF_UPDATER_DOWNLOAD_PATH', storage_path('framework/upgrade/temp')),
+            'type' => 'github',
+            'repository_vendor' => env('SELF_UPDATER_REPO_VENDOR', 'ttimot24'),
+            'repository_name' => env('SELF_UPDATER_REPO_NAME', 'HorizontCMS'),
+            'repository_url' => 'https://github.com/ttimot24/HorizontCMS',
+            'download_path' => env('SELF_UPDATER_DOWNLOAD_PATH', storage_path('framework/upgrade/temp')),
             'private_access_token' => env('SELF_UPDATER_GITHUB_PRIVATE_ACCESS_TOKEN', ''),
-            'use_branch'           => env('SELF_UPDATER_USE_BRANCH', ''),
+            'use_branch' => env('SELF_UPDATER_USE_BRANCH', ''),
         ],
         'gitlab' => [
-            'type'                 => 'gitlab',
-            'repository_id'        => env('SELF_UPDATER_REPO_URL', ''),
-            'download_path'        => env('SELF_UPDATER_DOWNLOAD_PATH', storage_path('framework/upgrade/temp')),
+            'type' => 'gitlab',
+            'repository_id' => env('SELF_UPDATER_REPO_URL', ''),
+            'download_path' => env('SELF_UPDATER_DOWNLOAD_PATH', storage_path('framework/upgrade/temp')),
             'private_access_token' => env('SELF_UPDATER_GITLAB_PRIVATE_ACCESS_TOKEN', ''),
         ],
         'http' => [
-            'type'                 => 'http',
-            'repository_url'       => env('SELF_UPDATER_REPO_URL', ''),
-            'pkg_filename_format'  => env('SELF_UPDATER_PKG_FILENAME_FORMAT', 'v_VERSION_'),
-            'download_path'        => env('SELF_UPDATER_DOWNLOAD_PATH', storage_path('framework/upgrade/temp')),
+            'type' => 'http',
+            'repository_url' => env('SELF_UPDATER_REPO_URL', ''),
+            'pkg_filename_format' => env('SELF_UPDATER_PKG_FILENAME_FORMAT', 'v_VERSION_'),
+            'download_path' => env('SELF_UPDATER_DOWNLOAD_PATH', storage_path('framework/upgrade/temp')),
             'private_access_token' => env('SELF_UPDATER_HTTP_PRIVATE_ACCESS_TOKEN', ''),
         ],
     ],
@@ -111,7 +111,7 @@ return [
     'notifications' => [
         'notifications' => [
             \Codedge\Updater\Notifications\Notifications\UpdateSucceeded::class => ['mail'],
-            \Codedge\Updater\Notifications\Notifications\UpdateFailed::class    => ['mail'],
+            \Codedge\Updater\Notifications\Notifications\UpdateFailed::class => ['mail'],
             \Codedge\Updater\Notifications\Notifications\UpdateAvailable::class => ['mail'],
         ],
 
@@ -124,12 +124,12 @@ return [
         'mail' => [
             'to' => [
                 'address' => env('SELF_UPDATER_MAILTO_ADDRESS', 'notifications@example.com'),
-                'name'    => env('SELF_UPDATER_MAILTO_NAME', ''),
+                'name' => env('SELF_UPDATER_MAILTO_NAME', ''),
             ],
 
             'from' => [
                 'address' => env('SELF_UPDATER_MAIL_FROM_ADDRESS', 'updater@example.com'),
-                'name'    => env('SELF_UPDATER_MAIL_FROM_NAME', 'Update'),
+                'name' => env('SELF_UPDATER_MAIL_FROM_NAME', 'Update'),
             ],
         ],
     ],
@@ -142,20 +142,20 @@ return [
 
     'artisan_commands' => [
         'pre_update' => [
-            //'command:signature' => [
+            // 'command:signature' => [
             //    'class' => Command class
             //    'params' => []
-            //]
+            // ]
         ],
         'post_update' => [
-           // \Artisan::call("migrate", ['--no-interaction' => '', '--force' => true]);
+            // \Artisan::call("migrate", ['--no-interaction' => '', '--force' => true]);
             'command:migrate' => [
                 'class' => \Illuminate\Database\Console\Migrations\MigrateCommand::class,
                 'params' => [
                     'no-interaction' => '',
-                    'force' => true
-                ]
-            ]
+                    'force' => true,
+                ],
+            ],
         ],
     ],
 

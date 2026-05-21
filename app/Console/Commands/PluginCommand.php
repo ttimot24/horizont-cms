@@ -30,14 +30,12 @@ class PluginCommand extends Command
         parent::__construct();
     }
 
-
-
     public function handle(): void
     {
 
         $selectedPlugin = $this->argument('plugin');
 
-        echo PHP_EOL . "Selected plugin: " . $selectedPlugin . PHP_EOL . PHP_EOL;
+        echo PHP_EOL.'Selected plugin: '.$selectedPlugin.PHP_EOL.PHP_EOL;
 
         if ($this->option('download')) {
             $this->download($selectedPlugin);
@@ -64,63 +62,55 @@ class PluginCommand extends Command
         }
     }
 
-
-
     private function download(string $selectedPlugin): void
     {
 
-        echo "Download..." . PHP_EOL;
-        throw new \Exception("This function is not supported yet!");
+        echo 'Download...'.PHP_EOL;
+        throw new \Exception('This function is not supported yet!');
     }
 
     private function remove(string $selectedPlugin): void
     {
 
-        echo "Remove..." . PHP_EOL;
-        throw new \Exception("This function is not supported yet!");
+        echo 'Remove...'.PHP_EOL;
+        throw new \Exception('This function is not supported yet!');
     }
-
 
     private function install(string $selectedPlugin): void
     {
 
-        echo "Install..." . PHP_EOL;
-        throw new \Exception("This function is not supported yet!");
+        echo 'Install...'.PHP_EOL;
+        throw new \Exception('This function is not supported yet!');
     }
-
 
     private function uninstall(string $selectedPlugin): void
     {
 
-        echo "Uninstall..." . PHP_EOL;
-        throw new \Exception("This function is not supported yet!");
+        echo 'Uninstall...'.PHP_EOL;
+        throw new \Exception('This function is not supported yet!');
     }
-
-
 
     private function activate(string $selectedPlugin): void
     {
 
-        echo "Activate..." . PHP_EOL;
+        echo 'Activate...'.PHP_EOL;
 
         if (\App\Model\Plugin::where('root_dir', $selectedPlugin)->update(['active' => 1])) {
-            echo "Plugin successfully activated!" . PHP_EOL;
+            echo 'Plugin successfully activated!'.PHP_EOL;
         } else {
-            echo "Could not activate the plugin!" . PHP_EOL;
+            echo 'Could not activate the plugin!'.PHP_EOL;
         }
     }
-
 
     private function deactivate(string $selectedPlugin): void
     {
 
-        echo "Deactivate..." . PHP_EOL;
-
+        echo 'Deactivate...'.PHP_EOL;
 
         if (\App\Model\Plugin::where('root_dir', $selectedPlugin)->update(['active' => 0])) {
-            echo "Plugin successfully deactivated!" . PHP_EOL;
+            echo 'Plugin successfully deactivated!'.PHP_EOL;
         } else {
-            echo "Could not deactivate the plugin!" . PHP_EOL;
+            echo 'Could not deactivate the plugin!'.PHP_EOL;
         }
     }
 }

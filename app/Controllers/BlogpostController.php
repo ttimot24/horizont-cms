@@ -3,17 +3,16 @@
 namespace App\Controllers;
 
 use App\Controllers\Trait\UploadsImage;
-use \Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use App\Model\Blogpost;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
 class BlogpostController extends Controller
 {
-
     use UploadsImage;
 
-    //TODO Use model path
+    // TODO Use model path
     protected $imagePath = 'images/blogposts';
 
     /**
@@ -23,19 +22,20 @@ class BlogpostController extends Controller
      */
     public function index(Request $request)
     {
-        
+
         if ($request->wantsJson()) {
 
             $blogposts = Blogpost::paginateSortAndFilter();
 
-            foreach($request->get('with', []) as $relation) {
+            foreach ($request->get('with', []) as $relation) {
                 $blogposts->load($relation);
             }
+
             return response()->json($blogposts);
         }
 
         return view('blogposts.index', [
-            'all_blogposts' =>  Blogpost::paginateSortAndFilter([
+            'all_blogposts' => Blogpost::paginateSortAndFilter([
                 'sort' => $request->input('sort', 'id,desc'),
             ]),
         ]);
@@ -67,21 +67,21 @@ class BlogpostController extends Controller
         $request->validate(Blogpost::$rules);
 
         $blogpost = new Blogpost($request->all());
-        $blogpost->slug = str_slug($request->input('title'), "-");
+        $blogpost->slug = str_slug($request->input('title'), '-');
         $blogpost->comments_enabled = 1;
 
         $blogpost->author()->associate(
-            Gate::allows('update','user') && $request->has('author_id')? 
+            Gate::allows('update', 'user') && $request->has('author_id') ?
             \App\Model\User::findOrFail($request->input('author_id')) : $request->user()
         );
 
         $this->uploadImage($blogpost);
 
         $blogpost->save();
-    
+
         $blogpost->categories()->attach($request->input('category_ids', []));
 
-        return $blogpost->save() ? redirect(route("blogpost.edit", ['blogpost' => $blogpost]))->withMessage(['success' => trans('message.successfully_created_blogpost')])
+        return $blogpost->save() ? redirect(route('blogpost.edit', ['blogpost' => $blogpost]))->withMessage(['success' => trans('message.successfully_created_blogpost')])
             : redirect()->back()->withInput()->withMessage(['danger' => trans('message.something_went_wrong')]);
     }
 
@@ -95,17 +95,17 @@ class BlogpostController extends Controller
     {
 
         if ($request->wantsJson()) {
-            foreach($request->get('with', []) as $relation) {
+            foreach ($request->get('with', []) as $relation) {
                 $blogpost->load($relation);
             }
+
             return response()->json($blogpost);
         }
-
 
         return view('blogposts.view', [
             'blogpost' => $blogpost,
             'previous_blogpost' => Blogpost::where('id', '<', $blogpost->id)->max('id'),
-            'next_blogpost' =>  Blogpost::where('id', '>', $blogpost->id)->min('id'),
+            'next_blogpost' => Blogpost::where('id', '>', $blogpost->id)->min('id'),
         ]);
     }
 
@@ -137,18 +137,18 @@ class BlogpostController extends Controller
     public function update(Request $request, Blogpost $blogpost)
     {
 
-        if($request->has("duplicate")){
+        if ($request->has('duplicate')) {
             $blogpost = $blogpost->replicate();
             $blogpost->active = 0;
         } else {
 
             $blogpost->fill($request->all());
 
-            $blogpost->slug = str_slug($request->input('title', $blogpost->title), "-");
+            $blogpost->slug = str_slug($request->input('title', $blogpost->title), '-');
             $blogpost->categories()->sync($request->input('category_ids', $blogpost->categories->pluck('id')->toArray()));
 
             $blogpost->author()->associate(
-                Gate::allows('update','user') && $request->has('author_id')? 
+                Gate::allows('update', 'user') && $request->has('author_id') ?
                 \App\Model\User::findOrFail($request->input('author_id')) : $request->user()
             );
 
@@ -159,7 +159,7 @@ class BlogpostController extends Controller
         if ($blogpost->save()) {
             return redirect()->back()->with('blogpost', $blogpost)->withMessage(['success' => trans('message.successfully_updated_blogpost')]);
         }
-        
+
         return redirect()->back()->withInput()->withMessage(['danger' => trans('message.something_went_wrong')]);
     }
 
@@ -173,10 +173,9 @@ class BlogpostController extends Controller
     {
 
         if ($blogpost->delete()) {
-            return redirect(route("blogpost.index"))->withMessage(['success' => trans('message.successfully_deleted_blogpost')]);
+            return redirect(route('blogpost.index'))->withMessage(['success' => trans('message.successfully_deleted_blogpost')]);
         }
 
-
-        return redirect(route("blogpost.index"))->withMessage(['danger' => trans('message.something_went_wrong')]);
+        return redirect(route('blogpost.index'))->withMessage(['danger' => trans('message.something_went_wrong')]);
     }
 }

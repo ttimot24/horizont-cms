@@ -3,21 +3,19 @@
 namespace App\Controllers;
 
 use App\Controllers\Trait\UploadsImage;
+use App\Model\HeaderImage;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-use App\Model\HeaderImage;
-
 class HeaderImageController extends Controller
 {
-
     use UploadsImage;
 
     protected $imagePath = 'images/header_images';
 
     public function before()
     {
-        \File::ensureDirectoryExists($this->imagePath . '/thumbs');
+        \File::ensureDirectoryExists($this->imagePath.'/thumbs');
     }
 
     /**
@@ -29,13 +27,13 @@ class HeaderImageController extends Controller
     {
         $activeImages = HeaderImage::active()->orderBy('order', 'ASC')->get();
 
-        if($request->wantsJson()){
+        if ($request->wantsJson()) {
             return response()->json($activeImages);
         }
 
         return view('media.header_images', [
             'slider_images' => $activeImages,
-            'slider_disabled' => HeaderImage::inactive()->orderBy('order','ASC')->get(),
+            'slider_disabled' => HeaderImage::inactive()->orderBy('order', 'ASC')->get(),
         ]);
     }
 
@@ -52,7 +50,6 @@ class HeaderImageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -60,16 +57,16 @@ class HeaderImageController extends Controller
         $header_image = new HeaderImage($request->all());
         $header_image->author()->associate($request->user());
 
-        if($request->hasFile($this->form_field_name)){
-            $header_image->type = explode('/',request()->{$this->form_field_name}->getMimeType())[0];
+        if ($request->hasFile($this->form_field_name)) {
+            $header_image->type = explode('/', request()->{$this->form_field_name}->getMimeType())[0];
         }
 
         $this->uploadImage($header_image);
 
         if ($header_image->save()) {
             return redirect()->back()->withMessage(['success' => trans('message.successfully_added_headerimage')]);
-        } 
-        
+        }
+
         return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong')]);
     }
 
@@ -98,7 +95,6 @@ class HeaderImageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -108,14 +104,13 @@ class HeaderImageController extends Controller
         $headerimage->fill($request->all());
         $headerimage->author()->associate($request->user());
 
-        if($headerimage->save()) {
+        if ($headerimage->save()) {
             return redirect()->back()->withMessage(['success' => trans('message.successfully_added_headerimage')]);
         }
 
         return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong')]);
 
     }
-
 
     /**
      * Remove the specified resource from database.

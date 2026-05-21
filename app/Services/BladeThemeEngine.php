@@ -7,7 +7,9 @@ use App\Interfaces\ThemeEngineInterface;
 class BladeThemeEngine implements ThemeEngineInterface
 {
     protected \App\Services\Theme $theme;
+
     protected string $page_template = 'index';
+
     public \Illuminate\Http\Request $request;
 
     public function __construct(\Illuminate\Http\Request $request)
@@ -20,7 +22,7 @@ class BladeThemeEngine implements ThemeEngineInterface
         return $this->theme;
     }
 
-    public function setTheme(\App\Services\Theme | string $theme): void
+    public function setTheme(\App\Services\Theme|string $theme): void
     {
         $this->theme = is_string($theme) ? new \App\Services\Theme($theme) : $theme;
     }
@@ -32,13 +34,13 @@ class BladeThemeEngine implements ThemeEngineInterface
 
     public function defaultTemplateExists(string $template): bool
     {
-        return file_exists($this->theme->getPath() . $template . '.blade.php');
+        return file_exists($this->theme->getPath().$template.'.blade.php');
     }
 
     public function templateExists(string $template): bool
     {
         return file_exists(
-            $this->theme->getPath() . 'page_templates' . DIRECTORY_SEPARATOR . $template
+            $this->theme->getPath().'page_templates'.DIRECTORY_SEPARATOR.$template
         );
     }
 
@@ -51,7 +53,7 @@ class BladeThemeEngine implements ThemeEngineInterface
         \View::addNamespace('theme', base_path($this->theme->getPath()));
 
         return view(
-            'theme::' . str_replace('.blade.php', '', $this->page_template),
+            'theme::'.str_replace('.blade.php', '', $this->page_template),
             array_merge($default_data, $data)
         );
     }

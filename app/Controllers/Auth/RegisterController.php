@@ -2,13 +2,13 @@
 
 namespace App\Controllers\Auth;
 
-use Illuminate\Routing\Controller;
 use App\Model\User;
-use Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Contracts\View\View;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Config;
+use Validator;
 
 class RegisterController extends Controller
 {
@@ -37,7 +37,7 @@ class RegisterController extends Controller
 
     public function showRegistrationForm(): View|Factory
     {
-        return view(Config::get('horizontcms.auth_view', 'auth') . '.register');
+        return view(Config::get('horizontcms.auth_view', 'auth').'.register');
     }
 
     /**
@@ -50,11 +50,9 @@ class RegisterController extends Controller
         return route('login');
     }
 
-
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -69,7 +67,6 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
      * @return User
      */
     protected function create(array $data)

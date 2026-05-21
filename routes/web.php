@@ -1,7 +1,7 @@
 <?php
 
+use App\Model\Settings;
 use Illuminate\Support\Facades\Route;
-use \App\Model\Settings;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,74 +14,70 @@ use \App\Model\Settings;
 |
 */
 
-Route::group(['prefix'=>'/'],function(){
-	Route::resource('/', \App\Controllers\WebsiteController::class);
+Route::group(['prefix' => '/'], function () {
+    Route::resource('/', \App\Controllers\WebsiteController::class);
 });
 
 if (app()->isInstalled()) {
 
-	$_THEME_NAME = Settings::get('theme');
+    $_THEME_NAME = Settings::get('theme');
 
-	if (!defined('THEME_CONTROLLER_PATH')) {
-		define('THEME_CONTROLLER_PATH', 'themes' . DIRECTORY_SEPARATOR . $_THEME_NAME . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Controllers');
-	}
+    if (! defined('THEME_CONTROLLER_PATH')) {
+        define('THEME_CONTROLLER_PATH', 'themes'.DIRECTORY_SEPARATOR.$_THEME_NAME.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'Controllers');
+    }
 
-	if (is_dir(base_path(THEME_CONTROLLER_PATH))){
-		foreach (array_diff(scandir(base_path(THEME_CONTROLLER_PATH)), ['.', '..']) as $file) {
-			if (is_file(THEME_CONTROLLER_PATH . "/" . $file)) {
-				$actualName = pathinfo($file, PATHINFO_FILENAME);
-				$controller_route = strtolower(str_replace("Controller", "", $actualName));
+    if (is_dir(base_path(THEME_CONTROLLER_PATH))) {
+        foreach (array_diff(scandir(base_path(THEME_CONTROLLER_PATH)), ['.', '..']) as $file) {
+            if (is_file(THEME_CONTROLLER_PATH.'/'.$file)) {
+                $actualName = pathinfo($file, PATHINFO_FILENAME);
+                $controller_route = strtolower(str_replace('Controller', '', $actualName));
 
+                Route::resource('/'.$controller_route, "\Theme\\".$_THEME_NAME."\App\Controllers\\".$actualName)
+                    ->names(collect(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])->mapWithKeys(function ($item) use ($controller_route) {
+                        return [$item => 'theme.'.$controller_route.'.'.$item];
+                    })->toArray());
+            }
+        }
+    }
 
-				Route::resource("/" . $controller_route, "\Theme\\" . $_THEME_NAME . "\App\Controllers\\" . $actualName)
-					->names(collect(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])->mapWithKeys(function ($item) use ($controller_route) {
-						return [$item => 'theme.' . $controller_route . '.' . $item];
-					})->toArray());
-			}
-		}
-	}
+    Route::any('/{slug?}/{args?}', function ($slug = '', $args = null) use ($_THEME_NAME) {
 
+        try {
 
-	Route::any('/{slug?}/{args?}', function ($slug = "", $args = null) use ($_THEME_NAME) {
+            $resolver = new \App\Http\RouteResolver;
 
-		try {
+            try {
 
-			$resolver = new \App\Http\RouteResolver();
+                $resolver->changeNamespace('Theme\\'.$_THEME_NAME.'\\App\\Controllers\\');
 
-			try {
+                $action = explode('/', $args)[0];
 
-				$resolver->changeNamespace("Theme\\" . $_THEME_NAME . "\\App\\Controllers\\");
+                return $resolver->resolve($slug, $action, ltrim($args, $action.'/'));
+            } catch (Exception $e) {
 
-				$action = explode("/", $args)[0];
+                if ($e instanceof \App\Exceptions\FileNotFoundException || $e instanceof BadMethodCallException) {
 
-				return $resolver->resolve($slug, $action, ltrim($args, $action . "/"));
-			} catch (Exception $e) {
+                    /** @var \Illuminate\Routing\Controller $controller */
+                    $controller = \App::make('\App\Controllers\WebsiteController');
 
+                    if (method_exists($controller, 'before')) {
+                        $controller->before();
+                    }
 
-				if ($e instanceof \App\Exceptions\FileNotFoundException || $e instanceof BadMethodCallException) {
+                    if (method_exists($controller, $slug)) {
 
-					/** @var \Illuminate\Routing\Controller $controller */
-					$controller = \App::make('\App\Controllers\WebsiteController');
+                        return $controller->callAction($slug, [$slug, $args]);
+                    }
 
-					if (method_exists($controller, 'before')) {
-						$controller->before();
-					}
+                    return $controller->callAction('show', [$slug, $args]);
+                }
 
-					if (method_exists($controller, $slug)) {
+                throw $e;
+            }
+        } catch (Exception $e) {
+            $handler = new \App\Exceptions\WebsiteExceptionHandler(app());
 
-						return $controller->callAction($slug, [$slug, $args]);
-					}
-
-					return $controller->callAction('show', [$slug, $args]);
-				}
-
-
-				throw $e;
-			}
-		} catch (Exception $e) {
-			$handler = new \App\Exceptions\WebsiteExceptionHandler(app());
-
-			return $handler->render(request(), $e);
-		}
-	})->where('args', '(.*)');
+            return $handler->render(request(), $e);
+        }
+    })->where('args', '(.*)');
 }

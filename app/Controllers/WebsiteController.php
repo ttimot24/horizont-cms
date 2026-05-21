@@ -2,20 +2,20 @@
 
 namespace App\Controllers;
 
-use Illuminate\Routing\Controller;
-use Illuminate\Http\Request;
 use App\Model\Page;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class WebsiteController extends Controller
 {
-
     private $request;
 
     private $engine;
 
-    public function __construct(Request $request){
+    public function __construct(Request $request)
+    {
         $this->request = $request;
-        if(app()->isInstalled()){
+        if (app()->isInstalled()) {
             $this->engine = app()->make(\App\Interfaces\ThemeEngineInterface::class);
         }
     }
@@ -30,12 +30,13 @@ class WebsiteController extends Controller
         return $this->show($page);
     }
 
-    public function show($page){
-        if (\Session::has("lang")) {
-            \App::setLocale(\Session::get("lang"));
+    public function show($page)
+    {
+        if (\Session::has('lang')) {
+            \App::setLocale(\Session::get('lang'));
         }
-        if ($this->request->has("lang")) {
-            \App::setLocale($this->request->input("lang"));
+        if ($this->request->has('lang')) {
+            \App::setLocale($this->request->input('lang'));
         }
 
         $engines = config('horizontcms.theme_engines');
@@ -44,21 +45,17 @@ class WebsiteController extends Controller
 
         $this->engine->runScript('before');
 
-
-        if ($this->request->settings['website_down'] == 1 && (\Auth::user() == null || !\Auth::user()->isAdmin())) {
+        if ($this->request->settings['website_down'] == 1 && (\Auth::user() == null || ! \Auth::user()->isAdmin())) {
             return $this->engine->renderWebsiteDown();
         }
 
-
-        $requested_page = empty($page)? Page::find($this->request->settings['home_page']) : Page::findBySlug($page);
-
+        $requested_page = empty($page) ? Page::find($this->request->settings['home_page']) : Page::findBySlug($page);
 
         \App\Model\Visits::newVisitor($this->request);
 
-
-        if (!empty($requested_page)) {
-            if (!empty($requested_page->url) && $this->engine->templateExists($requested_page->url)) {
-                $template = "page_templates." . $requested_page->url;
+        if (! empty($requested_page)) {
+            if (! empty($requested_page->url) && $this->engine->templateExists($requested_page->url)) {
+                $template = 'page_templates.'.$requested_page->url;
             } else {
                 $template = 'page';
             }
@@ -66,12 +63,9 @@ class WebsiteController extends Controller
             return $this->engine->render404();
         }
 
-
         $this->engine->pageTemplate($template);
 
-
         $this->engine->runScript('before_render');
-
 
         return $this->engine->render([
             '_REQUESTED_PAGE' => $requested_page,
@@ -94,7 +88,6 @@ class WebsiteController extends Controller
         return redirect()->back()->withMessage(['danger' => trans('message.something_went_wrong')]);
     }
 
-
     public function authenticate()
     {
 
@@ -104,7 +97,7 @@ class WebsiteController extends Controller
 
             if (\Auth::attempt([$mode => $this->request->input($mode), 'password' => $this->request->input('password')]) && \Auth::user()->isActive()) {
 
-                $redirect = $this->request->has('redirect_success')? redirect($this->request->input('redirect_success')) : redirect()->back();
+                $redirect = $this->request->has('redirect_success') ? redirect($this->request->input('redirect_success')) : redirect()->back();
 
                 return $redirect->withMessage(['success' => trans('message.successfully_logged_in')]);
             } else {
@@ -118,8 +111,8 @@ class WebsiteController extends Controller
     public function language()
     {
 
-        if ($this->request->has("lang")) {
-            \Session::put('lang', $this->request->input("lang"));
+        if ($this->request->has('lang')) {
+            \Session::put('lang', $this->request->input('lang'));
         }
 
         return redirect()->back();
@@ -130,12 +123,11 @@ class WebsiteController extends Controller
 
         if ($this->request->isMethod('POST')) {
 
-            if ($this->request->input('search') == "" || $this->request->input('search') == null) {
+            if ($this->request->input('search') == '' || $this->request->input('search') == null) {
                 return redirect()->back();
             }
 
-
-            $search_engine = new \App\Services\SearchEngine();
+            $search_engine = new \App\Services\SearchEngine;
 
             $search_engine->registerModel(\App\Model\Blogpost::class);
             $search_engine->registerModel(\App\Model\Page::class);

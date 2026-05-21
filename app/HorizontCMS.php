@@ -7,7 +7,6 @@ use Illuminate\Support\Collection;
 
 class HorizontCMS extends Application
 {
-
     // TODO Settings should be added here
     public Collection $plugins;
 
@@ -15,25 +14,26 @@ class HorizontCMS extends Application
     {
         parent::__construct($basePath);
 
-        $this->plugins = new Collection();
+        $this->plugins = new Collection;
     }
 
     public static function isInstalled(): bool
     {
-        return file_exists(base_path(".env")) || config('horizontcms.installed', false);
+        return file_exists(base_path('.env')) || config('horizontcms.installed', false);
     }
 
     public function publicPath($path = ''): string
     {
-        return $this->basePath . DIRECTORY_SEPARATOR;
+        return $this->basePath.DIRECTORY_SEPARATOR;
     }
 
-    public function setPlugins(Collection $plugins): void {
+    public function setPlugins(Collection $plugins): void
+    {
         $this->plugins = $plugins;
     }
 
-    public function getPlugins(): Collection {
+    public function getPlugins(): Collection
+    {
         return $this->plugins;
     }
-
 }

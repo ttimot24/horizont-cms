@@ -31,23 +31,23 @@ class UserCommand extends Command
 
     }
 
+    public function handle(): void
+    {
 
+        $this->line('*****Administrator creation*****'.PHP_EOL);
 
-    public function handle(): void {
+        if (! \App\HorizontCMS::isInstalled()) {
+            $this->info('HorizontCMS is not installed!');
 
-        $this->line("*****Administrator creation*****".PHP_EOL);
-
-        if(!\App\HorizontCMS::isInstalled()){ 
-            $this->info("HorizontCMS is not installed!");
             return;
         }
 
-        $admin['name'] = empty($this->option("name"))? $this->ask('Name') : $this->option("name");        
-        $admin['email'] = empty($this->option("email"))? $this->ask('Email') : $this->option("email") ;
-        $admin['username'] = empty($this->option("username"))? $this->ask('Username') : $this->option("username");
-        $admin['password'] = empty($this->option("password"))? $this->secret('Password') : $this->option("password");
+        $admin['name'] = empty($this->option('name')) ? $this->ask('Name') : $this->option('name');
+        $admin['email'] = empty($this->option('email')) ? $this->ask('Email') : $this->option('email');
+        $admin['username'] = empty($this->option('username')) ? $this->ask('Username') : $this->option('username');
+        $admin['password'] = empty($this->option('password')) ? $this->secret('Password') : $this->option('password');
 
-        try{
+        try {
 
             $user = new \App\Model\User($admin);
             $user->slug = str_slug($admin['username']);
@@ -57,11 +57,10 @@ class UserCommand extends Command
 
             $user->save();
 
-            $this->info("User ".$user->username." created successfully!");
-        }catch(\Exception $e){
+            $this->info('User '.$user->username.' created successfully!');
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
 
     }
-
 }

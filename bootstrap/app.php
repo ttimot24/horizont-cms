@@ -11,7 +11,6 @@
 |
 */
 
-
 $app = new App\HorizontCMS(
     realpath(__DIR__.'/../')
 );

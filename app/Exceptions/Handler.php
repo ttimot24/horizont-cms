@@ -3,9 +3,9 @@
 namespace App\Exceptions;
 
 use Exception;
-use Throwable;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -19,7 +19,7 @@ class Handler extends ExceptionHandler
         \Illuminate\Auth\Access\AuthorizationException::class,
         \Symfony\Component\HttpKernel\Exception\HttpException::class,
         \Illuminate\Database\Eloquent\ModelNotFoundException::class,
-       // \Illuminate\Session\TokenMismatchException::class,
+        // \Illuminate\Session\TokenMismatchException::class,
         \Illuminate\Validation\ValidationException::class,
     ];
 
@@ -46,27 +46,26 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
 
-
         if ($exception instanceof \Illuminate\Session\TokenMismatchException) {
             return redirect()->route('login');
         }
-      
-        if(get_class($exception)==\Illuminate\Auth\Access\AuthorizationException::class){
+
+        if (get_class($exception) == \Illuminate\Auth\Access\AuthorizationException::class) {
             return redirect()->route('dashboard.show', ['dashboard' => 'unauthorized']);
         }
 
-    	if(get_class($exception)!=\Illuminate\Auth\AuthenticationException::class && get_class($exception)!= \Illuminate\Validation\ValidationException::class){
-    		
-    		if ($request->expectsJson()) {
-    			return response()->json(['error' => $exception->getMessage()], 500);
-    		}
+        if (get_class($exception) != \Illuminate\Auth\AuthenticationException::class && get_class($exception) != \Illuminate\Validation\ValidationException::class) {
 
-            if(app()->environment('production')){
+            if ($request->expectsJson()) {
+                return response()->json(['error' => $exception->getMessage()], 500);
+            }
+
+            if (app()->environment('production')) {
                 return redirect()->back()->withMessage(['danger' => $exception->getMessage()]);
             }
-    		
-    		return response()->view('errors.exception', ['exception' => $exception]);
-    	}
+
+            return response()->view('errors.exception', ['exception' => $exception]);
+        }
 
         return parent::render($request, $exception);
 
@@ -76,7 +75,6 @@ class Handler extends ExceptionHandler
      * Convert an authentication exception into an unauthenticated response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Auth\AuthenticationException  $exception
      * @return \Illuminate\Http\Response
      */
     protected function unauthenticated($request, AuthenticationException $exception)

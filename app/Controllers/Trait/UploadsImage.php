@@ -2,57 +2,59 @@
 
 namespace App\Controllers\Trait;
 
-use TypeError;
-use Illuminate\Support\Facades\File;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
+use TypeError;
 
-trait UploadsImage {
-
+trait UploadsImage
+{
     protected $form_field_name = 'up_file';
 
-    private function getMaxImageSize(): int {
+    private function getMaxImageSize(): int
+    {
         return config('horizontcms.max_upload_file_size', 2560); // 2.5 MB
     }
 
-    private function getStrippedDirectoryPath(Model $model): string {
+    private function getStrippedDirectoryPath(Model $model): string
+    {
         return str_replace('storage/', '', $model->getImageDirectory());
     }
 
-    public function uploadImage(Model $model): bool {
+    public function uploadImage(Model $model): bool
+    {
 
-        if(!in_array('App\Model\Trait\HasImage', class_uses($model, true))){
-           throw new TypeError('Class['.get_class($model).'] does not use HasImage trait');
+        if (! in_array('App\Model\Trait\HasImage', class_uses($model, true))) {
+            throw new TypeError('Class['.get_class($model).'] does not use HasImage trait');
         }
 
-        if (!request()->hasFile($this->form_field_name)) {
+        if (! request()->hasFile($this->form_field_name)) {
             return false;
         }
 
         request()->validate([
-            $this->form_field_name => 'nullable|image|max:' . $this->getMaxImageSize(),
+            $this->form_field_name => 'nullable|image|max:'.$this->getMaxImageSize(),
         ]);
 
         File::ensureDirectoryExists($model->getImageDirectory());
 
         $file = request()->file($this->form_field_name);
-        
-        $img = config("horizontcms.upload_file_rename") ?
-               $file->store($this->getStrippedDirectoryPath($model)) : 
+
+        $img = config('horizontcms.upload_file_rename') ?
+               $file->store($this->getStrippedDirectoryPath($model)) :
                $file->storeAs($this->getStrippedDirectoryPath($model), $file->getClientOriginalName());
 
         $model->attachImage($img);
-        
+
         if (extension_loaded('gd') && starts_with(request()->{$this->form_field_name}->getMimeType(), 'image/')) {
-		    File::ensureDirectoryExists($model->getImageDirectory() . '/thumbs');
-            (new ImageManager(new Driver()))->read(storage_path($img))->resize(
-                config('horizontcms.thumbnail.width', 300), 
+            File::ensureDirectoryExists($model->getImageDirectory().'/thumbs');
+            (new ImageManager(new Driver))->read(storage_path($img))->resize(
+                config('horizontcms.thumbnail.width', 300),
                 config('horizontcms.thumbnail.height', 200)
-            )->save($model->getThumbnailDirectory(). DIRECTORY_SEPARATOR . $model->image);
+            )->save($model->getThumbnailDirectory().DIRECTORY_SEPARATOR.$model->image);
         }
 
         return true;
     }
-
 }

@@ -2,72 +2,71 @@
 
 return [
 
-	'version' => 'v1.4.4',
+    'version' => 'v1.4.4',
 
-	'installed' => env('INSTALLED', false),
+    'installed' => env('INSTALLED', false),
 
-	'backend_prefix' => env('HCMS_ADMIN_PREFIX','admin'),
+    'backend_prefix' => env('HCMS_ADMIN_PREFIX', 'admin'),
 
-	'charset' => 'utf-8',
+    'charset' => 'utf-8',
 
-	'default_controller' => 'login',
+    'default_controller' => 'login',
 
-	'auth_view' => 'auth',
+    'auth_view' => 'auth',
 
-	'admin_logo' => 'resources/logo.png',
-	
-	'default_date_format' => env('HCMS_DEFAULT_DATE_FORMAT', 'Y.m.d H:i:s'),
+    'admin_logo' => 'resources/logo.png',
 
-	'max_upload_file_size' => env('HCMS_MAX_UPLOAD_FILE_SIZE', 2560), // 2.5 MB
+    'default_date_format' => env('HCMS_DEFAULT_DATE_FORMAT', 'Y.m.d H:i:s'),
 
-	'upload_file_rename' => env('HCMS_UPLOAD_FILE_RENAME', true), // rename uploaded files to unique names
+    'max_upload_file_size' => env('HCMS_MAX_UPLOAD_FILE_SIZE', 2560), // 2.5 MB
 
-	'sattelite_url' => env('HCMS_CENTRAL_REPO','https://hcms-store.bluehill.hu'),
+    'upload_file_rename' => env('HCMS_UPLOAD_FILE_RENAME', true), // rename uploaded files to unique names
 
-	'css' => [
-				'resources/css/horizontcms-next.css',
-			],
+    'sattelite_url' => env('HCMS_CENTRAL_REPO', 'https://hcms-store.bluehill.hu'),
 
-	'js' => [
-				'resources/js/app.js',
-			],
+    'css' => [
+        'resources/css/horizontcms-next.css',
+    ],
 
-	'meta' =>[
-				[ "name" => "viewport", 
-				   "content" => "width=device-width, initial-scale=1.0"
-				],
-			],
+    'js' => [
+        'resources/js/app.js',
+    ],
 
-	'modules' => [ //namespaces and root dirs for modules
-				'Theme' =>  'themes',
-				'Plugin' => 'plugins',
-			],
+    'meta' => [
+        ['name' => 'viewport',
+            'content' => 'width=device-width, initial-scale=1.0',
+        ],
+    ],
 
-	'languages' => [ //available languages
-				'en' => 'English',
-				'de' => 'Deutsch',
-				'hu' => 'Magyar',
-				'es' => 'Español'
-			],
-	
-	
-	'theme_engines' => [ //available theme engines
-			 	'hcms' => \App\Services\ThemeEngine::class,
-        		'blade' => \App\Services\BladeThemeEngine::class,
-				'spa' => \App\Services\SpaThemeEngine::class,
-	],
+    'modules' => [ // namespaces and root dirs for modules
+        'Theme' => 'themes',
+        'Plugin' => 'plugins',
+    ],
 
-	'default_theme_engine' => env('HCMS_DEFAULT_THEME_ENGINE', 'hcms'),
+    'languages' => [ // available languages
+        'en' => 'English',
+        'de' => 'Deutsch',
+        'hu' => 'Magyar',
+        'es' => 'Español',
+    ],
 
-	'thumbnail' => [
-				'width' => env('HCMS_THUMBNAIL_WIDTH', 300),
-				'height' => env('HCMS_THUMBNAIL_HEIGHT', 200)
-	],
+    'theme_engines' => [ // available theme engines
+        'hcms' => \App\Services\ThemeEngine::class,
+        'blade' => \App\Services\BladeThemeEngine::class,
+        'spa' => \App\Services\SpaThemeEngine::class,
+    ],
 
-	'creator' => [
-				'name' => 'Timot Tarjani',
-				'twitter' => 'http://www.twitter.com/timottarjani',
-				'github' => 'https://github.com/ttimot24/HorizontCMS'
-	]
+    'default_theme_engine' => env('HCMS_DEFAULT_THEME_ENGINE', 'hcms'),
+
+    'thumbnail' => [
+        'width' => env('HCMS_THUMBNAIL_WIDTH', 300),
+        'height' => env('HCMS_THUMBNAIL_HEIGHT', 200),
+    ],
+
+    'creator' => [
+        'name' => 'Timot Tarjani',
+        'twitter' => 'http://www.twitter.com/timottarjani',
+        'github' => 'https://github.com/ttimot24/HorizontCMS',
+    ],
 
 ];

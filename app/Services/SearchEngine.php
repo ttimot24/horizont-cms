@@ -4,8 +4,8 @@ namespace App\Services;
 
 class SearchEngine
 {
-
     private array $searchModels = [];
+
     private $searchKey = null;
 
     public function registerModel($model): void
@@ -30,11 +30,11 @@ class SearchEngine
         $this->searchKey = $search_key;
 
         foreach ($this->searchModels as $model => $values) {
-       
+
             if (method_exists($model, 'scopePaginateSortAndFilter')) {
 
                 $filter['relation'] = 'or';
-                $filter['filter'] = collect((new $model)->getFilterableFields())->mapWithKeys(fn($item) => [$item => $this->searchKey])->toArray();
+                $filter['filter'] = collect((new $model)->getFilterableFields())->mapWithKeys(fn ($item) => [$item => $this->searchKey])->toArray();
 
                 $this->searchModels[$model] = $model::paginateSortAndFilter($filter);
             }
@@ -44,7 +44,7 @@ class SearchEngine
     public function getResultsFor($model)
     {
 
-        if (!array_key_exists($model, $this->searchModels)) {
+        if (! array_key_exists($model, $this->searchModels)) {
             return [];
         }
 

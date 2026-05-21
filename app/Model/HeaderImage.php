@@ -2,15 +2,15 @@
 
 namespace App\Model;
 
-use \Illuminate\Database\Eloquent\Model;
 use App\Model\Trait\HasAuthor;
 use App\Model\Trait\HasImage;
 use App\Model\Trait\IsActive;
+use Illuminate\Database\Eloquent\Model;
 
-class HeaderImage extends Model {
-
-    use HasImage;
+class HeaderImage extends Model
+{
     use HasAuthor;
+    use HasImage;
     use IsActive;
 
     /**
@@ -19,9 +19,8 @@ class HeaderImage extends Model {
      * @var array
      */
     protected $fillable = [
-        'title', 'type' ,'link' ,'description', 'image', 'active',
+        'title', 'type', 'link', 'description', 'image', 'active',
     ];
 
     protected $defaultImage = '';
-
 }

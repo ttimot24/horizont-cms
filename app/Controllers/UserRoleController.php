@@ -2,13 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Model\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use App\Model\UserRole;
 
 class UserRoleController extends Controller
 {
-
     public function index()
     {
         return view('users.roles.index', [
@@ -29,15 +28,17 @@ class UserRoleController extends Controller
         ]);
     }
 
-    private function getEscapedRights(Request $request){
+    private function getEscapedRights(Request $request)
+    {
         $actions = ['view', 'create', 'update', 'delete'];
 
         $rights = array_map(function ($item) use ($actions) {
             foreach ($actions as $action) {
-                if (str_ends_with($item, '_' . $action)) {
-                    return preg_replace('/_(?=' . $action . '$)/', '.', $item);
+                if (str_ends_with($item, '_'.$action)) {
+                    return preg_replace('/_(?='.$action.'$)/', '.', $item);
                 }
             }
+
             return $item;
         }, array_keys($request->except(['_token', 'name', '_method'])));
 
@@ -52,14 +53,14 @@ class UserRoleController extends Controller
         $permission_list = [];
 
         foreach ($controllers as $controller) {
-            
-            if (!str_ends_with($controller, 'Controller.php') || in_array($controller, ['WebsiteController.php', 'InstallController.php', 'DashboardController.php'])) {
+
+            if (! str_ends_with($controller, 'Controller.php') || in_array($controller, ['WebsiteController.php', 'InstallController.php', 'DashboardController.php'])) {
                 continue;
             }
 
-            $name = str_replace("Controller.php", "", $controller);
+            $name = str_replace('Controller.php', '', $controller);
             $permission_list[str_slug($name)] = $name;
-            
+
         }
 
         foreach (\App\Model\Plugin::all() as $plugin) {
@@ -72,15 +73,12 @@ class UserRoleController extends Controller
             }
         }
 
-
         return $permission_list;
     }
-
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -125,7 +123,6 @@ class UserRoleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -144,7 +141,6 @@ class UserRoleController extends Controller
     /**
      * Remove the specified resource from database.
      *
-     * @param  \App\Model\UserRole  $userrole
      * @return \Illuminate\Http\Response
      */
     public function destroy(UserRole $userrole)

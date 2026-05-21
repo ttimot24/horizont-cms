@@ -3,12 +3,13 @@
 namespace App\Services;
 
 use App\Interfaces\ThemeEngineInterface;
-use App\Services\Website;
 
 class ThemeEngine implements ThemeEngineInterface
 {
     protected ?\App\Services\Theme $theme = null;
+
     protected string $page_template = 'index';
+
     public \Illuminate\Http\Request $request;
 
     public function __construct(\Illuminate\Http\Request $request)
@@ -33,27 +34,27 @@ class ThemeEngine implements ThemeEngineInterface
 
     public function defaultTemplateExists(string $template): bool
     {
-        return file_exists($this->theme->getPath() . $template . '.php');
+        return file_exists($this->theme->getPath().$template.'.php');
     }
 
     public function templateExists(string $template): bool
     {
-        return file_exists($this->theme->getPath() . "page_templates" . DIRECTORY_SEPARATOR . $template . '.php');
+        return file_exists($this->theme->getPath().'page_templates'.DIRECTORY_SEPARATOR.$template.'.php');
     }
 
     public function boot(): void
     {
         if ($this->theme === null) {
-            throw new \Exception("<b>Theme is not set!</b>");
+            throw new \Exception('<b>Theme is not set!</b>');
         }
 
         Website::initalize($this);
     }
 
-    public function render(array $data = null): string
+    public function render(?array $data = null): string
     {
         if ($this->theme === null) {
-            throw new \Exception("Theme is not set!");
+            throw new \Exception('Theme is not set!');
         }
 
         ob_start();
@@ -70,7 +71,7 @@ class ThemeEngine implements ThemeEngineInterface
 
     private function require_file(string $file): void
     {
-        $filePath = base_path($this->theme->getPath() . $file);
+        $filePath = base_path($this->theme->getPath().$file);
         if (file_exists($filePath)) {
             require_once $filePath;
         }

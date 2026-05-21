@@ -4,20 +4,19 @@ namespace App\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Madnest\Madzipper\Madzipper;
 
 class PluginRegistryController extends Controller
 {
-
     private readonly string $apiPath;
 
     public function __construct()
     {
-        $this->apiPath = config('horizontcms.sattelite_url') . '/api/v1/plugins';
+        $this->apiPath = config('horizontcms.sattelite_url').'/api/v1/plugins';
         File::ensureDirectoryExists('plugins');
     }
 
@@ -33,13 +32,13 @@ class PluginRegistryController extends Controller
         try {
             $response = Http::get($this->apiPath);
 
-            $plugins = collect($response->object())->map(function ($plugin) { 
+            $plugins = collect($response->object())->map(function ($plugin) {
 
                 $local = new \App\Model\Plugin($plugin->dir);
 
                 $plugin->local = $local->exists() ? $local : null;
-                
-                return $plugin; 
+
+                return $plugin;
             });
 
         } catch (\Exception $e) {
@@ -61,28 +60,28 @@ class PluginRegistryController extends Controller
 
         $path = Storage::disk('local')->path($tempZip);
 
-        $response = Http::sink($path)->get($this->apiPath . "/{$plugin_name}/download");
+        $response = Http::sink($path)->get($this->apiPath."/{$plugin_name}/download");
 
         if ($response->successful()) {
 
-            $zipper = new Madzipper();
-            $zipper->make(storage_path() . DIRECTORY_SEPARATOR . $tempZip);
+            $zipper = new Madzipper;
+            $zipper->make(storage_path().DIRECTORY_SEPARATOR.$tempZip);
 
             if ($zipper->contains($plugin_name.'/plugin_info.xml')) {
-                $zipper->folder($plugin_name)->extractTo('plugins/' . $plugin_name);
+                $zipper->folder($plugin_name)->extractTo('plugins/'.$plugin_name);
             } else {
-                $zipper->extractTo('plugins/' . $plugin_name);
+                $zipper->extractTo('plugins/'.$plugin_name);
             }
 
-            if (file_exists("plugins/" . $plugin_name)) {
-                @Storage::delete("framework" . DIRECTORY_SEPARATOR . "temp" . DIRECTORY_SEPARATOR . $plugin_name . ".zip");
-                return redirect()->back()->withMessage(['success' => trans('Succesfully downloaded ' . $plugin_name)]);
+            if (file_exists('plugins/'.$plugin_name)) {
+                @Storage::delete('framework'.DIRECTORY_SEPARATOR.'temp'.DIRECTORY_SEPARATOR.$plugin_name.'.zip');
+
+                return redirect()->back()->withMessage(['success' => trans('Succesfully downloaded '.$plugin_name)]);
             } else {
-                return redirect()->back()->withMessage(['danger' => trans('Could not extract the plugin: ' . $plugin_name . "")]);
+                return redirect()->back()->withMessage(['danger' => trans('Could not extract the plugin: '.$plugin_name.'')]);
             }
         } else {
-            return redirect()->back()->withMessage(['danger' => trans('Could not download the plugin: ' . $plugin_name . "")]);
+            return redirect()->back()->withMessage(['danger' => trans('Could not download the plugin: '.$plugin_name.'')]);
         }
     }
-
 }

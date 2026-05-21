@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
     private string $table_name = 'blogpost_categories_pivot';
 
     public function up(): void
@@ -16,16 +15,16 @@ return new class extends Migration
 
             $table->unsignedInteger('blogpost_id');
             $table->unsignedInteger('blogpost_category_id');
-            
+
             $table->foreign('blogpost_id', 'fk_blogpost_pivot')
-                  ->references('id')
-                  ->on('blogposts')
-                  ->onDelete('cascade');
+                ->references('id')
+                ->on('blogposts')
+                ->onDelete('cascade');
 
             $table->foreign('blogpost_category_id', 'fk_blogpost_category_pivot')
-                  ->references('id')
-                  ->on('blogpost_categories')
-                  ->onDelete('cascade');
+                ->references('id')
+                ->on('blogpost_categories')
+                ->onDelete('cascade');
 
             $table->timestamps();
 

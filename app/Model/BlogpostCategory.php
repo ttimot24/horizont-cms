@@ -4,11 +4,11 @@ namespace App\Model;
 
 use App\Model\Trait\HasAuthor;
 use App\Model\Trait\HasImage;
-use \Illuminate\Database\Eloquent\Model;
 use App\Model\Trait\PaginateSortAndFilter;
+use Illuminate\Database\Eloquent\Model;
 
-class BlogpostCategory extends Model {
-
+class BlogpostCategory extends Model
+{
     use HasAuthor;
     use HasImage;
     use PaginateSortAndFilter;
@@ -22,19 +22,18 @@ class BlogpostCategory extends Model {
         'name',
     ];
 
-	protected $imageDir = "storage/images/blogpost_category";
+    protected $imageDir = 'storage/images/blogpost_category';
 
-	public $timestamps = false;
+    public $timestamps = false;
 
-    protected $filterableFields  = ['name'];
-    
-	/*public function blogposts(){
-		 return $this->hasMany(\App\Model\Blogpost::class,'category_id','id');
-	}*/
+    protected $filterableFields = ['name'];
+
+    /*public function blogposts(){
+         return $this->hasMany(\App\Model\Blogpost::class,'category_id','id');
+    }*/
 
     public function blogposts()
     {
         return $this->belongsToMany(Blogpost::class, 'blogpost_categories_pivot');
     }
-
 }
