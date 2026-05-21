@@ -88,7 +88,6 @@ class BlogpostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, Blogpost $blogpost)
@@ -112,7 +111,6 @@ class BlogpostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit(Blogpost $blogpost)
@@ -130,8 +128,6 @@ class BlogpostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Blogpost $blogpost)
@@ -166,7 +162,6 @@ class BlogpostController extends Controller
     /**
      * Remove the specified resource from database.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(Blogpost $blogpost)
