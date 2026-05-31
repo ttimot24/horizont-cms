@@ -67,6 +67,7 @@ class BlogpostController extends Controller
         $request->validate(Blogpost::$rules);
 
         $blogpost = new Blogpost($request->all());
+        $blogpost->text = clean($request->input('text'));
         $blogpost->slug = str_slug($request->input('title'), '-');
         $blogpost->comments_enabled = 1;
 
@@ -139,6 +140,7 @@ class BlogpostController extends Controller
         } else {
 
             $blogpost->fill($request->all());
+            $blogpost->text = clean($request->input('text'));
 
             $blogpost->slug = str_slug($request->input('title', $blogpost->title), '-');
             $blogpost->categories()->sync($request->input('category_ids', $blogpost->categories->pluck('id')->toArray()));
