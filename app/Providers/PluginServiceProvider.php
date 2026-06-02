@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Model\Settings;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -118,7 +119,7 @@ class PluginServiceProvider extends ServiceProvider
 
             foreach ($plugin->getRegister('eventHooks', []) as $key => $value) {
                 foreach ($value as $do) {
-                    \Event::listen($key, $do);
+                    Event::listen($key, $do);
                 }
             }
         }
@@ -157,7 +158,7 @@ class PluginServiceProvider extends ServiceProvider
                 continue;
             }
 
-            \View::addNamespace(str_slug($plugin->root_dir), [
+            View::addNamespace(str_slug($plugin->root_dir), [
                 $plugin->getPath().DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'View',
                 $plugin->getPath().DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'views',
             ]);
