@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Model\Settings;
 use App\Services\Theme;
+use Illuminate\Console\Application as Artisan;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,8 @@ class ThemeServiceProvider extends ServiceProvider
             $this->registerThemeViews($theme);
 
             $this->registerThemeRoutes($theme);
+
+            $this->registerThemeCommands($theme);
 
             $this->registerThemeProviders($theme);
 
@@ -101,6 +104,28 @@ class ThemeServiceProvider extends ServiceProvider
             $this->app->register($provider);
         }
 
+    }
+
+    protected function registerThemeCommands(Theme $theme): void
+    {
+        foreach (glob($theme->getPath().'/Console/*.php') as $file) {
+
+            $class = $this->resolveClassFromThemeFile($theme, $file);
+
+            if (class_exists($class)) {
+                Artisan::starting(function ($artisan) use ($class) {
+                    $artisan->resolve($class);
+                });
+            }
+        }
+    }
+
+    protected function resolveClassFromThemeFile(Theme $theme, string $file): string
+    {
+        $relative = str_replace($theme->getPath().'/', '', $file);
+
+        return 'Theme\\'.$theme->getName().'\\'.
+            str_replace(['/', '.php'], ['\\', ''], $relative);
     }
 
     /**
