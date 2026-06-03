@@ -35,6 +35,8 @@ class ThemeServiceProvider extends ServiceProvider
 
             $this->registerThemeRoutes($theme);
 
+            $this->registerThemeCommands($theme);
+
             $this->registerThemeProviders($theme);
 
         }
@@ -101,6 +103,32 @@ class ThemeServiceProvider extends ServiceProvider
             $this->app->register($provider);
         }
 
+    }
+
+    protected function registerThemeCommands(Theme $theme): void
+    {
+
+        $commands = [];
+
+        foreach (glob($theme->getPath().'app/Console/*.php') as $file) {
+
+            $class = $this->resolveClassFromThemeFile($theme, $file);
+
+            if (class_exists($class)) {
+                $commands[] = $class;
+            }
+        }
+
+        $this->commands($commands);
+    }
+
+    protected function resolveClassFromThemeFile(Theme $theme, string $file): string
+    {
+
+        $relative = str_replace($theme->getPath().'app/', '', $file);
+
+        return 'Theme\\'.$theme->getName().'\\App\\'.
+            str_replace(['/', '.php'], ['\\', ''], $relative);
     }
 
     /**
