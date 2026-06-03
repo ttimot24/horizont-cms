@@ -110,7 +110,7 @@ class ThemeServiceProvider extends ServiceProvider
 
         $commands = [];
 
-        foreach (glob($theme->getPath().'/Console/*.php') as $file) {
+        foreach (glob($theme->getPath().'app/Console/*.php') as $file) {
 
             $class = $this->resolveClassFromThemeFile($theme, $file);
 
@@ -124,9 +124,10 @@ class ThemeServiceProvider extends ServiceProvider
 
     protected function resolveClassFromThemeFile(Theme $theme, string $file): string
     {
-        $relative = str_replace($theme->getPath().'/', '', $file);
 
-        return 'Theme\\'.$theme->getName().'\\'.
+        $relative = str_replace($theme->getPath().'app/', '', $file);
+
+        return 'Theme\\'.$theme->getName().'\\App\\'.
             str_replace(['/', '.php'], ['\\', ''], $relative);
     }
 
