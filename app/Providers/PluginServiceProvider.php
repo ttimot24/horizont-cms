@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Model\Plugin;
 use App\Model\Settings;
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,14 +18,14 @@ class PluginServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(\Illuminate\Contracts\Http\Kernel $kernel): void
+    public function boot(Kernel $kernel): void
     {
         $this->kernel = $kernel;
 
         try {
 
             if ($this->app->isInstalled()) {
-                $this->app->plugins = \App\Model\Plugin::active()->get()->keyBy('root_dir');
+                $this->app->plugins = Plugin::active()->get()->keyBy('root_dir');
 
                 $this->registerPluginAutoloaders();
 
