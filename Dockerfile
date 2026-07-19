@@ -20,10 +20,10 @@ RUN chmod +x /usr/local/bin/install-php-extensions && \
 
 # Composer install
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
-    php composer-setup.php && \
+    php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
     php -r "unlink('composer-setup.php');" && \
     chown -R www-data /var/www/html && \
-    php composer.phar install
+    composer install
 
 # NPM install
 RUN npm install --global cross-env && \ 
