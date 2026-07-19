@@ -1,4 +1,4 @@
-FROM php:8.3-apache AS builder
+FROM php:8.4-apache AS builder
 
 WORKDIR /var/www/html
 
