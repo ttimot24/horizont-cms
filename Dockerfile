@@ -36,7 +36,7 @@ RUN chmod -R 775 /var/www/html && \
 
 ## --- Production image ---
 
-FROM php:8.3-apache
+FROM php:8.4-apache
 
 WORKDIR /var/www/html
 
