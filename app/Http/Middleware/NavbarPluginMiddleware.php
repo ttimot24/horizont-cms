@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Lavary\Menu\Collection as MenuCollection;
 use Lavary\Menu\Facade as Menu;
 
 class NavbarPluginMiddleware

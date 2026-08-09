@@ -8,7 +8,10 @@
             @include('breadcrumb', [
                 'links' => [
                     ['name' => trans('settings.settings'), 'url' => route('settings.index')],
-                    ['name' => trans('settings.adminarea_settings'), 'url' => route('settings.show', ['setting' => 'adminarea'])]
+                    [
+                        'name' => trans('settings.adminarea_settings'),
+                        'url' => route('settings.show', ['setting' => 'adminarea']),
+                    ],
                 ],
                 'page_title' => trans('settings.adminarea_settings'),
             ])
@@ -65,7 +68,9 @@
                                     <select name='language' class='form-select'>
 
                                         @foreach (config('horizontcms.languages') as $key => $language)
-                                            <option value='{{ $key }}' {{ $key == $settings['language']? "selected" : "" }}>{{ ucfirst($language) }}</option>
+                                            <option value='{{ $key }}'
+                                                {{ $key == $settings['language'] ? 'selected' : '' }}>
+                                                {{ ucfirst($language) }}</option>
                                         @endforeach
 
                                     </select>
@@ -111,7 +116,8 @@
                                     <p class="text-muted">The plugin and theme repository URL.</p>
                                 </div>
                                 <div class="col-12 col-md-6 mt-3">
-                                    <input type='text' class='form-control' value="{{ config('horizontcms.sattelite_url') }}" disabled>
+                                    <input type='text' class='form-control'
+                                        value="{{ config('horizontcms.sattelite_url') }}" disabled>
                                 </div>
                             </div>
                             <hr>
@@ -125,11 +131,24 @@
                                     <textarea type='text' class='form-control' name='admin_broadcast' rows='2'>{{ $settings['admin_broadcast'] }}</textarea>
                                 </div>
                             </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <h6 class="text-dark fw-bold">Service Account Token</h6>
+                                    <p class="text-muted">The API token MCP clients use to authenticate against the WelloAI
+                                        endpoint.</p>
+                                </div>
+                                <div class="col-12 col-md-6 mt-3">
+                                    <input type='text' class='form-control' name='service_account_token'
+                                        value="{{ $settings['service_account_token'] ?? '' }}" readonly disabled>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="text-center">
-                        <button type='submit' class='btn btn-primary btn-lg'><i class="fa-solid fa-floppy-disk"></i> {{ trans('settings.adminarea_save_settings') }}</button>
+                        <button type='submit' class='btn btn-primary btn-lg'><i class="fa-solid fa-floppy-disk"></i>
+                            {{ trans('settings.adminarea_save_settings') }}</button>
                     </div>
                 </form>
 
