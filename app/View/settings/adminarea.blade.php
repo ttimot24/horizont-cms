@@ -131,18 +131,6 @@
                                     <textarea type='text' class='form-control' name='admin_broadcast' rows='2'>{{ $settings['admin_broadcast'] }}</textarea>
                                 </div>
                             </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-12 col-md-6">
-                                    <h6 class="text-dark fw-bold">Service Account Token</h6>
-                                    <p class="text-muted">The API token MCP clients use to authenticate against the WelloAI
-                                        endpoint.</p>
-                                </div>
-                                <div class="col-12 col-md-6 mt-3">
-                                    <input type='text' class='form-control' name='service_account_token'
-                                        value="{{ $settings['service_account_token'] ?? '' }}" readonly disabled>
-                                </div>
-                            </div>
                         </div>
                     </div>
 

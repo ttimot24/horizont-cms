@@ -6,6 +6,7 @@ use App\Controllers\Trait\UploadsImage;
 use App\Model\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -56,6 +57,7 @@ class UserController extends Controller
 
         $user = new User($request->all());
         $user->slug = str_slug($request->input('username'), '-');
+        $user->api_token = Str::random(60);
         $user->visits = 0;
         $user->active = 1;
 

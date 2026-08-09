@@ -57,5 +57,11 @@ class UserRolesSeeder extends Seeder
                 'blogpostcategory.delete', 'blogpostcomment.delete', 'blogpost.delete', 'filemanager.delete', 'headerimage.delete', 'page.delete', 'plugin.delete', 'pluginregistry.delete', 'schedule.delete', 'search.delete', 'settings.delete', 'theme.delete', 'upgrade.delete', 'user.delete', 'userrole.delete']),
         ]);
 
+        DB::table('user_roles')->insert([
+            'name' => 'Service Account',
+            'permission' => 3,
+            'rights' => json_encode(['blogpostcategory.view', 'blogpostcomment.view', 'blogpost.view', 'filemanager.view', 'headerimage.view', 'page.view', 'search.view', 'user.view']),
+        ]);
+
     }
 }

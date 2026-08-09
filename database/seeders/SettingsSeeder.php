@@ -293,11 +293,5 @@ class SettingsSeeder extends Seeder
 
         ]);
 
-        DB::table('settings')->insert([
-            'group' => 'admin',
-            'setting' => 'service_account_token',
-            'value' =>  \Str::random(60),
-        ]);
-
     }
 }
