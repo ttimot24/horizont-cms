@@ -49,7 +49,9 @@ class NavbarPluginMiddleware
                             if (isset($item['submenu_of'])) {
                                 $right_menu->find($item['submenu_of'])->add($item['label'], $item['url'])->id($key);
                             } else {
-                                $right_menu->add($item['label'], $item['url'])->id($key);
+                                $items = clone $right_menu->all();
+                                $menu_item = $right_menu->add($item['label'], $item['url'])->id($key);
+                                $right_menu->takeCollection((new MenuCollection([$menu_item]))->merge($items));
                             }
                         }
                     }
