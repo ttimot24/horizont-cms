@@ -59,7 +59,7 @@ class UserRolesSeeder extends Seeder
 
         DB::table('user_roles')->insert([
             'name' => 'Service Account',
-            'permission' => 3,
+            'permission' => 2,
             'rights' => json_encode(['blogpostcategory.view', 'blogpostcomment.view', 'blogpost.view', 'filemanager.view', 'headerimage.view', 'page.view', 'search.view', 'user.view']),
         ]);
 
