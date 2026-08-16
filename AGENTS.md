@@ -13,20 +13,30 @@ HorizontCMS is an open-source CMS built on:
 
 ## Commands
 
-| Command                                                         | Purpose                                     |
-| --------------------------------------------------------------- | ------------------------------------------- |
-| `composer test`                                                 | PHPUnit (Unit + Integration suite)          |
-| `./vendor/bin/phpunit --testsuite Full`                         | all PHP tests                               |
-| `composer lint`                                                 | Pint code style check                       |
-| `./vendor/bin/pint`                                             | Pint formatting                             |
-| `npm run lint`                                                  | ESLint on `resources/vue/ts`                |
-| `npm test`                                                      | Vitest (Vue component tests, with coverage) |
-| `npm run prod` / `npm run watch`                                | Laravel Mix build (frontend)                |
-| `php artisan hcms:install`                                      | CLI installer                               |
-| `php artisan hcms:plugin {--install\|--activate\|...} {plugin}` | plugin management                           |
-| `php artisan hcms:theme {--set} {theme}`                        | switch theme                                |
+| Command                                                                                                     | Purpose                                                |
+| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| `composer test`                                                                                             | PHPUnit Unit + Integration (Gui suite is NOT included) |
+| `./vendor/bin/phpunit --testsuite Full`                                                                     | all PHP tests (unit, integration, gui)                 |
+| `composer lint`                                                                                             | Pint code style check (`pint --test`)                  |
+| `./vendor/bin/pint`                                                                                         | Pint formatting                                        |
+| `npm run lint`                                                                                              | ESLint on `resources/vue/ts`                           |
+| `npm test`                                                                                                  | Vitest (Vue component tests, with coverage)            |
+| `npm run prod` / `npm run watch`                                                                            | Laravel Mix build (frontend)                           |
+| `php artisan hcms:install`                                                                                  | CLI installer                                          |
+| `php artisan hcms:plugin {--install\|--uninstall\|--activate\|--deactivate\|--download\|--remove} {plugin}` | plugin management                                      |
+| `php artisan hcms:theme {--set} {theme}`                                                                    | switch theme                                           |
+| `php artisan hcms:user {--create-admin}`                                                                    | create an admin user                                   |
 
 PHPStan (`larastan`, vendor/bin/phpstan) and PhpArchitect (`phparkitect.php`) are available as dev dependencies.
+
+## CI (what GitHub Actions actually runs)
+
+`.github/workflows/github-ci.yml` runs on `master` push + PRs. When in doubt, verify against it:
+
+- **Style**: `vendor/bin/pint --test app bootstrap config database routes` (a subset — `plugins/` and `themes/` are skipped) + `phplint` for syntax.
+- **Static analysis**: `vendor/bin/phpstan analyse app bootstrap config database routes --level 0` (level 0, not the larastan default).
+- **PHP tests**: `INSTALLED=YES XDEBUG_MODE=coverage ./vendor/bin/phpunit --testsuite Unit` across PHP 8.1–8.5. `INSTALLED=YES` is required because CI has no `.env`.
+- **Frontend**: `npm install --force` (peer-dep conflicts under Vue 2.6 / Laravel Mix), then `npm test` and `npm run build`.
 
 ## Directory structure
 
@@ -309,7 +319,7 @@ Required steps when developing a plugin:
 
 - Vue 2.6, Options API. The `window.vue` global instance (`resources/vue/ts/main.ts`), components registered in `app.ts`.
 - HTTP: `axios-observable` (`window.vue.prototype.http`), CSRF + API token from `<head>` meta tags.
-- Every component has a `.vue` + `.ts` (logic) + `.spec.ts` (Vitest) trio in `components/<name>/`.
+- Components follow a `.vue` + `.ts` (logic) + `.spec.ts` (Vitest) trio in `components/<name>/`.
 - Build: Laravel Mix (`webpack.mix.js`) into `resources/js` and `resources/css`.
 - i18n: `laravel-vue-i18n`, translations in `resources/lang/*.json` (en, de, hu, es).
 
@@ -325,3 +335,4 @@ Required steps when developing a plugin:
 - For a new global helper, put it in `app/Helpers/` (classmap) and run `composer dump-autoload`.
 - `app/HorizontCMS.php` overrides `publicPath()` and keeps active plugins on `app()->plugins`.
 - Theme/plugin version compatibility is checked via `requires.core` + `isCompatibleWithCore()`.
+- The app counts as installed only if `.env` exists OR `INSTALLED=YES` is set (see `App\HorizontCMS::isInstalled()`).
