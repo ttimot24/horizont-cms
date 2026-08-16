@@ -13,18 +13,18 @@ HorizontCMS is an open-source CMS built on:
 
 ## Commands
 
-| Command | Purpose |
-|---|---|
-| `composer test` | PHPUnit (Unit + Integration suite) |
-| `./vendor/bin/phpunit --testsuite Full` | all PHP tests |
-| `composer lint` | Pint code style check |
-| `./vendor/bin/pint` | Pint formatting |
-| `npm run lint` | ESLint on `resources/vue/ts` |
-| `npm test` | Vitest (Vue component tests, with coverage) |
-| `npm run prod` / `npm run watch` | Laravel Mix build (frontend) |
-| `php artisan hcms:install` | CLI installer |
-| `php artisan hcms:plugin {--install\|--activate\|...} {plugin}` | plugin management |
-| `php artisan hcms:theme {--set} {theme}` | switch theme |
+| Command                                                         | Purpose                                     |
+| --------------------------------------------------------------- | ------------------------------------------- |
+| `composer test`                                                 | PHPUnit (Unit + Integration suite)          |
+| `./vendor/bin/phpunit --testsuite Full`                         | all PHP tests                               |
+| `composer lint`                                                 | Pint code style check                       |
+| `./vendor/bin/pint`                                             | Pint formatting                             |
+| `npm run lint`                                                  | ESLint on `resources/vue/ts`                |
+| `npm test`                                                      | Vitest (Vue component tests, with coverage) |
+| `npm run prod` / `npm run watch`                                | Laravel Mix build (frontend)                |
+| `php artisan hcms:install`                                      | CLI installer                               |
+| `php artisan hcms:plugin {--install\|--activate\|...} {plugin}` | plugin management                           |
+| `php artisan hcms:theme {--set} {theme}`                        | switch theme                                |
 
 PHPStan (`larastan`, vendor/bin/phpstan) and PhpArchitect (`phparkitect.php`) are available as dev dependencies.
 
@@ -69,23 +69,241 @@ Theme engine selection: `config('horizontcms.theme_engines')` + `HCMS_DEFAULT_TH
 
 ## Plugin structure (`plugins/<Plugin>/`)
 
-Required elements:
+### Deviation from the default Laravel structure
 
-- **`Register.php`** — `Plugin\PluginName\Register`, implements `App\Interfaces\PluginInterface`. Methods: `webRouteOptions`, `apiRouteOptions`, `navigation`, `eventHooks`, `widget`, `injectWebsiteJs`, `injectAdminJs`, `onInstall`, `addProviders`, `addMiddlewares`, `addAliases`, `cliCommands`.
-- **`plugin_info.xml`** (or .yml/.json) — name, version, `requires.core`.
-- Controllers: `app/Controllers/`, namespace `Plugin\<Name>\App\Controllers\`.
-- Views: `app/View/` or `resources/views/`.
-- Config: `config/*.php` → `plugin:<root_dir>:<filename>` key.
-- Custom routes: `routes/web.php`, `routes/api.php`.
-- Activation: `plugins` table (`root_dir`, `active`, `version`). Inactive plugins are not loaded.
-- Plugin link helpers: `plugin_link()`, `namespace_to_slug()`, `str_slug()` etc. in `app/Helpers`.
+> ⚠️ **Instead** of Laravel core's default `tests/Unit` and `tests/Feature`
+> folders, HorizontCMS plugins **must** use the following naming (note the
+> lowercase subfolder names `unit` and `integration`):
 
-## Models
+- `tests/unit` — isolated unit tests, test classes suffixed `Test.php`
+- `tests/integration` — integration tests, test classes suffixed `Test.php`
 
-- `Settings` — key-value store; `Settings::get('theme')`, `Settings::getAll()`.
-- `Plugin` — plugin metadata + state; `$plugin->getRegister('...')`, `getPath()`, `getInfo()`.
-- `User` / `UserRole` — roles/permissions (Gates, `can:global-authorization`).
-- `Blogpost`, `Page`, `HeaderImage`, `BlogpostComment`, `BlogpostCategory`, `ScheduledTask`, `Visits`.
+The PHPUnit configuration (`phpunit.xml`) must define the test suites
+accordingly:
+
+```xml
+<testsuites>
+    <testsuite name="Unit">
+        <directory suffix="Test.php">tests/unit</directory>
+    </testsuite>
+    <testsuite name="Integration">
+        <directory suffix="Test.php">tests/integration</directory>
+    </testsuite>
+    <testsuite name="Full">
+        <directory suffix="Test.php">tests</directory>
+    </testsuite>
+</testsuites>
+```
+
+A `Full` suite covering the whole `tests/` tree is included alongside `Unit`
+and `Integration` so all plugin tests can be run in one pass in CI.
+
+---
+
+### Register.php — Mandatory Entry Point
+
+Every plugin must ship a `Register.php` file at its root, which **must
+implement** the core `App\Interfaces\PluginInterface`.
+
+```php
+<?php
+
+namespace Plugins\ExamplePlugin;
+
+use App\Interfaces\PluginInterface;
+
+class Register implements PluginInterface
+{
+    // Mandatory implementation of the methods required by PluginInterface
+    // (e.g. boot(), register(), getName(), getVersion(), etc. — as defined
+    // by the core interface).
+}
+```
+
+**Rules:**
+
+- `Register.php` is the single official entry point that the HorizontCMS
+  runtime looks for and instantiates when loading the plugin.
+- If the class does **not** implement `PluginInterface`, the plugin is
+  considered invalid — the runtime will reject or skip it.
+- The namespace must be unique and must not collide with the core's or
+  other plugins' namespaces.
+
+---
+
+### Composer Dependency Management
+
+#### Strictly Forbidden
+
+> 🚫 It is **FORBIDDEN** to modify the HorizontCMS core `composer.json` in any
+> way (neither adding new dependencies nor changing existing ones is allowed
+> as part of plugin development or installation).
+
+#### Required Process
+
+- Every plugin has its **own, independent `composer.json`** in the plugin's
+  root directory.
+- All **third-party** PHP packages required by the plugin must be declared in
+  this plugin-local `composer.json`. The Laravel/Illuminate framework itself is
+  **not** a third-party dependency for plugins — it is provided by the host CMS
+  at runtime (see "Laravel/Illuminate dependencies are provided by the CMS"
+  below).
+- The plugin has its own `vendor/` directory, installed within the plugin's
+  own folder (`composer install` run inside the plugin root), **not** merged
+  into the core `vendor/` directory.
+- At load time, the runtime reads the plugin's own autoloaders/dependencies —
+  the core's composer state remains untouched.
+
+```json
+{
+  "name": "vendor/example-plugin",
+  "require": {
+    "php": "^8.1",
+    "vendor/some-third-party-package": "^1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.6",
+    "illuminate/support": "^11.0"
+  },
+  "replace": {
+    "laravel/framework": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Plugins\\ExamplePlugin\\": "src/"
+    }
+  }
+}
+```
+
+#### Laravel/Illuminate dependencies are provided by the CMS
+
+HorizontCMS is a Laravel application, so at production time the runtime
+already provides the full Laravel (Illuminate) framework. Plugins therefore
+**must not** declare Laravel/Illuminate framework packages in their own
+`require` section — doing so only bundles a duplicate copy of what the host
+CMS already supplies.
+
+Rules:
+
+- Laravel/Illuminate framework packages go in `require-dev` **only**, and only
+  when the plugin's isolated tests (which bootstrap just the plugin's own
+  `vendor/autoload.php`, see section 5) need those classes. They are never a
+  runtime `require` dependency of the plugin.
+- Use the `replace` block to tell Composer that the Laravel framework is
+  provided by the host CMS, e.g. `"laravel/framework": "*"` plus any
+  Illuminate components the host provides (e.g. `illuminate/http`,
+  `illuminate/routing`). This keeps third-party packages (such as
+  `laravel/mcp`) from trying to install a second copy of the framework.
+- At runtime the plugin's Illuminate classes resolve from the **core's**
+  autoloader (registered first), never from the plugin's own `vendor/`.
+
+---
+
+### PHPUnit Installation — Per-Plugin, Self-Contained
+
+> ⚠️ The core's PHPUnit installation **cannot** be used to test a plugin.
+> Every plugin must have **its own, independently installed PHPUnit**.
+
+Required steps when developing a plugin:
+
+1. Install PHPUnit at the plugin root via the plugin's own `composer.json`
+   (in the `require-dev` section):
+
+   ```json
+   {
+     "require-dev": {
+       "phpunit/phpunit": "^10.0"
+     }
+   }
+   ```
+
+2. Run the plugin's own `vendor/bin/phpunit` binary to execute tests —
+   **not** the core's:
+
+   ```bash
+   cd plugins/<plugin-name>
+   composer install
+   ./vendor/bin/phpunit
+   ```
+
+3. The plugin's own `phpunit.xml` configuration file must reference the
+   `tests/unit` and `tests/integration` directories (see section 2), and should
+   follow the reference template below.
+
+#### Reference `phpunit.xml` template
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">./app</directory>
+        </include>
+        <exclude>
+            <directory>./app/View</directory>
+        </exclude>
+        <report>
+            <clover outputFile="reports/coverage.xml"/>
+            <html outputDirectory="reports/html"/>
+        </report>
+    </coverage>
+    <logging>
+        <junit outputFile="reports/junit.xml"/>
+    </logging>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">tests/unit</directory>
+        </testsuite>
+        <testsuite name="Integration">
+            <directory suffix="Test.php">tests/integration</directory>
+        </testsuite>
+        <testsuite name="Full">
+            <directory suffix="Test.php">tests</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <server name="APP_ENV" value="testing"/>
+        <server name="CACHE_DRIVER" value="array"/>
+        <server name="SESSION_DRIVER" value="array"/>
+        <server name="QUEUE_DRIVER" value="sync"/>
+        <server name="DB_CONNECTION" value="sqlite"/>
+        <server name="DB_DATABASE" value=":memory:"/>
+        <server name="HTTP_SIGNATURE" value="-" />
+    </php>
+</phpunit>
+```
+
+**Notes on this template:**
+
+- `bootstrap="vendor/autoload.php"` points at the **plugin's own** autoloader,
+  not the core's — this only works once the plugin has its own `vendor/`
+  directory installed (see section 4 and step 1 above).
+- `<coverage><include>` targets `./app` — adjust this path to wherever the
+  plugin keeps its testable source code (e.g. `./src` if the plugin doesn't
+  use an `app/` folder).
+- Coverage and JUnit reports are written to `reports/` inside the plugin
+  directory; this folder should be generated at test-run time and excluded
+  from version control.
+- The `<php><server>` block forces an isolated, in-memory test environment
+  (SQLite `:memory:` DB, array cache/session drivers, sync queue) so plugin
+  tests never touch a real database or external services.
+- Uses the PHPUnit 9.3 schema — pin `phpunit/phpunit` in the plugin's
+  `require-dev` to a compatible 9.x release (see section 5, step 1) unless
+  the plugin intentionally targets a newer PHPUnit major version, in which
+  case update the schema URL and deprecated attributes (`backupGlobals`,
+  `convert*ToExceptions`, etc. were removed/changed in PHPUnit 10+)
+  accordingly.
 
 ## Frontend conventions
 
