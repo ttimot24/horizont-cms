@@ -22,7 +22,9 @@ return [
 
     'upload_file_rename' => env('HCMS_UPLOAD_FILE_RENAME', true), // rename uploaded files to unique names
 
-    'sattelite_url' => env('HCMS_CENTRAL_REPO', 'https://hcms-store.bluehill.hu'),
+    'hcms_store_url' => env('HCMS_STORE_REGISTRY', 'https://hcms-store.bluehill.hu'),
+
+    'hcms_store_token' => env('HCMS_STORE_TOKEN', null),
 
     'css' => [
         'resources/css/horizontcms-next.css',

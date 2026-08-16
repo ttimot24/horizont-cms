@@ -16,8 +16,19 @@ class PluginRegistryController extends Controller
 
     public function __construct()
     {
-        $this->apiPath = config('horizontcms.sattelite_url').'/api/v1/plugins';
+        $this->apiPath = config('horizontcms.hcms_store_url').'/api/v1/plugins';
         File::ensureDirectoryExists('plugins');
+    }
+
+    private function client(): \Illuminate\Http\Client\PendingRequest
+    {
+        $http = Http::timeout(30);
+
+        if ($token = config('horizontcms.hcms_store_token')) {
+            $http = $http->withToken($token);
+        }
+
+        return $http;
     }
 
     /**
@@ -30,7 +41,7 @@ class PluginRegistryController extends Controller
         $repo_status = true;
 
         try {
-            $response = Http::get($this->apiPath);
+            $response = $this->client()->get($this->apiPath);
 
             $plugins = collect($response->object())->map(function ($plugin) {
 
@@ -60,7 +71,7 @@ class PluginRegistryController extends Controller
 
         $path = Storage::disk('local')->path($tempZip);
 
-        $response = Http::sink($path)->get($this->apiPath."/{$plugin_name}/download");
+        $response = $this->client()->sink($path)->get($this->apiPath."/{$plugin_name}/download");
 
         if ($response->successful()) {
 

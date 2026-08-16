@@ -336,3 +336,7 @@ Required steps when developing a plugin:
 - `app/HorizontCMS.php` overrides `publicPath()` and keeps active plugins on `app()->plugins`.
 - Theme/plugin version compatibility is checked via `requires.core` + `isCompatibleWithCore()`.
 - The app counts as installed only if `.env` exists OR `INSTALLED=YES` is set (see `App\HorizontCMS::isInstalled()`).
+
+## Additional Forbiddens (important!)
+
+- it is forbbiden to commit to the main/master branch

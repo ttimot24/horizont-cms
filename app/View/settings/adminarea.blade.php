@@ -117,7 +117,7 @@
                                 </div>
                                 <div class="col-12 col-md-6 mt-3">
                                     <input type='text' class='form-control'
-                                        value="{{ config('horizontcms.sattelite_url') }}" disabled>
+                                        value="{{ config('horizontcms.hcms_store_url') }}" disabled>
                                 </div>
                             </div>
                             <hr>
