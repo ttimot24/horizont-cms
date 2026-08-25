@@ -315,6 +315,73 @@ Required steps when developing a plugin:
   `convert*ToExceptions`, etc. were removed/changed in PHPUnit 10+)
   accordingly.
 
+---
+
+### Vue Component Registration (Runtime)
+
+Plugins **must** be able to register their own Vue components at runtime
+through the global Vue API exposed by the core. The core provides two
+globals (declared in `resources/vue/ts/global.d.ts`):
+
+| Global          | Type                        | Description                                      |
+|-----------------|-----------------------------|--------------------------------------------------|
+| `window.vue`    | `VueConstructor<Vue>`       | The Vue constructor (from `main.ts`)             |
+| `window.hcms`   | `Vue` (root instance)       | The root Vue instance mounted on `#hcms` (`app.ts`) |
+
+#### How it works today
+
+1. The plugin's `Register.php` implements `injectAdminJs(): array` (and/or
+   `injectWebsiteJs(): array`) returning paths to plain `.js` files relative
+   to the plugin root.
+2. `PluginServiceProvider::registerPluginJSScripts()` collects those paths
+   and shares them as `$jsplugins` to the Blade layout.
+3. `app/View/layout.blade.php` renders them as `<script>` tags in `<head>`.
+4. Inside those scripts, plugins access `window.vue` and `window.hcms` to
+   register components.
+
+#### Registration pattern
+
+A plugin's JS file (returned by `injectAdminJs`) should register components
+**before** the root Vue instance mounts, or use `window.hcms.$forceUpdate()`
+after late registration. Recommended approach — global registration via the
+Vue constructor:
+
+```javascript
+// plugins/MyPlugin/resources/js/admin.js
+window.vue.component('my-plugin-widget', {
+    template: '<div class="my-widget">{{ msg }}</div>',
+    data() {
+        return { msg: 'Hello from MyPlugin' };
+    }
+});
+```
+
+Alternatively, register on the root instance so the component is available
+inside `#hcms`:
+
+```javascript
+window.hcms.$options.components['my-plugin-widget'] = {
+    template: '<div>...</div>'
+};
+window.hcms.$forceUpdate();
+```
+
+#### Rules
+
+- Plugin Vue components **must** be registered via `window.vue` (global) or
+  `window.hcms.$options.components` (local). Do not assume any build-time
+  bundling — the plugin's JS is loaded as a plain `<script>` tag.
+- Plugin components **must not** overwrite core component names (`text-editor`,
+  `lock-screen`, `file-manager`, `category-selector`, `parent-page-selector`,
+  `filter-bar`).
+- If a plugin needs its own `.vue` SFC files compiled, it must ship its own
+  build step (e.g. its own `webpack.mix.js` or `vite.config.ts`) and output
+  a single JS bundle that is returned by `injectAdminJs()`.
+- Plugin components that depend on the i18n instance can access it via
+  `window.hcms.$i18n`.
+- Plugin components that need HTTP can use `window.vue.prototype.http`
+  (axios-observable, pre-configured with CSRF/API tokens).
+
 ## Frontend conventions
 
 - Vue 2.6, Options API. The `window.vue` global instance (`resources/vue/ts/main.ts`), components registered in `app.ts`.
