@@ -403,6 +403,7 @@ window.hcms.$forceUpdate();
 - `app/HorizontCMS.php` overrides `publicPath()` and keeps active plugins on `app()->plugins`.
 - Theme/plugin version compatibility is checked via `requires.core` + `isCompatibleWithCore()`.
 - The app counts as installed only if `.env` exists OR `INSTALLED=YES` is set (see `App\HorizontCMS::isInstalled()`).
+- **After any Vue/bundler change, always visually verify these in the browser:** CKEditor loads and is editable, Bootstrap 5 dropdowns open/close correctly, Select2 initializes and works (e.g. category selector on blogpost form), file upload works (file-manager drag-and-drop, upload dialog). These integrations depend on jQuery, Bootstrap, and third-party plugins sharing a single global instance — bundler misconfigurations silently break them.
 
 ## Additional Forbiddens (important!)
 
