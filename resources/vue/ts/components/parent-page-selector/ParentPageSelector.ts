@@ -1,4 +1,4 @@
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 import { environment } from '../../environments/environment';
 import { Page } from '@smartnowx/hcms-commons';
 

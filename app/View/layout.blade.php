@@ -14,17 +14,19 @@
     <title>{{ $title }} - {{ config('app.name') }}</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('resources/images/icons/favicon16.png') }}" />
 
-    @foreach ($css as $each_css)
-        <link rel="stylesheet" type="text/css" href="{{ asset($each_css) }}">
-    @endforeach
+    @if(!empty(config('horizontcms.vite.entrypoints')))
+        @vite(config('horizontcms.vite.entrypoints'), config('horizontcms.vite.build_directory', 'resources'))
+    @else
+        @foreach (config('horizontcms.css', []) as $each_css)
+            <link rel="stylesheet" type="text/css" href="{{ url($each_css) }}">
+        @endforeach
 
-    <script type="text/javascript" src="{{ asset('resources/js/main.js') }}" defer></script>
+        @foreach (config('horizontcms.js', []) as $each_js)
+            <script type="text/javascript" src="{{ asset($each_js) }}" defer></script>
+        @endforeach
+    @endif
 
     @yield('head')
-
-    @foreach ($js as $each_js)
-        <script type="text/javascript" src="{{ asset($each_js) }}" defer></script>
-    @endforeach
 
     @if(isset($jsplugins))
         @foreach ($jsplugins as $each_js)
