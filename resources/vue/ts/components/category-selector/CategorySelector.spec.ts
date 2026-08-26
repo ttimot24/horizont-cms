@@ -94,7 +94,7 @@ describe('CategorySelector - Unit Tests', () => {
                 selected_categories: [],
                 categories: [],
                 http: mockHttp,
-                $nextTick: vi.fn((cb: () => void) => cb()),
+                $nextTick: vi.fn(),
                 selector: '#category_select'
             };
 
