@@ -93,7 +93,9 @@ describe('CategorySelector - Unit Tests', () => {
                 blogpost_categories: [1, 2],
                 selected_categories: [],
                 categories: [],
-                http: mockHttp
+                http: mockHttp,
+                $nextTick: vi.fn((cb: () => void) => cb()),
+                selector: '#category_select'
             };
 
             mockHttp.get.mockReturnValue(

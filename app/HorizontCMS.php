@@ -24,7 +24,7 @@ class HorizontCMS extends Application
 
     public function publicPath($path = ''): string
     {
-        return $this->basePath . DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR);
+        return $this->basePath.DIRECTORY_SEPARATOR.ltrim($path, DIRECTORY_SEPARATOR);
     }
 
     public function setPlugins(Collection $plugins): void
