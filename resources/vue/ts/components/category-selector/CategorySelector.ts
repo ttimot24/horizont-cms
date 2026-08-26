@@ -52,7 +52,7 @@ export default defineComponent({
         vm.$nextTick(() => {
           const $ = (window as any).jQuery;
           if ($) {
-            $(vm.selectId).select2({
+            $("#" + vm.selectId).select2({
               theme: "bootstrap-5",
             });
           }
