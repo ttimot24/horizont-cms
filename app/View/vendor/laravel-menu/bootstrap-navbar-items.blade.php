@@ -1,5 +1,5 @@
 @foreach ($items as $item)
-    <li class="nav-item  {{ $item->hasChildren() ? 'dropdown"' : '' }}">
+    <li class="nav-item  {{ $item->hasChildren() ? 'dropdown' : '' }}">
         @if ($item->link)
 
             <?php

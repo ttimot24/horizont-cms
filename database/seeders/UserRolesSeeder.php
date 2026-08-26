@@ -12,25 +12,25 @@ class UserRolesSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('user_roles')->insert([
+        DB::table('user_roles')->insertOrIgnore([
             'name' => 'Public',
             'permission' => 0,
             'rights' => null,
         ]);
 
-        DB::table('user_roles')->insert([
+        DB::table('user_roles')->insertOrIgnore([
             'name' => 'User',
             'permission' => 1,
             'rights' => null,
         ]);
 
-        DB::table('user_roles')->insert([
+        DB::table('user_roles')->insertOrIgnore([
             'name' => 'Member',
             'permission' => 2,
             'rights' => null,
         ]);
 
-        DB::table('user_roles')->insert([
+        DB::table('user_roles')->insertOrIgnore([
             'name' => 'Editor',
             'permission' => 3,
             'rights' => json_encode(['admin_area', 'blogpostcategory.view', 'blogpostcomment.view', 'blogpost.view', 'filemanager.view', 'headerimage.view', 'page.view', 'search.view', 'user.view',
@@ -39,7 +39,7 @@ class UserRolesSeeder extends Seeder
                 'blogpostcategory.delete', 'blogpostcomment.delete', 'blogpost.delete', 'filemanager.delete', 'headerimage.delete', 'page.delete', 'search.delete', 'user.delete']),
         ]);
 
-        DB::table('user_roles')->insert([
+        DB::table('user_roles')->insertOrIgnore([
             'name' => 'Manager',
             'permission' => 4,
             'rights' => json_encode(['admin_area', 'blogpostcategory.view', 'blogpostcomment.view', 'blogpost.view', 'filemanager.view', 'headerimage.view', 'page.view', 'plugin.view', 'search.view', 'user.view', 'userrole.view',
@@ -48,7 +48,7 @@ class UserRolesSeeder extends Seeder
                 'blogpostcategory.delete', 'blogpostcomment.delete', 'blogpost.delete', 'filemanager.delete', 'headerimage.delete', 'page.delete', 'plugin.delete', 'search.delete', 'user.delete', 'userrole.delete']),
         ]);
 
-        DB::table('user_roles')->insert([
+        DB::table('user_roles')->insertOrIgnore([
             'name' => 'Admin',
             'permission' => 5,
             'rights' => json_encode(['admin_area', 'blogpostcategory.view', 'blogpostcomment.view', 'blogpost.view', 'filemanager.view', 'headerimage.view', 'page.view', 'plugin.view', 'pluginregistry.view', 'schedule.view', 'search.view', 'settings.view', 'theme.view', 'upgrade.view', 'user.view', 'userrole.view', 'log.view',
@@ -57,7 +57,7 @@ class UserRolesSeeder extends Seeder
                 'blogpostcategory.delete', 'blogpostcomment.delete', 'blogpost.delete', 'filemanager.delete', 'headerimage.delete', 'page.delete', 'plugin.delete', 'pluginregistry.delete', 'schedule.delete', 'search.delete', 'settings.delete', 'theme.delete', 'upgrade.delete', 'user.delete', 'userrole.delete']),
         ]);
 
-        DB::table('user_roles')->insert([
+        DB::table('user_roles')->insertOrIgnore([
             'name' => 'Service Account',
             'permission' => 2,
             'rights' => json_encode(['blogpostcategory.view', 'blogpostcomment.view', 'blogpost.view', 'filemanager.view', 'headerimage.view', 'page.view', 'search.view', 'user.view']),

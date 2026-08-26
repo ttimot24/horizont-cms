@@ -13,284 +13,202 @@ class SettingsSeeder extends Seeder
     public function run(): void
     {
 
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'title',
-            'value' => 'Your title',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'site_name',
-            'value' => 'Your site',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'slogan',
-            'value' => 'Your awesome slogan',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'favicon',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'scroll_text',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'default_email',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'address',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'default_phone',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'contact',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'theme',
-            'value' => 'TheWright',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'language',
-            'value' => 'en',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'date_format',
-            'value' => 'Y.m.d H:i:s',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'home_page',
-            'value' => 1,
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'website_down',
-            'value' => '0',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'logo',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'favicon',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'admin',
-            'setting' => 'admin_logo',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'website_debug',
-            'value' => '0',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'admin',
-            'setting' => 'admin_debug',
-            'value' => '0',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'admin',
-            'setting' => 'admin_broadcast',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'website_type',
-            'value' => 'website',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'blogposts_on_page',
-            'value' => '5',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'admin',
-            'setting' => 'default_user_role',
-            'value' => '2',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'admin',
-            'setting' => 'auto_upgrade_check',
-            'value' => '1',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'use_https',
-            'value' => '0',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'social_link_facebook',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'social_link_youtube',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'social_link_twitter',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'social_link_instagram',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'social_link_google',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'social_link_linkedin',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'social_link_pinterest',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'social_link_github',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'social_link_gitlab',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'social_link_spotify',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'social_link_soundcloud',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'social_link_tiktok',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'social_link_steam',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'website',
-            'setting' => 'social_link_reddit',
-            'value' => '',
-
-        ]);
-
-        DB::table('settings')->insert([
-            'group' => 'admin',
-            'setting' => 'scheduler',
-            'value' => 'not configured',
-
+        DB::table('settings')->insertOrIgnore([
+            [
+                'group' => 'website',
+                'setting' => 'title',
+                'value' => 'Your title',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'site_name',
+                'value' => 'Your site',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'slogan',
+                'value' => 'Your awesome slogan',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'favicon',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'scroll_text',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'default_email',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'address',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'default_phone',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'contact',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'theme',
+                'value' => 'TheWright',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'language',
+                'value' => 'en',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'date_format',
+                'value' => 'Y.m.d H:i:s',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'home_page',
+                'value' => '1',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'website_down',
+                'value' => '0',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'logo',
+                'value' => '',
+            ],
+            [
+                'group' => 'admin',
+                'setting' => 'admin_logo',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'website_debug',
+                'value' => '0',
+            ],
+            [
+                'group' => 'admin',
+                'setting' => 'admin_debug',
+                'value' => '0',
+            ],
+            [
+                'group' => 'admin',
+                'setting' => 'admin_broadcast',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'website_type',
+                'value' => 'website',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'blogposts_on_page',
+                'value' => '5',
+            ],
+            [
+                'group' => 'admin',
+                'setting' => 'default_user_role',
+                'value' => '2',
+            ],
+            [
+                'group' => 'admin',
+                'setting' => 'auto_upgrade_check',
+                'value' => '1',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'use_https',
+                'value' => '0',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'social_link_facebook',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'social_link_youtube',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'social_link_twitter',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'social_link_instagram',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'social_link_google',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'social_link_linkedin',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'social_link_pinterest',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'social_link_github',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'social_link_gitlab',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'social_link_spotify',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'social_link_soundcloud',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'social_link_tiktok',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'social_link_steam',
+                'value' => '',
+            ],
+            [
+                'group' => 'website',
+                'setting' => 'social_link_reddit',
+                'value' => '',
+            ],
+            [
+                'group' => 'admin',
+                'setting' => 'scheduler',
+                'value' => 'not configured',
+            ],
         ]);
 
     }

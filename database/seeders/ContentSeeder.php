@@ -13,7 +13,7 @@ class ContentSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('pages')->insert([
+        DB::table('pages')->insertOrIgnore([
             'id' => 1,
             'name' => 'Home',
             'slug' => 'home',
@@ -29,8 +29,7 @@ class ContentSeeder extends Seeder
             'active' => 1,
         ]);
 
-        DB::table('pages')->insert([
-            'id' => 2,
+        DB::table('pages')->insertOrIgnore([
             'name' => 'Blog',
             'slug' => 'blog',
             'language' => 'en',
@@ -46,7 +45,7 @@ class ContentSeeder extends Seeder
             'active' => 1,
         ]);
 
-        DB::table('blogposts')->insert([
+        DB::table('blogposts')->insertOrIgnore([
             'id' => 1,
             'title' => 'Welcome to HorizontCMS!',
             'slug' => 'welcome-to-horizontcms',
@@ -61,7 +60,7 @@ class ContentSeeder extends Seeder
             'active' => 1,
         ]);
 
-        DB::table('blogpost_categories')->insert([
+        DB::table('blogpost_categories')->insertOrIgnore([
             'id' => 1,
             'name' => 'default',
             'language' => 'en',
@@ -71,7 +70,7 @@ class ContentSeeder extends Seeder
             'updated_at' => null,
         ]);
 
-        DB::table('blogpost_categories_pivot')->insert([
+        DB::table('blogpost_categories_pivot')->insertOrIgnore([
             'id' => 1,
             'blogpost_id' => 1,
             'blogpost_category_id' => 1,
@@ -79,7 +78,7 @@ class ContentSeeder extends Seeder
             'updated_at' => null,
         ]);
 
-        DB::table('header_images')->insert([
+        DB::table('header_images')->insertOrIgnore([
             'id' => 1,
             'title' => 'default',
             'type' => 'image',
