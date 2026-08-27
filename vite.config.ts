@@ -19,16 +19,16 @@ export default defineConfig({
         emptyOutDir: false,
         rollupOptions: {
             output: {
-                chunkFileNames: 'js/[name]-[hash].js',
-                entryFileNames: 'js/[name]-[hash].js',
+                chunkFileNames: 'js/[name].js',
+                entryFileNames: 'js/[name].js',
                 assetFileNames: (assetInfo) => {
                     const name = assetInfo.name ?? '';
                     const ext = name.split('.').pop()?.toLowerCase() ?? '';
 
-                    if (ext === 'css') return 'css/[name]-[hash].[ext]';
-                    if (fontExtensions.includes(ext)) return 'font/[name]-[hash].[ext]';
-                    if (imageExtensions.includes(ext)) return 'img/[name]-[hash].[ext]';
-                    return 'assets/[name]-[hash].[ext]';
+                    if (ext === 'css') return 'css/[name].[ext]';
+                    if (fontExtensions.includes(ext)) return 'font/[name].[ext]';
+                    if (imageExtensions.includes(ext)) return 'img/[name].[ext]';
+                    return 'assets/[name].[ext]';
                 },
             },
         },

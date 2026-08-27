@@ -26,16 +26,12 @@ return [
 
     'hcms_store_token' => env('HCMS_STORE_TOKEN', null),
 
-    'css' => [],
+    'css' => [
+        'resources/css/horizontcms-next.css',
+    ],
 
-    'js' => [],
-
-    'vite' => [
-        'entrypoints' => [
-            'resources/vue/ts/app.ts',
-            'resources/vue/sass/horizontcms-next.scss',
-        ],
-        'build_directory' => 'resources',
+    'js' => [
+        'resources/js/app.js',
     ],
 
     'meta' => [
