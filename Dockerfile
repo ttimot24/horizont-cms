@@ -28,7 +28,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 # NPM install
 RUN npm install --global cross-env && \ 
     npm install --global webpack && \
-    npm ci --force && npm run dev && \
+    npm ci --force && npm run build && \
     rm -rf /var/www/html/node_modules
 
 RUN chmod -R 775 /var/www/html && \
