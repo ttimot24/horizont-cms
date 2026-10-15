@@ -54,8 +54,25 @@ COPY --from=builder --chown=appuser /etc/apache2/apache2.conf /etc/apache2/apach
 
 RUN echo "error_log = /dev/stderr" >> /usr/local/etc/php/php.ini
 
-USER appuser
+# Apache's master process runs as root (it has to bind port 80 and own its pid
+# and log directories) while its workers run as `appuser`, so files created by
+# the application keep `appuser` ownership.
+ENV APACHE_RUN_USER=appuser \
+    APACHE_RUN_GROUP=appuser
 
-RUN (crontab -l ; echo "* * * * * php /var/www/html/artisan schedule:run >> /dev/null 2>&1")| crontab -
+# Laravel's scheduler runs from cron as `appuser`: cron itself needs root to
+# read the crontab spool and to drop privileges for the job. The explicit PATH
+# is needed because cron otherwise falls back to /usr/bin:/bin, where php is not
+# present.
+RUN (crontab -u appuser -l 2>/dev/null; \
+        echo "PATH=/usr/local/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin"; \
+        echo "* * * * * cd /var/www/html && /usr/local/bin/php artisan schedule:run >> /dev/null 2>&1") \
+    | crontab -u appuser -
+
+# There is deliberately no USER directive: the container has to start as root,
+# because `printenv > /etc/environment` (the cron jobs read that file through
+# pam_env, which is how they receive DB_* / APP_*) and the cron daemon both
+# require root. Apache drops to `appuser` for its workers via APACHE_RUN_USER.
+CMD ["sh", "-c", "printenv > /etc/environment && cron && exec apache2-foreground"]
 
 EXPOSE 80
