@@ -5,3 +5,5 @@ plugins
 themes
 !themes/TheWright
 vendor
+.env
+.env.*
