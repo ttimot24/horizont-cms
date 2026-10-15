@@ -5,7 +5,7 @@
     <base href="{{ config('app.url') }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    @if(auth()->check())
+    @if (auth()->check())
         <meta name="api-token" content="{{ auth()->user()->api_token }}" />
     @endif
 
@@ -18,15 +18,13 @@
         <link rel="stylesheet" type="text/css" href="{{ asset($each_css) }}">
     @endforeach
 
-    <script type="text/javascript" src="{{ asset('resources/js/main.js') }}" defer></script>
-
     @yield('head')
 
     @foreach ($js as $each_js)
         <script type="text/javascript" src="{{ asset($each_js) }}" defer></script>
     @endforeach
 
-    @if(isset($jsplugins))
+    @if (isset($jsplugins))
         @foreach ($jsplugins as $each_js)
             <script type="text/javascript" src="{{ asset($each_js) }}" defer></script>
         @endforeach
@@ -34,7 +32,7 @@
 
 </head>
 
-<body @style(["padding-top: 5rem;" => Auth::user()])>
+<body @style(['padding-top: 5rem;' => Auth::user()])>
 
     <div id="hcms">
 
@@ -54,8 +52,9 @@
                 <div class="row py-5 px-3">
                     <div class='col-lg-6 col-sm-12 text-center text-lg-start'>
                         <p class='text-muted credit mb-0'>
-                            {{ config('app.name') }} &copy 2015 - {{ date('Y') }} 
-                            <a href='{{ config('horizontcms.creator.twitter') }}' class="me-1">{{ config('horizontcms.creator.name') }}</a>
+                            {{ config('app.name') }} &copy 2015 - {{ date('Y') }}
+                            <a href='{{ config('horizontcms.creator.twitter') }}'
+                                class="me-1">{{ config('horizontcms.creator.name') }}</a>
                             <a href='{{ config('horizontcms.creator.github') }}'><i style='font-size: 1.2em'
                                     class="fab fa-github" aria-hidden="true"></i></a>
                         </p>

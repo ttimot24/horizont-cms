@@ -1,5 +1,5 @@
 import { Modal } from 'bootstrap';
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 import { User } from '@smartnowx/hcms-commons';
 import { AxiosResponse, AxiosError } from 'axios';
 import { environment } from '../../environments/environment';

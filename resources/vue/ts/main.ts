@@ -1,22 +1,20 @@
 import Vue from 'vue';
 import VueResource from "vue-resource";
-//import VueI18n from 'vue-i18n';
-import axios, { Axios } from  'axios-observable';
+import http from './services/axios-observable';
 
 Vue.use(VueResource);
-//Vue.use(VueI18n);
 
 Vue.config.devtools = true;
 
-const csrfToken: HTMLElement = document.head.querySelector('meta[name="csrf-token"]') as HTMLElement;
-const apiToken: HTMLElement = document.head.querySelector('meta[name="api-token"]') as HTMLElement;
+const csrfToken: HTMLElement | null = document.head.querySelector('meta[name="csrf-token"]');
+const apiToken: HTMLElement | null = document.head.querySelector('meta[name="api-token"]');
 
-axios.defaults.headers.common['Content-Type'] = "application/json";
-axios.defaults.headers.common['Accept'] = "application/json";
-axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken.getAttribute('content');
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + apiToken.getAttribute('content');
+http.defaults.headers.common['Content-Type'] = "application/json";
+http.defaults.headers.common['Accept'] = "application/json";
+http.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken?.getAttribute('content') ?? '';
+http.defaults.headers.common['Authorization'] = 'Bearer ' + (apiToken?.getAttribute('content') ?? '');
 
-Vue.prototype.http = axios;
+Vue.prototype.http = http;
 
 Vue.mixin({
     data: function() {
@@ -29,3 +27,4 @@ Vue.mixin({
 });
 
 window.vue = Vue;
+(window as any).Vue = Vue;

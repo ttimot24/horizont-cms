@@ -1,0 +1,41 @@
+{
+  "resources/fonts/vendor/@fortawesome/fontawesome-free/webfa-brands-400.ttf": {
+    "file": "font/webfa-brands-400.ttf",
+    "src": "resources/fonts/vendor/@fortawesome/fontawesome-free/webfa-brands-400.ttf"
+  },
+  "resources/fonts/vendor/@fortawesome/fontawesome-free/webfa-brands-400.woff2": {
+    "file": "font/webfa-brands-400.woff2",
+    "src": "resources/fonts/vendor/@fortawesome/fontawesome-free/webfa-brands-400.woff2"
+  },
+  "resources/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.ttf": {
+    "file": "font/webfa-regular-400.ttf",
+    "src": "resources/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.ttf"
+  },
+  "resources/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.woff2": {
+    "file": "font/webfa-regular-400.woff2",
+    "src": "resources/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.woff2"
+  },
+  "resources/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.ttf": {
+    "file": "font/webfa-solid-900.ttf",
+    "src": "resources/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.ttf"
+  },
+  "resources/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.woff2": {
+    "file": "font/webfa-solid-900.woff2",
+    "src": "resources/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.woff2"
+  },
+  "resources/fonts/vendor/bootstrap-icons/bootstrap-icons.woff2": {
+    "file": "font/bootstrap-icons.woff2",
+    "src": "resources/fonts/vendor/bootstrap-icons/bootstrap-icons.woff2"
+  },
+  "resources/vue/sass/horizontcms-next.scss": {
+    "file": "css/horizontcms-next.css",
+    "src": "resources/vue/sass/horizontcms-next.scss",
+    "isEntry": true
+  },
+  "resources/vue/ts/app.ts": {
+    "file": "js/app.js",
+    "name": "app",
+    "src": "resources/vue/ts/app.ts",
+    "isEntry": true
+  }
+}

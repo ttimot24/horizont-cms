@@ -47,6 +47,12 @@ class UserCommand extends Command
         $admin['username'] = empty($this->option('username')) ? $this->ask('Username') : $this->option('username');
         $admin['password'] = empty($this->option('password')) ? $this->secret('Password') : $this->option('password');
 
+        if (\App\Model\User::where('username', $admin['username'])->exists()) {
+            $this->info('User '.$admin['username'].' already exists, skipping creation.');
+
+            return self::SUCCESS;
+        }
+
         try {
 
             $user = new \App\Model\User($admin);

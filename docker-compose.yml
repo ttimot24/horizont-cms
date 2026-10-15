@@ -78,8 +78,8 @@ services:
     image: ttimot24/horizont-cms:latest
     restart: always
     depends_on:
-      hcms_admin_user:
-        condition: service_completed_successfully
+      hcms_db:
+        condition: service_healthy
     environment:
       INSTALLED: "true"
       DB_HOST: "hcms_db"

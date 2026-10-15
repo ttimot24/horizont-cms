@@ -1,4 +1,4 @@
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 import DeleteModal from '../delete-modal/DeleteModal.vue';
 import { environment } from '../../environments/environment';
 import { FileManagerResponse } from '../../model/FileManagerResponse';

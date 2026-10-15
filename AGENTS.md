@@ -323,10 +323,10 @@ Plugins **must** be able to register their own Vue components at runtime
 through the global Vue API exposed by the core. The core provides two
 globals (declared in `resources/vue/ts/global.d.ts`):
 
-| Global          | Type                        | Description                                      |
-|-----------------|-----------------------------|--------------------------------------------------|
-| `window.vue`    | `VueConstructor<Vue>`       | The Vue constructor (from `main.ts`)             |
-| `window.hcms`   | `Vue` (root instance)       | The root Vue instance mounted on `#hcms` (`app.ts`) |
+| Global        | Type                  | Description                                         |
+| ------------- | --------------------- | --------------------------------------------------- |
+| `window.vue`  | `VueConstructor<Vue>` | The Vue constructor (from `main.ts`)                |
+| `window.hcms` | `Vue` (root instance) | The root Vue instance mounted on `#hcms` (`app.ts`) |
 
 #### How it works today
 
@@ -348,11 +348,11 @@ Vue constructor:
 
 ```javascript
 // plugins/MyPlugin/resources/js/admin.js
-window.vue.component('my-plugin-widget', {
-    template: '<div class="my-widget">{{ msg }}</div>',
-    data() {
-        return { msg: 'Hello from MyPlugin' };
-    }
+window.vue.component("my-plugin-widget", {
+  template: '<div class="my-widget">{{ msg }}</div>',
+  data() {
+    return { msg: "Hello from MyPlugin" };
+  },
 });
 ```
 
@@ -360,8 +360,8 @@ Alternatively, register on the root instance so the component is available
 inside `#hcms`:
 
 ```javascript
-window.hcms.$options.components['my-plugin-widget'] = {
-    template: '<div>...</div>'
+window.hcms.$options.components["my-plugin-widget"] = {
+  template: "<div>...</div>",
 };
 window.hcms.$forceUpdate();
 ```
@@ -384,10 +384,10 @@ window.hcms.$forceUpdate();
 
 ## Frontend conventions
 
-- Vue 2.6, Options API. The `window.vue` global instance (`resources/vue/ts/main.ts`), components registered in `app.ts`.
-- HTTP: `axios-observable` (`window.vue.prototype.http`), CSRF + API token from `<head>` meta tags.
+- Vue 2.7. The `window.vue` global instance (`resources/vue/ts/main.ts`), components registered in `app.ts`.
+- HTTP: `axios-observable` (rewritten in axios-observable.ts) (`window.vue.prototype.http`), CSRF + API token from `<head>` meta tags.
 - Components follow a `.vue` + `.ts` (logic) + `.spec.ts` (Vitest) trio in `components/<name>/`.
-- Build: Laravel Mix (`webpack.mix.js`) into `resources/js` and `resources/css`.
+- Build: Laravel Vite (`vite.config.ts`) into `resources/js` and `resources/css`.
 - i18n: `laravel-vue-i18n`, translations in `resources/lang/*.json` (en, de, hu, es).
 
 ## Testing
