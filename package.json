@@ -17,7 +17,7 @@
         "@fortawesome/free-solid-svg-icons": "^7.0.0",
         "@popperjs/core": "^2.11.6",
         "@smartnowx/hcms-commons": "^0.0.29",
-        "axios": "^1.9",
+        "axios": "^1.20",
         "bootstrap": "~5.2.3",
         "bootstrap-fileinput": "^5.5.0",
         "bootstrap-icons": "^1.8.3",
