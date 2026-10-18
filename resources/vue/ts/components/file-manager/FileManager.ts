@@ -1,394 +1,443 @@
-import { defineComponent } from 'vue';
-import DeleteModal from '../delete-modal/DeleteModal.vue';
-import { environment } from '../../environments/environment';
-import { FileManagerResponse } from '../../model/FileManagerResponse';
-import { catchError, of, map, retry, throwError } from 'rxjs';
+import { defineComponent } from "vue";
+import DeleteModal from "../delete-modal/DeleteModal.vue";
+import { environment } from "../../environments/environment";
+import { FileManagerResponse } from "../../model/FileManagerResponse";
+import { catchError, of, map, retry, throwError } from "rxjs";
 
 export default defineComponent({
-    name: 'FileManager',
-    components: {
-        DeleteModal
+  name: "FileManager",
+  components: {
+    DeleteModal,
+  },
+  inject: ["bootstrap"],
+  props: {
+    directory: {
+      type: String,
+      default: "",
     },
-    inject: ['bootstrap'],
-    props: {
-        directory: {
-            type: String,
-            default: ''
-        },
-        disks: {
-            type: Array<string>,
-            default: []
-        },
-        mode: {
-            type: String,
-            default: 'standalone'
-        }
+    disks: {
+      type: Array<string>,
+      default: [],
     },
-    data: function () {
-        return {
-            newTypes: ['folder', 'file'],
-            previousDirectory: null,
-            currentDirectory: this.directory,
-            drivers: [],
-            folders: [],
-            files: [],
-            knownFileExtensions: ['jpg', 'png', 'jpeg'],
-            messages: [],
-            filter: null,
-            selected: null,
-            currentDisk: 'local',
-            openError: null,
-        }
+    mode: {
+      type: String,
+      default: "standalone",
     },
-    mounted: function () {
+  },
+  data: function () {
+    return {
+      newTypes: ["folder", "file"],
+      previousDirectory: null,
+      currentDirectory: this.directory,
+      drivers: [],
+      folders: [],
+      files: [],
+      knownFileExtensions: ["jpg", "png", "jpeg"],
+      messages: [],
+      filter: null,
+      selected: null,
+      currentDisk: "local",
+      openError: null,
+    };
+  },
+  mounted: function () {
+    const vm = this;
 
-        const vm = this;
+    console.log("VueJS: FileManager started");
+    console.log("Opening: " + vm.currentDirectory);
+    vm.open(vm.currentDirectory, false);
+    console.log("Directory: " + vm.currentDirectory);
 
-        console.log("VueJS: FileManager started");
-        console.log('Opening: ' + vm.currentDirectory);
+    vm.modalRename = vm.getModal("rename_sample");
+    vm.modalUpload = vm.getModal("upload_file_to_storage");
+    vm.modalNewFolder = vm.getModal("new_folder");
+    vm.modalNewFile = vm.getModal("new_file");
+    vm.modalDelete = vm.getModal("delete_sample");
+
+    $("#delete-form").on("submit", (event: Event) => {
+      event.preventDefault();
+      this.deleteFile();
+    });
+  },
+  watch: {
+    filter: function (filter: string) {
+      const vm = this;
+
+      if (filter != null && filter != "") {
+        vm.folders = vm.folders.filter((folder: string) =>
+          folder.includes(filter),
+        );
+        vm.files = vm.files.filter((folder: string) => folder.includes(filter));
+      } else {
         vm.open(vm.currentDirectory, false);
-        console.log('Directory: ' + vm.currentDirectory);
-
-
-        vm.modalRename = vm.getModal("rename_sample");
-        vm.modalUpload = vm.getModal("upload_file_to_storage");
-        vm.modalNewFolder = vm.getModal("new_folder");
-        vm.modalNewFile = vm.getModal("new_file");
-        vm.modalDelete = vm.getModal("delete_sample");
-
-        $('#delete-form').on('submit', (event: Event) => { event.preventDefault(); this.deleteFile(); });
+      }
     },
-    watch: {
-        filter: function (filter: string) {
-            const vm = this;
+  },
+  computed: {
+    breadcrumb: function (): {
+      text: any;
+      link: string;
+    }[] {
+      const vm = this;
 
-            if (filter != null && filter != "") {
-                vm.folders = vm.folders.filter((folder: string) => folder.includes(filter));
-                vm.files = vm.files.filter((folder: string) => folder.includes(filter));
-            } else {
-                vm.open(vm.currentDirectory, false);
-            }
-        }
+      const here = vm.currentDirectory.split("/");
+
+      const parts = [];
+
+      for (let i = 0; i < here.length; i++) {
+        const part = here[i];
+        const text = part;
+        const link = "" + here.slice(0, i + 1).join("/");
+        parts.push({ text: text, link: link });
+      }
+
+      return parts;
     },
-    computed: {
-        breadcrumb: function (): {
-            text: any,
-            link: string
-        }[] {
-            const vm = this;
-
-            const here = vm.currentDirectory.split('/');
-
-            const parts = [];
-
-            for (let i = 0; i < here.length; i++) {
-                const part = here[i];
-                const text = part;
-                const link = '' + here.slice(0, i + 1).join('/');
-                parts.push({ "text": text, "link": link });
-            }
-
-            return parts;
-        }
+  },
+  methods: {
+    getModal: function (id: string): bootstrap.Modal {
+      return new this.bootstrap.Modal(
+        document.getElementById(id) || ({} as HTMLElement),
+      );
     },
-    methods: {
-        getModal: function (id: string): bootstrap.Modal {
-            return (new this.bootstrap.Modal(document.getElementById(id) || {} as HTMLElement));
-        },
-        switchDisk: function (disk: string): void {
-            this.currentDisk = disk;
-            this.currentDirectory = '';
-            this.open('', false);
-        },
-        select: function (file: string): void {
-            const vm = this;
+    switchDisk: function (disk: string): void {
+      this.currentDisk = disk;
+      this.currentDirectory = "";
+      this.open("", false);
+    },
+    select: function (file: string): void {
+      const vm = this;
 
-            vm.selected = (event?.currentTarget as any).id;
-            $(".file").removeClass('selected');
-            $(".folder").removeClass('selected');
-            $((event?.currentTarget as any)).addClass('selected');
-            console.log('Selected file: ' + vm.selected);
-        },
-        open: function (folder: string, useCurrent = true): void {
+      vm.selected = (event?.currentTarget as any).id;
+      $(".file").removeClass("selected");
+      $(".folder").removeClass("selected");
+      $(event?.currentTarget as any).addClass("selected");
+      console.log("Selected file: " + vm.selected);
+    },
+    open: function (folder: string, useCurrent = true): void {
+      const vm = this;
 
-            const vm = this;
+      vm.openError = null;
 
-            vm.openError = null;
+      if (useCurrent) {
+        var folderToOpen = vm.currentDirectory + "/" + folder;
+      } else {
+        var folderToOpen = folder;
+      }
 
-            if (useCurrent) {
-                var folderToOpen = vm.currentDirectory + '/' + folder;
-            } else {
-                var folderToOpen = folder;
+      console.debug(vm);
+
+      this.http
+        .get(
+          environment.REST_API_BASE +
+            "/file-manager?disk=" +
+            vm.currentDisk +
+            "&path=" +
+            folderToOpen,
+        )
+        .pipe(
+          retry(environment.API_RETRY),
+          map((response: any) => response.data as FileManagerResponse),
+          catchError((error: any) => {
+            console.error(error);
+            this.openError = error.response?.data || { error: "Unknown error" };
+            return throwError(error);
+          }),
+        )
+        .subscribe((data: FileManagerResponse) => {
+          console.debug(vm);
+          vm.previousDirectory = vm.currentDirectory;
+          vm.currentDirectory = data.current_dir;
+          vm.folders = [];
+          vm.files = [];
+
+          console.log(data);
+
+          if (
+            data.dirs &&
+            typeof data.dirs !== undefined &&
+            data.dirs.length > 0
+          ) {
+            data.dirs.forEach(function (each: string) {
+              vm.folders.push(each);
+            });
+          }
+
+          if (
+            data.files &&
+            typeof data.files !== undefined &&
+            data.files.length > 0
+          ) {
+            data.files.forEach(function (each: string) {
+              vm.files.push(each);
+            });
+          }
+
+          $(".fa-refresh").removeClass("fa-spin");
+        });
+    },
+    createNew: function (event: any, type: string): void {
+      const vm = this;
+
+      const dirPath = vm.currentDirectory;
+      const newName = $('[name="new_' + type + '_name"]').val();
+
+      this.http
+        .put(
+          environment.REST_API_BASE +
+            "/file-manager/new-" +
+            type +
+            "?disk=" +
+            vm.currentDisk,
+          {
+            _token: vm.csrfToken,
+            dir_path: dirPath,
+            new_folder_name: newName,
+            new_file_name: newName,
+          },
+        )
+        .pipe(
+          catchError((error: any) => {
+            console.error(error);
+            return of(error);
+          }),
+        )
+        .subscribe((data: any) => {
+          if (typeof data.success !== undefined) {
+            console.log(type + " created: " + dirPath + "/" + newName);
+
+            vm.modalNewFolder.hide();
+            vm.modalNewFile.hide();
+
+            $('[name="new_' + type + '_name"]').val("");
+
+            if (type === "folder") {
+              vm.folders.push(newName);
             }
 
-            console.debug(vm);
-
-            this.http.get(environment.REST_API_BASE + '/file-manager?disk='+vm.currentDisk+'&path='+folderToOpen)
-            .pipe(
-                retry(environment.API_RETRY),
-                map((response: any) => response.data as FileManagerResponse),
-                catchError((error: any) => {
-                    console.error(error);
-                    this.openError = error.response?.data || { error: 'Unknown error' };
-                    return throwError(error);
-                })
-            )
-            .subscribe((data: FileManagerResponse) => {
-                console.debug(vm);
-                vm.previousDirectory = vm.currentDirectory;
-                vm.currentDirectory = data.current_dir;
-                vm.folders = [];
-                vm.files = [];
-
-                console.log(data);
-
-                if (data.dirs && typeof data.dirs !== undefined && data.dirs.length > 0) {
-
-                    data.dirs.forEach(function (each: string) {
-                        vm.folders.push(each);
-                    });
-                }
-
-                if (data.files && typeof data.files !== undefined && data.files.length > 0) {
-
-
-                    data.files.forEach(function (each: string) {
-                        vm.files.push(each);
-                    });
-
-                }
-
-                $('.fa-refresh').removeClass('fa-spin');
-            });
-
-        },
-        createNew: function (event: any, type: string): void {
-
-            const vm = this;
-
-            const dirPath = vm.currentDirectory;
-            const newName = $('[name="new_'+type+'_name"]').val();
-
-            this.http.put(environment.REST_API_BASE + '/file-manager/new-'+type, {
-                 _token: vm.csrfToken,
-                dir_path: dirPath,
-                new_folder_name: newName,
-                new_file_name: newName
-            }).pipe(
-                catchError((error: any) => {
-                    console.error(error);
-                    return of(error);
-                })
-            ).subscribe((data: any) => {
-                  if (typeof data.success !== undefined) {
-
-                        console.log(type + " created: " + dirPath + '/' + newName);
-
-                        vm.modalNewFolder.hide();
-                        vm.modalNewFile.hide();
-
-                        $('[name="new_'+type+'_name"]').val("");
-
-                        if(type==='folder'){
-                            vm.folders.push(newName);
-                        }
-
-                        if(type==='file'){
-                            vm.files.push(newName);
-                        }
-
-                    } else {
-                        console.log("Error:");
-                        console.log(data);
-                    }
-            });
-
-        },
-        upload: function (event: any): void {
-
-            event.preventDefault();
-
-            const vm = this;
-
-            console.log("Uploading ...");
-
-            const dirPath = vm.currentDirectory;
-
-            const fileSelect = ($('#input-2') as any);
-            const files = fileSelect[0].files;
-
-            if (!files) {
-                console.log("No file is selected");
-                return;
+            if (type === "file") {
+              vm.files.push(newName);
             }
+          } else {
+            console.log("Error:");
+            console.log(data);
+          }
+        });
+    },
+    upload: function (event: any): void {
+      event.preventDefault();
 
-            const formData = new FormData();
-            formData.append('_token', vm.csrfToken);
-            formData.append('dir_path', dirPath);
+      const vm = this;
 
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                formData.append('up_file[]', file, file.name);
-            }
+      console.log("Uploading ...");
 
-            vm.http.post(event.target.action, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }).pipe(
-                retry(environment.API_RETRY),
-                catchError((error: any) => {
-                    console.error(error);
-                    return of(error);
-                })
-            ).subscribe((response: any) => {
+      const dirPath = vm.currentDirectory;
 
-                const data = response.data;
-                
-                if (typeof data.success !== undefined) {
-                    console.log(data);
-                    vm.modalUpload.hide();
-                    fileSelect.val("");
-                    //fileSelect.fileinput("clear");
-                    
-                    data.uploadedFileNames?.forEach((uploaded: string) => {
-                        const base = vm.basename(uploaded);
-                        const ext = vm.getFileExtension(uploaded);
-                        
-                        console.log(base);
-                        vm.files.push(base + '.' + ext);
-                    });
-                } else {
-                    console.log("Error" + data);
-                }
-            }).catch(function (error: any) {
-                console.log("Error in axios form submission");
-                console.error(error);
+      const fileSelect = $("#input-2") as any;
+      const files = fileSelect[0].files;
+
+      if (!files) {
+        console.log("No file is selected");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("_token", vm.csrfToken);
+      formData.append("dir_path", dirPath);
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        formData.append("up_file[]", file, file.name);
+      }
+
+      vm.http
+        .post(event.target.action + "?disk=" + vm.currentDisk, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .pipe(
+          retry(environment.API_RETRY),
+          catchError((error: any) => {
+            console.error(error);
+            return of(error);
+          }),
+        )
+        .subscribe((response: any) => {
+          const data = response.data;
+
+          if (typeof data.success !== undefined) {
+            console.log(data);
+            vm.modalUpload.hide();
+            fileSelect.val("");
+            //fileSelect.fileinput("clear");
+
+            data.uploadedFileNames?.forEach((uploaded: string) => {
+              const base = vm.basename(uploaded);
+              const ext = vm.getFileExtension(uploaded);
+
+              console.log(base);
+              vm.files.push(base + "." + ext);
             });
-        },
-        basename: function (url: string): string {
-            //return ((/(([^\/\\\.#\? ]+)(\.\w+)*)([?#].+)?$/.exec(url)) != null) ? url[2] : '';
-            return url.substring(url.lastIndexOf('/') + 1);
-        },
-        deleteModal: function (file: string): void {
-            const vm = this;
+          } else {
+            console.log("Error" + data);
+          }
+        })
+        .catch(function (error: any) {
+          console.log("Error in axios form submission");
+          console.error(error);
+        });
+    },
+    basename: function (url: string): string {
+      //return ((/(([^\/\\\.#\? ]+)(\.\w+)*)([?#].+)?$/.exec(url)) != null) ? url[2] : '';
+      return url.substring(url.lastIndexOf("/") + 1);
+    },
+    deleteModal: function (file: string): void {
+      const vm = this;
 
-            $('#content-name').text(vm.basename(file));
+      $("#content-name").text(vm.basename(file));
 
-            $("#delete-submit").data('file', file);
+      $("#delete-submit").data("file", file);
 
-            vm.modalDelete.show();
+      vm.modalDelete.show();
+    },
+    renameModal: function (file: string): void {
+      const vm = this;
 
-        },
-        renameModal: function (file: string): void {
-            const vm = this;
+      vm.select(file);
+      $("#selected").val(file);
+      vm.modalRename.show();
+    },
+    renameFile: function (event: any): void {
+      const vm = this;
 
-            vm.select(file);
-            $("#selected").val(file);
-            vm.modalRename.show();
-        },
-        renameFile: function (event: any): void {
-            const vm = this;
+      const file = vm.currentDirectory
+        .concat("/")
+        .concat($('[name="old_name"]').val());
+      console.log(file);
 
-            const file = vm.currentDirectory.concat('/').concat($('[name="old_name"]').val());
-            console.log(file);
+      this.http
+        .put(
+          environment.REST_API_BASE +
+            "/file-manager/rename?disk=" +
+            vm.currentDisk,
+          {
+            _token: vm.csrfToken,
+            old_file: vm.currentDirectory
+              .concat("/")
+              .concat($('[name="old_name"]').val()),
+            new_file: vm.currentDirectory
+              .concat("/")
+              .concat($('[name="new_name"]').val()),
+          },
+        )
+        .pipe(
+          catchError((error: any) => {
+            console.error(error);
+            return of(error);
+          }),
+        )
+        .subscribe((data: any) => {
+          if (typeof data.success !== undefined) {
+            vm.open(vm.currentDirectory, false);
+            vm.modalRename.hide();
+            $('[name="new_name"]').val("");
+          } else {
+            console.log(data);
+          }
+        });
+    },
+    shareLink(file: string): void {
+      const baseUrl = window.location.origin;
+      const path = `storage/${this.currentDirectory}/${file}`;
+      const fullUrl = `${baseUrl}/${path}`;
 
-            this.http.put(environment.REST_API_BASE + '/file-manager/rename', {
-                _token: vm.csrfToken,
-                old_file: vm.currentDirectory.concat('/').concat($('[name="old_name"]').val()),
-                new_file: vm.currentDirectory.concat('/').concat($('[name="new_name"]').val())
-            }).pipe(
-                catchError((error: any) => {
-                    console.error(error);
-                    return of(error);
-                })
-            ).subscribe((data: any) => {
-                if (typeof data.success !== undefined) {
-                    vm.open(vm.currentDirectory, false);
-                    vm.modalRename.hide();
-                    $('[name="new_name"]').val('');
-                } else {
-                    console.log(data);
-                }
-            });
+      navigator.clipboard
+        .writeText(fullUrl)
+        .then(() => {
+          alert("Link copied to clipboard: " + fullUrl);
+        })
+        .catch((err) => {
+          console.error("Failed to copy:", err);
+        });
+    },
+    deleteFile: function (): void {
+      const vm = this;
 
-        },
-        shareLink(file: string): void {
-            const baseUrl = window.location.origin;
-            const path = `storage/${this.currentDirectory}/${file}`;
-            const fullUrl = `${baseUrl}/${path}`;
-        
-            navigator.clipboard.writeText(fullUrl)
-                .then(() => {
-                    alert('Link copied to clipboard: '+ fullUrl);
-                })
-                .catch(err => {
-                    console.error('Failed to copy:', err);
-                });
-        },
-        deleteFile: function (): void {
+      const deleteSubmit = $("#delete-submit");
 
-            const vm = this;
+      const file = vm.currentDirectory
+        .concat("/")
+        .concat(deleteSubmit.data("file"));
 
-            const deleteSubmit = $("#delete-submit");
+      this.http
+        .delete(
+          environment.REST_API_BASE +
+            "/file-manager/file?disk=" +
+            vm.currentDisk +
+            "&file=" +
+            file,
+        )
+        .pipe(
+          retry(environment.API_RETRY),
+          catchError((error: any) => {
+            console.error(error);
+            return of(error);
+          }),
+        )
+        .subscribe((data: any) => {
+          ["files", "folders"].forEach((key) => {
+            vm[key] = vm[key].filter(
+              (item: string) => item !== deleteSubmit.data("file"),
+            );
+          });
 
-            const file = vm.currentDirectory.concat('/').concat(deleteSubmit.data('file'));
+          vm.modalDelete.hide();
+        });
+    },
+    getUrlVar: function (location: string, vary: any): any {
+      let vars = [],
+        hash;
+      const hashes = location.slice(location.indexOf("?") + 1).split("&");
+      for (let i = 0; i < hashes.length; i++) {
+        hash = hashes[i].split("=");
+        vars.push(hash[0]);
+        vars[hash[0] as any] = hash[1];
+      }
+      return vars[vary];
+    },
+    getUrlParam: function (paramName: string): number {
+      const reParam = new RegExp("(?:[?&]|&)" + paramName + "=([^&]+)", "i");
+      const match = window.location.search.match(reParam);
 
-            this.http.delete(environment.REST_API_BASE + '/file-manager/file?file=' + file)
-            .pipe(
-                retry(environment.API_RETRY),
-                catchError((error: any) => {
-                    console.error(error);
-                    return of(error);
-                })
-            ).subscribe((data: any) => {
+      return Number(match && match.length > 1 ? match[1] : null);
+    },
+    returnFileUrl: function (filepath: string): void {
+      try {
+        // Simulate user action of selecting a file to be returned to CKEditor.
+        const funcNum: number = this.getUrlParam("CKEditorFuncNum");
+        const fileUrl: string =
+          window.location.protocol +
+          "//" +
+          window.location.host +
+          "/" +
+          filepath;
+        window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl, "");
+        window.close();
+      } catch (e) {
+        console.log(window.opener.CKEDITOR);
+        console.log(e);
+      }
+    },
+    getFileExtension: function (fileName: string): string {
+      return fileName.substring(fileName.lastIndexOf(".") + 1);
+    },
+    isKnownExtension: function (fileName: string): boolean {
+      const vm = this;
 
-                ['files', 'folders'].forEach(key => {
-                    vm[key] = vm[key].filter((item: string) => item !== deleteSubmit.data('file'));
-                });
-
-                vm.modalDelete.hide();
-
-            });
-
-        },
-        getUrlVar: function (location: string, vary: any): any {
-            let vars = [], hash;
-            const hashes = location.slice(location.indexOf('?') + 1).split('&');
-            for (let i = 0; i < hashes.length; i++) {
-                hash = hashes[i].split('=');
-                vars.push(hash[0]);
-                vars[(hash[0] as any)] = hash[1];
-            }
-            return vars[vary];
-        },
-        getUrlParam: function (paramName: string): number {
-            const reParam = new RegExp('(?:[\?&]|&)' + paramName + '=([^&]+)', 'i');
-            const match = window.location.search.match(reParam);
-
-            return Number((match && match.length > 1) ? match[1] : null);
-        },
-        returnFileUrl: function (filepath: string): void {
-
-            try {
-                // Simulate user action of selecting a file to be returned to CKEditor.
-                const funcNum: number = this.getUrlParam("CKEditorFuncNum");
-                const fileUrl: string = window.location.protocol + '//' +window.location.host+'/'+filepath;
-                window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl, '');
-                window.close();
-            } catch (e) {
-                console.log(window.opener.CKEDITOR)
-                console.log(e);
-            }
-        },
-        getFileExtension: function (fileName: string): string {
-            return fileName.substring(fileName.lastIndexOf('.') + 1);
-        },
-        isKnownExtension: function (fileName: string): boolean {
-            const vm = this;
-
-            return vm.knownFileExtensions.includes(vm.getFileExtension(fileName).toLowerCase());
-        }
-    }
-
+      return vm.knownFileExtensions.includes(
+        vm.getFileExtension(fileName).toLowerCase(),
+      );
+    },
+  },
 });

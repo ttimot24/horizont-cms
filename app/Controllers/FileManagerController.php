@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -11,7 +13,7 @@ class FileManagerController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -50,7 +52,7 @@ class FileManagerController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store()
     {
@@ -94,9 +96,9 @@ class FileManagerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update($id)
     {
@@ -157,18 +159,21 @@ class FileManagerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @return Response
      */
     public function newFolder()
     {
 
         if (request()->isMethod('POST') || request()->isMethod('PUT')) {
 
-            $directory = 'storage/'.str_replace('storage/', '', request()->input('dir_path')).'/'.request()->input('new_folder_name');
+            $disk = request()->get('disk', 'local');
 
-            if (! file_exists($directory)) {
-                File::makeDirectory($directory, $mode = 0777, true, true);
+            $directory = request()->input('dir_path').'/'.request()->input('new_folder_name');
+
+            if (! Storage::disk($disk)->exists($directory)) {
+
+                Storage::disk($disk)->makeDirectory($directory);
 
                 if (request()->wantsJson()) {
                     return response()->json(['success' => 'Folder created successfully!']);
@@ -191,17 +196,19 @@ class FileManagerController extends Controller
     /**
      * Create a new file.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function newFile()
     {
 
         if (request()->isMethod('POST') || request()->isMethod('PUT')) {
 
-            $file = 'storage/'.str_replace('storage/', '', request()->input('dir_path')).'/'.request()->input('new_file_name', 'new_file.txt');
+            $disk = request()->get('disk', 'local');
 
-            if (! file_exists($file)) {
-                File::put($file, '');
+            $file = str_replace('storage/', '', request()->input('dir_path')).'/'.request()->input('new_file_name', 'new_file.txt');
+
+            if (! Storage::disk($disk)->exists($file)) {
+                Storage::disk($disk)->put($file, '');
 
                 if (request()->wantsJson()) {
                     return response()->json(['success' => 'File created successfully!']);
@@ -225,7 +232,7 @@ class FileManagerController extends Controller
      * Remove the specified resource from database.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy()
     {
