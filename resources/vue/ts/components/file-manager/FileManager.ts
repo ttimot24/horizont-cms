@@ -36,6 +36,7 @@ export default defineComponent({
       messages: [],
       filter: null,
       selected: null,
+      selectedForDelete: null as string | null,
       currentDisk: "local",
       openError: null,
     };
@@ -53,11 +54,6 @@ export default defineComponent({
     vm.modalNewFolder = vm.getModal("new_folder");
     vm.modalNewFile = vm.getModal("new_file");
     vm.modalDelete = vm.getModal("delete_sample");
-
-    $("#delete-form").on("submit", (event: Event) => {
-      event.preventDefault();
-      this.deleteFile();
-    });
   },
   watch: {
     filter: function (filter: string) {
@@ -295,10 +291,7 @@ export default defineComponent({
     deleteModal: function (file: string): void {
       const vm = this;
 
-      $("#content-name").text(vm.basename(file));
-
-      $("#delete-submit").data("file", file);
-
+      vm.selectedForDelete = file;
       vm.modalDelete.show();
     },
     renameModal: function (file: string): void {
@@ -364,11 +357,13 @@ export default defineComponent({
     deleteFile: function (): void {
       const vm = this;
 
-      const deleteSubmit = $("#delete-submit");
+      const name = vm.selectedForDelete;
 
-      const file = vm.currentDirectory
-        .concat("/")
-        .concat(deleteSubmit.data("file"));
+      if (name === null) {
+        return;
+      }
+
+      const file = vm.currentDirectory.concat("/").concat(name);
 
       this.http
         .delete(
@@ -385,13 +380,12 @@ export default defineComponent({
             return of(error);
           }),
         )
-        .subscribe((data: any) => {
+        .subscribe(() => {
           ["files", "folders"].forEach((key) => {
-            vm[key] = vm[key].filter(
-              (item: string) => item !== deleteSubmit.data("file"),
-            );
+            vm[key] = vm[key].filter((item: string) => item !== name);
           });
 
+          vm.selectedForDelete = null;
           vm.modalDelete.hide();
         });
     },

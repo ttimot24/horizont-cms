@@ -13,7 +13,7 @@
             </div>
             <div class='modal-footer'>
 
-                <form id="delete-form" method='POST' v-bind:action="route">
+                <form id="delete-form" method='POST' v-bind:action="route" v-on:submit.prevent="$emit('delete')">
 
                 <input type="hidden" name="_method" value="delete">
 

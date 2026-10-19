@@ -225,7 +225,7 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <delete-modal :id="'delete_sample'" :route="'admin/file-manager/destroy'" :header="'Are you sure you want to delete?'" :name="'[dir_name_sample]'" :delete_text="'Delete'" :cancel="'Cancel'" ref="deletemodal"></delete-modal>
+    <delete-modal :id="'delete_sample'" :route="'admin/file-manager/destroy'" :header="'Are you sure you want to delete?'" :name="selectedForDelete || ''" :delete_text="'Delete'" :cancel="'Cancel'" v-on:delete="deleteFile" ref="deletemodal"></delete-modal>
 
     </div>
 
