@@ -408,3 +408,4 @@ window.hcms.$forceUpdate();
 ## Additional Forbiddens (important!)
 
 - it is forbbiden to commit to the main/master branch
+- avoid jQuery when it's possible
