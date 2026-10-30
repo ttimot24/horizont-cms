@@ -9,14 +9,14 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class SettingsController extends Controller
 {
     public function before()
     {
-        File::ensureDirectoryExists('images/logos');
-        File::ensureDirectoryExists('images/favicons');
+        Storage::disk('local')->makeDirectory('images/logos');
+        Storage::disk('local')->makeDirectory('images/favicons');
     }
 
     public function store(Request $request)
@@ -120,7 +120,6 @@ class SettingsController extends Controller
     public function website()
     {
         return view('settings.website', [
-            'available_logos' => array_slice(scandir('storage/images/logos'), 2),
             'user_roles' => \App\Model\UserRole::all(),
         ]);
     }
@@ -134,7 +133,6 @@ class SettingsController extends Controller
     public function adminarea()
     {
         return view('settings.adminarea', [
-            'available_logos' => array_slice(scandir('storage/images/logos'), 2),
             'dateFormats' => ['Y.m.d H:i:s', 'Y-m-d H:i:s', 'Y. M. d H:i:s', 'd-m-Y H:i:s', 'd/m/Y H:i:s', 'm/d/Y H:i:s'],
         ]);
     }

@@ -177,9 +177,18 @@
     <script defer>
         window.onload = function() {
 
-            $("#workspace").on('click', ".file", function(event) {
-                var src = $(event.target).attr('src');
-                var bname = src.substring(src.lastIndexOf('/') + 1);
+            $(document).on('click', '.admin_logo_select-modal-lg .file', function(event) {
+
+                if ($(event.target).closest('.file-nav').length) {
+                    return;
+                }
+
+                var bname = $(this).find('b').first().text().trim();
+
+                if (bname == "") {
+                    return;
+                }
+
                 $('[name="admin_logo"]').val(bname);
                 $('#admin_logo').attr('src', 'storage/images/logos/' + bname);
                 $('#close-modal').click();
