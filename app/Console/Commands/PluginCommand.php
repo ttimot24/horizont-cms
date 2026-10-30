@@ -2,32 +2,33 @@
 
 namespace App\Console\Commands;
 
+use App\Model\Plugin;
+use App\Services\PluginRegistry;
 use Illuminate\Console\Command;
 
 class PluginCommand extends Command
 {
     /**
      * The name and signature of the console command.
-     *
-     * @var string
      */
     protected $signature = 'hcms:plugin {--install} {--uninstall} {--activate} {--deactivate} {--download} {--remove} {plugin} ';
 
     /**
      * The console command description.
-     *
-     * @var string
      */
     protected $description = 'Install and activate plugin.';
+
+    private readonly PluginRegistry $pluginRegistry;
 
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(PluginRegistry $pluginRegistry)
     {
         parent::__construct();
+        $this->pluginRegistry = $pluginRegistry;
     }
 
     public function handle(): int
@@ -54,8 +55,17 @@ class PluginCommand extends Command
     private function download(string $selectedPlugin): int
     {
 
-        $this->line('Download...');
-        throw new \Exception('This function is not supported yet!');
+        $this->line('Download: '.$selectedPlugin);
+
+        if ($this->pluginRegistry->downloadPlugin($selectedPlugin)) {
+            $this->info('Plugin successfully downloaded!');
+
+            return self::SUCCESS;
+        } else {
+            $this->error('Could not download the plugin!');
+
+            return self::FAILURE;
+        }
     }
 
     private function remove(string $selectedPlugin): int
@@ -84,12 +94,12 @@ class PluginCommand extends Command
 
         $this->line('Activate...');
 
-        if (\App\Model\Plugin::rootDir($selectedPlugin)->update(['active' => 1])) {
-            $this->line('Plugin successfully activated!');
+        if (Plugin::rootDir($selectedPlugin)->update(['active' => 1])) {
+            $this->info('Plugin successfully activated!');
 
             return self::SUCCESS;
         } else {
-            $this->line('Could not activate the plugin!');
+            $this->error('Could not activate the plugin!');
 
             return self::FAILURE;
         }
@@ -100,12 +110,12 @@ class PluginCommand extends Command
 
         $this->line('Deactivate...');
 
-        if (\App\Model\Plugin::rootDir($selectedPlugin)->update(['active' => 0])) {
-            $this->line('Plugin successfully deactivated!');
+        if (Plugin::rootDir($selectedPlugin)->update(['active' => 0])) {
+            $this->info('Plugin successfully deactivated!');
 
             return self::SUCCESS;
         } else {
-            $this->line('Could not deactivate the plugin!');
+            $this->error('Could not deactivate the plugin!');
 
             return self::FAILURE;
         }
