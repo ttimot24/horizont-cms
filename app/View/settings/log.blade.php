@@ -3,12 +3,19 @@
 @section('content')
     <div class='container card'>
 
+        @php
+            $links = [
+                ['name' => trans('settings.settings'), 'url' => route('settings.index')],
+                ['name' => trans('Log'), 'url' => route('log.index')],
+            ];
+
+            if (!empty($current_file)) {
+                $links[] = ['name' => $current_file, 'url' => route('log.show', ['log' => $current_file])];
+            }
+        @endphp
+
         @include('breadcrumb', [
-            'links' => [
-                ['name' => trans('settings.settings'), 'url' => route('settings.index')], 
-                ['name' => trans('Log'), 'url' => route('log.index')], 
-                ['name' => $current_file, 'url' => route('log.show', ['log' => $current_file])]
-            ],
+            'links' => $links,
             'page_title' => 'System log',
             'stats' => [
                 ['label'=> 'Files', 'value' => $all_files->count()]
@@ -96,7 +103,7 @@
             </div>
 
             <div class="d-flex justify-content-center mt-5">
-                {{ $entries->withPath(route('log.show', ['log' => $current_file]))->links() }}
+                {{ $entries->withPath(!empty($current_file) ? route('log.show', ['log' => $current_file]) : route('log.index'))->links() }}
             </div>
 
         </div>
