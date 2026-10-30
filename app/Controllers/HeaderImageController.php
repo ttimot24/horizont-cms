@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\Trait\UploadsImage;
 use App\Model\HeaderImage;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 
 class HeaderImageController extends Controller
@@ -21,7 +22,7 @@ class HeaderImageController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -40,7 +41,7 @@ class HeaderImageController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -50,7 +51,7 @@ class HeaderImageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -74,7 +75,7 @@ class HeaderImageController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -85,7 +86,7 @@ class HeaderImageController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($id)
     {
@@ -96,7 +97,7 @@ class HeaderImageController extends Controller
      * Update the specified resource in storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, HeaderImage $headerimage)
     {
@@ -116,7 +117,7 @@ class HeaderImageController extends Controller
      * Remove the specified resource from database.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(HeaderImage $headerimage)
     {

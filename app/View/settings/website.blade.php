@@ -1,4 +1,4 @@
-@extends('layout', [ 'title' => trans('settings.settings')])
+@extends('layout', ['title' => trans('settings.settings')])
 
 @section('content')
     <div class='container main-container'>
@@ -8,7 +8,10 @@
             @include('breadcrumb', [
                 'links' => [
                     ['name' => trans('settings.settings'), 'url' => route('settings.index')],
-                    ['name' => trans('settings.website'), 'url' => route('settings.show', ['setting' => 'website'])]
+                    [
+                        'name' => trans('settings.website'),
+                        'url' => route('settings.show', ['setting' => 'website']),
+                    ],
                 ],
                 'page_title' => trans('Website settings'),
             ])
@@ -270,7 +273,8 @@
                     </div>
 
                     <div class="text-center">
-                    <button type='submit' class='btn btn-primary btn-lg'><i class="fa-solid fa-floppy-disk"></i> {{ trans('settings.adminarea_save_settings') }}</button>
+                        <button type='submit' class='btn btn-primary btn-lg'><i class="fa-solid fa-floppy-disk"></i>
+                            {{ trans('settings.adminarea_save_settings') }}</button>
                     </div>
                 </form>
 
@@ -294,47 +298,53 @@
                 </div>
 
             </div>
-            </div>
-        @endsection
+        </div>
+    @endsection
 
-        @section('head')
-            <script defer>
-                window.onload = function() {
+    @section('head')
+        <script defer>
+            window.onload = function() {
 
-                    var context = "";
+                var context = "";
 
-                    $("#button-favicon").on('click', function(event) {
-                        context = "favicon";
-                    });
+                $("#button-favicon").on('click', function(event) {
+                    context = "favicon";
+                });
 
-                    $("#button-logo").on('click', function(event) {
-                        context = "logo";
-                    });
-
-
-                    $("#workspace").on('click', ".file", function(event) {
-
-                        if (context == "logo") {
-
-                            var src = $(event.target).attr('src');
-                            var bname = src.substring(src.lastIndexOf('/') + 1);
-                            $('[name="logo"]').val(bname);
-                            $('#logo').attr('src', 'storage/images/logos/' + bname);
-
-                        } else if (context == "favicon") {
-
-                            var src = $(event.target).attr('src');
-                            var bname = src.substring(src.lastIndexOf('/') + 1);
-                            $('[name="favicon"]').val(bname);
-                            $('#favicon').attr('src', 'storage/images/favicons/' + bname);
-
-                        }
-
-                        $('#close-modal').click();
-
-                    });
+                $("#button-logo").on('click', function(event) {
+                    context = "logo";
+                });
 
 
-                }
-            </script>
-        @endsection
+                $(document).on('click', '#filemanager-modal .file', function(event) {
+
+                    if ($(event.target).closest('.file-nav').length) {
+                        return;
+                    }
+
+                    var bname = $(this).find('b').first().text().trim();
+
+                    if (bname == "") {
+                        return;
+                    }
+
+                    if (context == "logo") {
+
+                        $('[name="logo"]').val(bname);
+                        $('#logo').attr('src', 'storage/images/logos/' + bname);
+
+                    } else if (context == "favicon") {
+
+                        $('[name="favicon"]').val(bname);
+                        $('#favicon').attr('src', 'storage/images/favicons/' + bname);
+
+                    }
+
+                    $('#close-modal').click();
+
+                });
+
+
+            }
+        </script>
+    @endsection
