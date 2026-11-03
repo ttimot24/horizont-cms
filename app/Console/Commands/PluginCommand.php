@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Model\Plugin;
 use App\Services\PluginRegistry;
+use App\Services\PluginService;
 use Illuminate\Console\Command;
 
 class PluginCommand extends Command
@@ -20,15 +21,18 @@ class PluginCommand extends Command
 
     private readonly PluginRegistry $pluginRegistry;
 
+    private readonly PluginService $pluginService;
+
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct(PluginRegistry $pluginRegistry)
+    public function __construct(PluginRegistry $pluginRegistry, PluginService $pluginService)
     {
         parent::__construct();
         $this->pluginRegistry = $pluginRegistry;
+        $this->pluginService = $pluginService;
     }
 
     public function handle(): int
@@ -55,7 +59,7 @@ class PluginCommand extends Command
     private function download(string $selectedPlugin): int
     {
 
-        $this->line('Download: '.$selectedPlugin);
+        $this->line('Download...');
 
         if ($this->pluginRegistry->downloadPlugin($selectedPlugin)) {
             $this->info('Plugin successfully downloaded!');
@@ -70,16 +74,37 @@ class PluginCommand extends Command
 
     private function remove(string $selectedPlugin): int
     {
-
         $this->line('Remove...');
-        throw new \Exception('This function is not supported yet!');
+
+        try {
+            $this->pluginService->remove(Plugin::rootDir($selectedPlugin)->firstOrFail());
+        } catch (\Exception $e) {
+            $this->error('Could not remove the plugin! '.$e->getMessage());
+
+            return self::FAILURE;
+        }
+
+        $this->info('Plugin successfully removed!');
+
+        return self::SUCCESS;
     }
 
     private function install(string $selectedPlugin): int
     {
 
         $this->line('Install...');
-        throw new \Exception('This function is not supported yet!');
+
+        try {
+            $this->pluginRegistry->downloadPlugin($selectedPlugin);
+        } catch (\Exception $e) {
+            $this->error('Could not download the plugin! '.$e->getMessage());
+
+            return self::FAILURE;
+        }
+
+        $this->info('Plugin successfully installed!');
+
+        return self::SUCCESS;
     }
 
     private function uninstall(string $selectedPlugin): int
@@ -94,7 +119,7 @@ class PluginCommand extends Command
 
         $this->line('Activate...');
 
-        if (Plugin::rootDir($selectedPlugin)->update(['active' => 1])) {
+        if ($this->pluginService->activate(Plugin::rootDir($selectedPlugin)->firstOrFail())) {
             $this->info('Plugin successfully activated!');
 
             return self::SUCCESS;
@@ -110,7 +135,7 @@ class PluginCommand extends Command
 
         $this->line('Deactivate...');
 
-        if (Plugin::rootDir($selectedPlugin)->update(['active' => 0])) {
+        if ($this->pluginService->deactivate(Plugin::rootDir($selectedPlugin)->firstOrFail())) {
             $this->info('Plugin successfully deactivated!');
 
             return self::SUCCESS;
