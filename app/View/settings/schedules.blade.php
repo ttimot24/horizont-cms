@@ -8,7 +8,10 @@
             @include('breadcrumb', [
                 'links' => [
                     ['name' => trans('settings.settings'), 'url' => route('settings.index')],
-                    ['name' => trans('settings.scheduler'), 'url' => route('settings.show', ['setting' => 'scheduler'])]
+                    [
+                        'name' => trans('settings.scheduler'),
+                        'url' => route('settings.show', ['setting' => 'scheduler']),
+                    ],
                 ],
                 'page_title' => trans('settings.scheduler'),
                 'stats' => [['label' => trans('user.all'), 'value' => $scheduled_tasks->count()]],
@@ -21,8 +24,11 @@
                 ],
                 'buttons_right' => [
                     [
-                        'label' => "Scheduler: ".$scheduler->value,
-                        'class' => 'badge '.optional($scheduler->updated_at)->diffInMinutes(now()) > 5 ? 'text-bg-danger': 'text-bg-success',
+                        'label' => 'Scheduler: ' . $scheduler->value,
+                        'class' =>
+                            'badge ' . optional($scheduler->updated_at)->diffInMinutes(now()) > 5
+                                ? 'text-bg-danger'
+                                : 'text-bg-success',
                     ],
                 ],
             ])
@@ -53,13 +59,18 @@
                                 <td>{{ $task->frequency }}</td>
                                 <td>{{ $task->ping_before }}</td>
                                 <td>{{ $task->ping_after }}</td>
-                                <td>
-                                    <div class='form-check form-switch'>
-                                        <input type="hidden" name="active" value="0">
-                                        <input class="form-check-input" type="checkbox" name="active" value="1"
-                                            role="switch" id="flexSwitchCheckDefault"
-                                            {{ $task->active==1? 'checked' : '' }}>
-                                    </div>
+                                <td class="cursor-pointer">
+                                    <form action="{{ route('schedule.update', ['schedule' => $task]) }}" method="POST"
+                                        class="d-inline">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class='form-check form-switch'>
+                                            <input type="hidden" name="active" value="0">
+                                            <input class="form-check-input" type="checkbox" name="active" value="1"
+                                                role="switch" id="schedule_active_{{ $task->id }}"
+                                                {{ $task->active == 1 ? 'checked' : '' }} onchange="this.form.submit()">
+                                        </div>
+                                    </form>
                                 </td>
                                 <td class='text-center'>
                                     <div class="dropdown">
@@ -147,7 +158,8 @@
                                 </div>
                                 <div class='modal-footer'>
                                     <button type='submit' class='btn btn-primary'>Schedule</button>
-                                    <button type='button' class='btn btn-default' data-bs-dismiss='modal'>{{ trans('actions.cancel') }}</button>
+                                    <button type='button' class='btn btn-default'
+                                        data-bs-dismiss='modal'>{{ trans('actions.cancel') }}</button>
                                 </div>
                             </form>
                         </div><!-- /.modal-content -->
