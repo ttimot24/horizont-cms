@@ -95,9 +95,9 @@ class PluginCommand extends Command
         $this->line('Install...');
 
         try {
-            $this->pluginRegistry->downloadPlugin($selectedPlugin);
+            $this->pluginService->install(Plugin::rootDir($selectedPlugin)->firstOrFail());
         } catch (\Exception $e) {
-            $this->error('Could not download the plugin! '.$e->getMessage());
+            $this->error('Could not install the plugin! '.$e->getMessage());
 
             return self::FAILURE;
         }
