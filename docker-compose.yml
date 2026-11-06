@@ -88,7 +88,7 @@ services:
       DB_PASSWORD: "website789"
       DB_DATABASE: "hcms_database"
       DB_TABLE_PREFIX: "hcms_"
-      LOG_CHANNEL: stack
+      LOG_CHANNEL:
     ports:
       - "8000:80"
     volumes:
