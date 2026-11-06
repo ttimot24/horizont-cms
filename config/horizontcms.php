@@ -67,7 +67,6 @@ return [
 
     'creator' => [
         'name' => 'Timot Tarjani',
-        'twitter' => 'http://www.twitter.com/timottarjani',
         'github' => 'https://github.com/ttimot24/HorizontCMS',
     ],
 
