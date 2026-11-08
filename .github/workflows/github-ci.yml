@@ -24,6 +24,8 @@ jobs:
 
       - name: Check PHP syntax errors
         uses: overtrue/phplint@9.8.0
+        with:
+          options: --no-cache
 
       - name: Check PHP code style
         run: vendor/bin/pint --test app bootstrap config database routes
