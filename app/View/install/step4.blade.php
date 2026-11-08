@@ -1,4 +1,4 @@
-@extends('layout', ['title' => trans("Install")])
+@extends('layout', ['title' => trans('Install')])
 
 @section('content')
     <div class="bg-dark text-white py-5">
@@ -32,8 +32,8 @@
                 <a href="{{ route('login') }}"><button type='button'
                         class='btn btn-primary btn-md animated pulse delay-3s'>Finish & go to admin area</button></a>
             @else
-                <a href="{{route('install.show', 'step3')}}"><button type='button' class='btn btn-primary btn-md'><i class="fa fa-repeat"
-                            aria-hidden="true"></i> Retry</button></a>
+                <a href="{{ route('install.show', 'step3') }}"><button type='button' class='btn btn-primary btn-md'><i
+                            class="fa fa-repeat" aria-hidden="true"></i> Retry</button></a>
             @endif
         </div>
     </div>

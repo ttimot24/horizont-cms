@@ -1,4 +1,4 @@
-@extends('layout', ['title' => trans("Install")])
+@extends('layout', ['title' => trans('Install')])
 
 @section('content')
     <div class="bg-dark text-white py-5">
@@ -14,22 +14,22 @@
 
             <h2>Step 1: Language</h2>
 
-            <form action="{{route('install.show', 'step2')}}" role="form" method="POST">
+            <form action="{{ route('install.show', 'step2') }}" role="form" method="POST">
                 @csrf
 
                 <div class='form-group'>
                     <label for='lang' class="form-label">Select language</label>
                     <select class='form-select' id='lang' name='lang'>
-                        @foreach ($languages as $language)
-                            <option value='{{ strtolower($language) }}'>{{ $language }}</option>
+                        @foreach ($languages as $key => $language)
+                            <option value='{{ strtolower($key) }}'>{{ $language }}</option>
                         @endforeach
                     </select>
                 </div>
                 </br></br>
                 <a href="{{ route('install.index') }}" class='btn btn-secondary btn-sm'><i class="fa fa-arrow-circle-left"
-                        aria-hidden="true"></i> Previous</a>
-                <button type='submit' class='btn btn-primary btn-md px-3'>Next <i class="fa fa-arrow-circle-right ml-2"
-                        aria-hidden="true"></i></button>
+                        aria-hidden="true"></i> {{ trans('actions.previous') }}</a>
+                <button type='submit' class='btn btn-primary btn-md px-3'>{{ trans('actions.next') }} <i
+                        class="fa fa-arrow-circle-right ml-2" aria-hidden="true"></i></button>
             </form>
 
 

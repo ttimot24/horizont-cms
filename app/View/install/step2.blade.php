@@ -1,4 +1,4 @@
-@extends('layout', ['title' => trans("Install")])
+@extends('layout', ['title' => trans('Install')])
 
 @section('content')
     <div class="bg-dark text-white py-5">
@@ -59,7 +59,7 @@
 
 
                     <div class='form-group'>
-                        <label class='form-label col-sm-2' for='pwd'>Password</label>
+                        <label class='form-label col-sm-2' for='pwd'>{{ trans('login.password') }}</label>
                         <div class='col-sm-5'>
                             <input type='password' class='form-control' id='pwd' name='password'
                                 placeholder='password' value=''>
@@ -67,7 +67,7 @@
                     </div>
 
                     <div class='form-group'>
-                        <label class='form-label col-sm-2' for='data'>Database</label>
+                        <label class='form-label col-sm-2' for='data'>{{ trans('settings.database') }}</label>
                         <div class='col-sm-5'>
                             <input type='text' class='form-control' id='data' name='database'
                                 placeholder='database name' value="{{ old('database') }}" required>
@@ -84,9 +84,10 @@
 
                 </div>
                 <div class="pt-5">
-                    <a href="{{route('install.show', 'step1')}}"><button type='button' class='btn btn-secondary btn-sm'><i
-                                class="fa fa-arrow-circle-left" aria-hidden="true"></i> Previous</button></a>
-                    <button type='submit' class='btn btn-primary btn-md px-3'>Next <i
+                    <a href="{{ route('install.show', 'step1') }}"><button type='button'
+                            class='btn btn-secondary btn-sm'><i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                            {{ trans('actions.previous') }}</button></a>
+                    <button type='submit' class='btn btn-primary btn-md px-3'>{{ trans('actions.next') }} <i
                             class="fa fa-arrow-circle-right ml-2" aria-hidden="true"></i></button>
                 </div>
             </form>
