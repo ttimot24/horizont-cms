@@ -28,7 +28,7 @@ class LogController extends Controller
                 ->reverse()
                 ->paginate(self::ENTRIES_PER_PAGE)
                 ->through(function (Log $entry): object {
-                    $context = '';
+                    $context = $entry->getOriginalText() ?? '';
                     $exception = $entry->context['exception'] ?? null;
 
                     if (is_string($exception) && $exception !== '' && ! str_contains($context, $exception)) {
