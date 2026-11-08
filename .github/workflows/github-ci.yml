@@ -23,7 +23,9 @@ jobs:
           args: --ignore-platform-reqs
 
       - name: Check PHP syntax errors
-        uses: overtrue/phplint@9.4.1
+        uses: overtrue/phplint@9.6.3
+        with:
+          options: --no-cache --exclude=vendor
 
       - name: Check PHP code style
         run: vendor/bin/pint --test app bootstrap config database routes
