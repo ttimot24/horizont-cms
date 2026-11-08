@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Http\Events\RequestHandled;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -17,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
 
         Config::set('self-update.version_installed', Config::get('horizontcms.version'));
 
-        \Illuminate\Pagination\Paginator::useBootstrap();
+        Paginator::useBootstrap();
 
         if (! app()->runningInConsole() && ($this->app->environment('local') || $this->app->environment('testing'))) {
             \DB::connection()->enableQueryLog();

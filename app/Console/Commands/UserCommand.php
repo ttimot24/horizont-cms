@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\HorizontCMS;
+use App\Model\User;
 use Illuminate\Console\Command;
 
 class UserCommand extends Command
@@ -36,7 +38,7 @@ class UserCommand extends Command
 
         $this->line('*****Administrator creation*****'.PHP_EOL);
 
-        if (! \App\HorizontCMS::isInstalled()) {
+        if (! HorizontCMS::isInstalled()) {
             $this->info('HorizontCMS is not installed!');
 
             return self::FAILURE;
@@ -47,7 +49,7 @@ class UserCommand extends Command
         $admin['username'] = empty($this->option('username')) ? $this->ask('Username') : $this->option('username');
         $admin['password'] = empty($this->option('password')) ? $this->secret('Password') : $this->option('password');
 
-        if (\App\Model\User::where('username', $admin['username'])->exists()) {
+        if (User::where('username', $admin['username'])->exists()) {
             $this->info('User '.$admin['username'].' already exists, skipping creation.');
 
             return self::SUCCESS;
@@ -55,7 +57,7 @@ class UserCommand extends Command
 
         try {
 
-            $user = new \App\Model\User($admin);
+            $user = new User($admin);
             $user->slug = str_slug($admin['username']);
             $user->password = $admin['password'];
             $user->role_id = 6;

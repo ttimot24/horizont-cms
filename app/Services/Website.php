@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Model\HeaderImage;
+use App\Model\Page;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
 
@@ -48,9 +50,9 @@ class Website
 
         self::$_CURRENT_USER = \Auth::user();
 
-        self::$_REQUESTED_PAGE = Request::segment(1) === null ? \App\Model\Page::find($wengine->request->settings['home_page']) : \App\Model\Page::findBySlug($wengine->request->segment(1));
+        self::$_REQUESTED_PAGE = Request::segment(1) === null ? Page::find($wengine->request->settings['home_page']) : Page::findBySlug($wengine->request->segment(1));
 
-        self::$_HEADER_IMAGES = collect(\App\Model\HeaderImage::all());
+        self::$_HEADER_IMAGES = collect(HeaderImage::all());
 
     }
 
@@ -142,7 +144,7 @@ class Website
 
     public static function getPageUrlByTemplate(?string $page_template): string
     {
-        $page = \App\Model\Page::withTemplate($page_template)->first();
+        $page = Page::withTemplate($page_template)->first();
 
         return $page == null ? '' : $page->getSlug();
     }

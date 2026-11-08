@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Interfaces\ThemeEngineInterface;
+use App\Services\Theme;
 use Illuminate\Support\ServiceProvider;
 
 class ThemeEngineServiceProvider extends ServiceProvider
@@ -12,9 +14,9 @@ class ThemeEngineServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
-        $this->app->singleton(\App\Interfaces\ThemeEngineInterface::class, function ($app) {
+        $this->app->singleton(ThemeEngineInterface::class, function ($app) {
 
-            $theme = app()->make(\App\Services\Theme::class);
+            $theme = app()->make(Theme::class);
 
             $engine = new (config()->get('horizontcms.theme_engines.'.config('horizontcms.default_theme_engine')))($this->app->request);
 

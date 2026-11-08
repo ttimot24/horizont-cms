@@ -4,7 +4,9 @@ namespace App\Controllers;
 
 use App\Controllers\Trait\UploadsImage;
 use App\Model\User;
+use App\Model\UserRole;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
 
@@ -22,7 +24,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -35,20 +37,20 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
         return view('users.form', [
             'current_user' => request()->user(),
-            'role_options' => \App\Model\UserRole::all(),
+            'role_options' => UserRole::all(),
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -75,7 +77,7 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(User $user)
     {
@@ -90,14 +92,14 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(User $user)
     {
         return view('users.form', [
             'current_user' => request()->user(),
             'user' => $user,
-            'role_options' => \App\Model\UserRole::all(),
+            'role_options' => UserRole::all(),
         ]);
     }
 
@@ -105,7 +107,7 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, User $user)
     {
@@ -133,7 +135,7 @@ class UserController extends Controller
      * Remove the specified resource from database.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(User $user)
     {

@@ -2,8 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Model\Blogpost;
+use App\Model\Page;
+use App\Model\User;
 use App\Services\SearchEngine;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
@@ -16,7 +20,7 @@ class SearchController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(Request $request)
     {
@@ -25,13 +29,13 @@ class SearchController extends Controller
         ]);
 
         // if(auth()->check() && Gate::allows('view', 'blogpost')){
-        $this->search_engine->registerModel(\App\Model\Blogpost::class);
+        $this->search_engine->registerModel(Blogpost::class);
         // }
         if (auth()->check() && Gate::allows('view', 'user')) {
-            $this->search_engine->registerModel(\App\Model\User::class);
+            $this->search_engine->registerModel(User::class);
         }
         if (auth()->check() && Gate::allows('view', 'page')) {
-            $this->search_engine->registerModel(\App\Model\Page::class);
+            $this->search_engine->registerModel(Page::class);
         }
 
         $this->search_engine->executeSearch($request->input('search'));

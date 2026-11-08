@@ -3,28 +3,29 @@
 namespace App\Services;
 
 use App\Interfaces\ThemeEngineInterface;
+use Illuminate\Http\Request;
 
 class ThemeEngine implements ThemeEngineInterface
 {
-    protected ?\App\Services\Theme $theme = null;
+    protected ?Theme $theme = null;
 
     protected string $page_template = 'index';
 
-    public \Illuminate\Http\Request $request;
+    public Request $request;
 
-    public function __construct(\Illuminate\Http\Request $request)
+    public function __construct(Request $request)
     {
         $this->request = $request;
     }
 
-    public function getTheme(): \App\Services\Theme
+    public function getTheme(): Theme
     {
         return $this->theme;
     }
 
-    public function setTheme(\App\Services\Theme|string $theme): void
+    public function setTheme(Theme|string $theme): void
     {
-        $this->theme = is_string($theme) ? new \App\Services\Theme($theme) : $theme;
+        $this->theme = is_string($theme) ? new Theme($theme) : $theme;
     }
 
     public function pageTemplate(string $page_template): void

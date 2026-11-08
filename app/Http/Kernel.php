@@ -2,7 +2,33 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\BaseUrlMiddleware;
+use App\Http\Middleware\EmailConfigMiddleware;
+use App\Http\Middleware\EncryptCookies;
+use App\Http\Middleware\HttpsMiddleware;
+use App\Http\Middleware\InstallerMiddleware;
+use App\Http\Middleware\LogLastUserActivity;
+use App\Http\Middleware\MenuMiddleware;
+use App\Http\Middleware\NavbarPluginMiddleware;
+use App\Http\Middleware\PluginMiddleware;
+use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Middleware\SettingsMiddleware;
+use App\Http\Middleware\VerifyCsrfToken;
+use App\Http\Middleware\WebsiteMiddleware;
+use Illuminate\Auth\Middleware\Authenticate;
+use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
+use Illuminate\Auth\Middleware\Authorize;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
+use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
+use Illuminate\Foundation\Http\Middleware\TrimStrings;
+use Illuminate\Http\Middleware\HandleCors;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Routing\Middleware\ThrottleRequests;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class Kernel extends HttpKernel
 {
@@ -14,8 +40,8 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-        \Illuminate\Http\Middleware\HandleCors::class,
-        \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+        HandleCors::class,
+        CheckForMaintenanceMode::class,
     ];
 
     /**
@@ -25,33 +51,33 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            \App\Http\Middleware\BaseUrlMiddleware::class,
-            \App\Http\Middleware\EncryptCookies::class,
-            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Illuminate\Session\Middleware\StartSession::class,
-            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \Illuminate\Foundation\Http\Middleware\TrimStrings::class,
-            \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-            \App\Http\Middleware\InstallerMiddleware::class,
-            \App\Http\Middleware\SettingsMiddleware::class,
-            \App\Http\Middleware\LogLastUserActivity::class,
-            \App\Http\Middleware\HttpsMiddleware::class,
-            \App\Http\Middleware\EmailConfigMiddleware::class,
+            BaseUrlMiddleware::class,
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            ShareErrorsFromSession::class,
+            VerifyCsrfToken::class,
+            SubstituteBindings::class,
+            TrimStrings::class,
+            ConvertEmptyStringsToNull::class,
+            InstallerMiddleware::class,
+            SettingsMiddleware::class,
+            LogLastUserActivity::class,
+            HttpsMiddleware::class,
+            EmailConfigMiddleware::class,
         ],
 
         'api' => [
             'throttle:60,1',
             'bindings',
-            \Illuminate\Http\Middleware\HandleCors::class,
+            HandleCors::class,
         ],
 
         'admin' => [
-            \Illuminate\Auth\Middleware\Authenticate::class,
-            \App\Http\Middleware\AdminMiddleware::class,
-            \App\Http\Middleware\MenuMiddleware::class,
-            \App\Http\Middleware\NavbarPluginMiddleware::class,
+            Authenticate::class,
+            AdminMiddleware::class,
+            MenuMiddleware::class,
+            NavbarPluginMiddleware::class,
         ],
 
     ];
@@ -64,13 +90,13 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'website' => \App\Http\Middleware\WebsiteMiddleware::class,
-        'plugin' => \App\Http\Middleware\PluginMiddleware::class,
+        'auth' => Authenticate::class,
+        'auth.basic' => AuthenticateWithBasicAuth::class,
+        'bindings' => SubstituteBindings::class,
+        'can' => Authorize::class,
+        'guest' => RedirectIfAuthenticated::class,
+        'throttle' => ThrottleRequests::class,
+        'website' => WebsiteMiddleware::class,
+        'plugin' => PluginMiddleware::class,
     ];
 }

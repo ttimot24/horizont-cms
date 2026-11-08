@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\HorizontCMS;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class EmailConfigMiddleware
     public function handle(Request $request, Closure $next)
     {
 
-        if (\App\HorizontCMS::isInstalled()) {
+        if (HorizontCMS::isInstalled()) {
             //    \Config::set('mail.from.address',$request->settings['default_email']);
             //   \Config::set('mail.from.name',$request->settings['site_name']);
         }

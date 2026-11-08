@@ -2,6 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\HorizontCMS;
+use App\Model\User;
+use App\Services\DotEnvGenerator;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
@@ -49,7 +52,7 @@ class InstallCommand extends Command
 
         echo "\r\n-------------------------------------------------------------------\r\n";
 
-        if (\App\HorizontCMS::isInstalled()) {
+        if (HorizontCMS::isInstalled()) {
             $this->info("\r\nAlready installed!");
             $continue = $this->choice('Do you want to reinstall?', ['yes', 'no'], 1);
             if ($continue === 'no') {
@@ -103,7 +106,7 @@ class InstallCommand extends Command
         $this->call('db:seed', ['--no-interaction' => true, '--force' => true]);
         $this->info('Ready');
 
-        $administrator = new \App\Model\User;
+        $administrator = new User;
         $administrator->name = 'Administrator';
         $administrator->username = $admin['username'];
         $administrator->slug = str_slug($admin['username']);
@@ -118,7 +121,7 @@ class InstallCommand extends Command
 
         $this->info('3. Generating .env file...');
 
-        $dotenv = new \App\Services\DotEnvGenerator([
+        $dotenv = new DotEnvGenerator([
             'DB_HOST' => '127.0.0.1',
             'DB_CONNECTION' => $database['driver'],
             'DB_USERNAME' => $database['username'],

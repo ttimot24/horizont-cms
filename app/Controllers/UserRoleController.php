@@ -2,8 +2,10 @@
 
 namespace App\Controllers;
 
+use App\Model\Plugin;
 use App\Model\UserRole;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 
 class UserRoleController extends Controller
@@ -11,7 +13,7 @@ class UserRoleController extends Controller
     public function index()
     {
         return view('users.roles.index', [
-            'all_user_roles' => \App\Model\UserRole::all(),
+            'all_user_roles' => UserRole::all(),
             'permission_list' => $this->getPermissionList(),
         ]);
     }
@@ -19,7 +21,7 @@ class UserRoleController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -63,7 +65,7 @@ class UserRoleController extends Controller
 
         }
 
-        foreach (\App\Model\Plugin::all() as $plugin) {
+        foreach (Plugin::all() as $plugin) {
 
             try {
                 if ($plugin->isActive()) {
@@ -79,12 +81,12 @@ class UserRoleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
 
-        $role = new \App\Model\UserRole($request->all());
+        $role = new UserRole($request->all());
         $role->rights = $this->getEscapedRights($request);
         $role->permission = 0;
 
@@ -99,7 +101,7 @@ class UserRoleController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -110,12 +112,12 @@ class UserRoleController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($id)
     {
         return view('users.roles.edit', [
-            'userrole' => \App\Model\UserRole::findOrFail($id),
+            'userrole' => UserRole::findOrFail($id),
             'permission_list' => $this->getPermissionList(),
         ]);
     }
@@ -124,7 +126,7 @@ class UserRoleController extends Controller
      * Update the specified resource in storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(UserRole $userrole, Request $request)
     {
@@ -141,7 +143,7 @@ class UserRoleController extends Controller
     /**
      * Remove the specified resource from database.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(UserRole $userrole)
     {

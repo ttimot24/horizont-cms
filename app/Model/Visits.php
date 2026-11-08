@@ -2,7 +2,9 @@
 
 namespace App\Model;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class Visits extends Model
 {
@@ -10,7 +12,7 @@ class Visits extends Model
 
     public $timestamps = false;
 
-    public static function newVisitor(\Illuminate\Http\Request $request): ?Visits
+    public static function newVisitor(Request $request): ?Visits
     {
         $visit = null;
 
@@ -33,8 +35,8 @@ class Visits extends Model
         return $visit;
     }
 
-    public function getCreatedAtAttribute(): \Carbon\Carbon
+    public function getCreatedAtAttribute(): Carbon
     {
-        return new \Carbon\Carbon($this->date.' '.$this->time);
+        return new Carbon($this->date.' '.$this->time);
     }
 }

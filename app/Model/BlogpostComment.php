@@ -22,7 +22,7 @@ class BlogpostComment extends Model
 
     public function blogpost()
     {
-        return $this->belongsTo(\App\Model\Blogpost::class, 'blogpost_id', 'id');
+        return $this->belongsTo(Blogpost::class, 'blogpost_id', 'id');
     }
 
     public function user()

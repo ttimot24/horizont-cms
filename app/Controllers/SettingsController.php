@@ -3,8 +3,10 @@
 namespace App\Controllers;
 
 use App\Model\Settings;
+use App\Model\UserRole;
 use App\Services\DashboardWidget;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
@@ -81,7 +83,7 @@ class SettingsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -94,7 +96,7 @@ class SettingsController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -104,7 +106,7 @@ class SettingsController extends Controller
     public function update(Request $request, $id)
     {
 
-        if (\App\Model\Settings::where('setting', $request->input('setting'))->update(['value' => $id])) {
+        if (Settings::where('setting', $request->input('setting'))->update(['value' => $id])) {
             return redirect()->back()->withMessage(['success' => trans('message.successfully_set_homepage')]);
         }
 
@@ -115,12 +117,12 @@ class SettingsController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function website()
     {
         return view('settings.website', [
-            'user_roles' => \App\Model\UserRole::all(),
+            'user_roles' => UserRole::all(),
         ]);
     }
 
@@ -128,7 +130,7 @@ class SettingsController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function adminarea()
     {

@@ -2,6 +2,8 @@
 
 namespace App\Http;
 
+use App\Exceptions\FileNotFoundException;
+
 /**
  * @deprecated deprecated since version 1.0.0
  */
@@ -40,7 +42,7 @@ class RouteResolver
 
         if (! class_exists($controllerClass)) {
 
-            throw new \App\Exceptions\FileNotFoundException('<b>'.$controllerClass.'.php'.'</b>');
+            throw new FileNotFoundException('<b>'.$controllerClass.'.php'.'</b>');
         }
 
         return $controllerClass;

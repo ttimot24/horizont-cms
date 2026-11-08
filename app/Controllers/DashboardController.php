@@ -2,6 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Model\Blogpost;
+use App\Model\User;
+use App\Model\Visits;
+use App\Services\DashboardWidget;
+use Codedge\Updater\UpdaterManager;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
@@ -10,34 +16,34 @@ class DashboardController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
 
-        $updater = new \Codedge\Updater\UpdaterManager(app());
+        $updater = new UpdaterManager(app());
 
         $admin_logo = request()->settings['admin_logo'];
 
         $widgets = collect([
-            \App\Services\DashboardWidget::builder()
+            DashboardWidget::builder()
                 ->setName(trans('dashboard.posted_news_count'))
                 ->setIcon('fa-solid fa-newspaper')
-                ->setValue(\App\Model\Blogpost::count())
+                ->setValue(Blogpost::count())
                 ->setLink(route('blogpost.index'))
                 ->setColor('primary')
                 ->build(),
-            \App\Services\DashboardWidget::builder()
+            DashboardWidget::builder()
                 ->setName(trans('dashboard.registered_users_count'))
                 ->setIcon('fa-solid fa-users')
-                ->setValue(\App\Model\User::count())
+                ->setValue(User::count())
                 ->setLink(route('user.index'))
                 ->setColor('primary')
                 ->build(),
-            \App\Services\DashboardWidget::builder()
+            DashboardWidget::builder()
                 ->setName(trans('dashboard.visits_count'))
                 ->setIcon('fa-solid fa-eye')
-                ->setValue(\App\Model\Visits::count())
+                ->setValue(Visits::count())
                 ->setLink('#')
                 ->setColor('primary')
                 ->build(),

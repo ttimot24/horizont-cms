@@ -3,8 +3,15 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Session\TokenMismatchException;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -15,12 +22,12 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        \Illuminate\Auth\AuthenticationException::class,
-        \Illuminate\Auth\Access\AuthorizationException::class,
-        \Symfony\Component\HttpKernel\Exception\HttpException::class,
-        \Illuminate\Database\Eloquent\ModelNotFoundException::class,
+        AuthenticationException::class,
+        AuthorizationException::class,
+        HttpException::class,
+        ModelNotFoundException::class,
         // \Illuminate\Session\TokenMismatchException::class,
-        \Illuminate\Validation\ValidationException::class,
+        ValidationException::class,
     ];
 
     /**
@@ -28,7 +35,7 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $exception
+     * @param  Exception  $exception
      * @return void
      */
     public function report(Throwable $exception)
@@ -39,22 +46,22 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @param  Exception  $exception
+     * @return Response
      */
     public function render($request, Throwable $exception)
     {
 
-        if ($exception instanceof \Illuminate\Session\TokenMismatchException) {
+        if ($exception instanceof TokenMismatchException) {
             return redirect()->route('login');
         }
 
-        if (get_class($exception) == \Illuminate\Auth\Access\AuthorizationException::class) {
+        if (get_class($exception) == AuthorizationException::class) {
             return redirect()->route('dashboard.show', ['dashboard' => 'unauthorized']);
         }
 
-        if (get_class($exception) != \Illuminate\Auth\AuthenticationException::class && get_class($exception) != \Illuminate\Validation\ValidationException::class) {
+        if (get_class($exception) != AuthenticationException::class && get_class($exception) != ValidationException::class) {
 
             if ($request->expectsJson()) {
                 return response()->json(['error' => $exception->getMessage()], 500);
@@ -74,8 +81,8 @@ class Handler extends ExceptionHandler
     /**
      * Convert an authentication exception into an unauthenticated response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @return Response
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {

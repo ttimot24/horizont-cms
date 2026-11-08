@@ -2,9 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Interfaces\ThemeEngineInterface;
 use App\Model\Settings;
 use App\Services\Theme;
+use App\Services\ThemeEngine;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
@@ -16,7 +19,7 @@ class ThemeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -32,7 +35,7 @@ class ThemeController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($theme)
     {
@@ -69,15 +72,15 @@ class ThemeController extends Controller
     /**
      * Display config page.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function config($slug)
     {
 
-        $websiteController = new \App\Controllers\WebsiteController(request(), app()->make(\App\Interfaces\ThemeEngineInterface::class));
+        $websiteController = new WebsiteController(request(), app()->make(ThemeEngineInterface::class));
         $websiteController->before();
 
-        $theme_engine = new \App\Services\ThemeEngine(request());
+        $theme_engine = new ThemeEngine(request());
         $theme_engine->setTheme(new Theme(request()->settings['theme']));
 
         $theme_engine->boot();
@@ -115,7 +118,7 @@ class ThemeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {

@@ -28,7 +28,7 @@ jobs:
           options: --no-cache --exclude=vendor
 
       - name: Check PHP code style
-        run: vendor/bin/pint --test app bootstrap config database routes
+        run: vendor/bin/pint --test app bootstrap/app.php bootstrap/autoload.php bootstrap/loader.php config database routes
 
   phpstan:
     runs-on: ubuntu-latest

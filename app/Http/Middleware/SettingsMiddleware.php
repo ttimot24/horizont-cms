@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\HorizontCMS;
+use App\Model\Settings;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
@@ -10,7 +12,7 @@ class SettingsMiddleware
 {
     private $settings;
 
-    public function __construct(\App\Model\Settings $settings)
+    public function __construct(Settings $settings)
     {
         $this->settings = $settings;
     }
@@ -23,7 +25,7 @@ class SettingsMiddleware
     public function handle(Request $request, Closure $next)
     {
 
-        if (\App\HorizontCMS::isInstalled()) {
+        if (HorizontCMS::isInstalled()) {
 
             $this->settings->assignAll();
             $request->settings = json_decode(json_encode($this->settings->settings), true);
