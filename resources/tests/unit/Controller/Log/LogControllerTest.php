@@ -3,6 +3,7 @@
 use App\Controllers\LogController;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Opcodes\LogViewer\Facades\LogViewer;
 
@@ -28,6 +29,7 @@ class LogControllerTest extends TestCase
         $stackTrace = "[object] (RuntimeException(code: 0): Request failed)\n[stacktrace]\n#0 /app/example.php(10): run()\n#1 {main}";
         $logLine = '[2025-01-01 10:00:00] testing.ERROR: Request failed '.json_encode(['exception' => $stackTrace]);
 
+        File::ensureDirectoryExists(dirname($logPath));
         file_put_contents($logPath, $logLine);
         Config::set('log-viewer.include_files', [$logPath]);
         LogViewer::clearFileCache();

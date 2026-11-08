@@ -2,7 +2,7 @@
 
 return [
 
-    'version' => 'v1.4.4',
+    'version' => 'v1.4.6',
 
     'installed' => env('INSTALLED', false),
 
