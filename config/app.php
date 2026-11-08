@@ -62,7 +62,6 @@ use Illuminate\Support\Str;
 use Illuminate\Translation\TranslationServiceProvider;
 use Illuminate\Validation\ValidationServiceProvider;
 use Illuminate\View\ViewServiceProvider;
-use Jackiedo\LogReader\LogReaderServiceProvider;
 use Lavary\Menu\Facade;
 use Lavary\Menu\ServiceProvider;
 use Madnest\Madzipper\MadzipperServiceProvider;
@@ -237,7 +236,6 @@ return [
         ServiceProvider::class,
 
         MadzipperServiceProvider::class,
-        LogReaderServiceProvider::class,
     ],
 
     /*

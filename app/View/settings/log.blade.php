@@ -12,6 +12,17 @@
             if (!empty($current_file)) {
                 $links[] = ['name' => $current_file, 'url' => route('log.show', ['log' => $current_file])];
             }
+
+            $colors = [
+                'emergency' => 'emergency',
+                'alert' => 'alert',
+                'critical' => 'danger',
+                'error' => 'danger',
+                'warning' => 'warning',
+                'notice' => 'info',
+                'info' => 'info',
+                'debug' => 'info',
+            ];
         @endphp
 
         @include('breadcrumb', [
@@ -25,37 +36,16 @@
 
         <div class="card-body">
             <section class="row">
-
-
                 <div class='col-12 col-md-3 mb-4'>
                     <div class="list-group">
-                        @foreach ($all_files as $file)
-                            <a href="{{ route('log.show', ['log' => basename($file)]) }}"
-                                class="list-group-item @if (basename($file) == basename($current_file)) bg-primary border-0 text-white @endif">{{ basename($file) }}</a>
-
-                            @if ($entries->total() == $max_files)
-                                @break
-                            @endif
+                        @foreach ($all_files->take($max_files) as $file)
+                            <a href="{{ route('log.show', ['log' => $file->name]) }}"
+                                class="list-group-item @if ($file->name === $current_file) bg-primary border-0 text-white @endif">{{ $file->name }}</a>
                         @endforeach
                     </div>
                 </div>
+
                 <div class='col-12 col-md-9'>
-
-                    <?php
-                    
-                    $colors = [
-                        'emergency' => 'emergency',
-                        'alert' => 'alert',
-                        'critical' => 'danger',
-                        'error' => 'danger',
-                        'warning' => 'warning',
-                        'notice' => 'info',
-                        'info' => 'info',
-                        'debug' => 'info',
-                    ];
-                    
-                    ?>
-
                     <div class="card bg-dark text-white mb-4 p-4">
                         <div class="row">
                             <div class="col-6">
@@ -68,18 +58,17 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="row p-2">
-                            {{ 'storage/framework/logs/' . $current_file }}
-                        </div>
+                        @if ($current_file)
+                            <div class="row p-2">{{ $current_file }}</div>
+                        @endif
                     </div>
 
-
                     <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
-
                         @foreach ($entries as $entry)
                             <div class="accordion-item">
                                 <h2 class="accordion-header mt-0" id="heading{{ $entry->id }}">
-                                    <button class="accordion-button bg-{{ $colors[$entry->level] }} text-white"
+                                    <button
+                                        class="accordion-button bg-{{ $colors[$entry->level] ?? 'secondary' }} text-white"
                                         type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapse{{ $entry->id }}" aria-expanded="true"
                                         aria-controls="collapse{{ $entry->id }}">
@@ -95,20 +84,17 @@
                                 <div id="collapse{{ $entry->id }}" class="accordion-collapse collapse show"
                                     aria-labelledby="heading{{ $entry->id }}" data-bs-parent="#accordion">
                                     <div class="accordion-body bg-dark text-white">
-                                        {!! $entry->context !!}
+                                        {!! nl2br(e($entry->context)) !!}
                                     </div>
                                 </div>
                             </div>
                         @endforeach
-
                     </div>
 
                     <div class="d-flex justify-content-center mt-5">
-                        {{ $entries->withPath(!empty($current_file) ? route('log.show', ['log' => $current_file]) : route('log.index'))->links() }}
+                        {{ $entries->links() }}
                     </div>
-
                 </div>
-
             </section>
         </div>
     </div>

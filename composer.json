@@ -11,26 +11,20 @@
     ],
     "license": "MIT",
     "type": "project",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/laravel-shift/Laravel-Log-Reader.git"
-        }
-    ],
     "require": {
         "php": "^8.2",
-        "laravel/framework": "^11.0",
+        "laravel/framework": "^12.0",
         "nunomaduro/collision": "^8.1",
         "lavary/laravel-menu": "1.8.*",
         "composer/semver": "*",
         "madnest/madzipper": "*",
-        "jackiedo/log-reader": "dev-l11-compatibility",
         "intervention/image": "*",
         "laravel/helpers": "*",
         "nesbot/carbon": "3.*",
         "mews/purifier": "^3.3",
         "laravel/ui": "^4.0",
-        "codedge/laravel-selfupdater": "^3.4"
+        "codedge/laravel-selfupdater": "^3.4",
+        "opcodesio/log-viewer": "^3.24"
     },
     "require-dev": {
         "phpunit/phpunit": "^11.0",

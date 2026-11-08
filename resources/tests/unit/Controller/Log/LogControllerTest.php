@@ -1,44 +1,47 @@
 <?php
 
+use App\Controllers\LogController;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
+use Opcodes\LogViewer\Facades\LogViewer;
 
 class LogControllerTest extends TestCase
 {
-    private string $emptyLogDir;
-
-    protected function setUp(): void
+    public function test_index_renders_the_cms_log_view_with_no_files(): void
     {
-        parent::setUp();
+        Config::set('log-viewer.include_files', []);
 
-        $this->emptyLogDir = sys_get_temp_dir().'/hcms-empty-logs-'.uniqid();
-
-        if (! is_dir($this->emptyLogDir)) {
-            mkdir($this->emptyLogDir, 0777, true);
-        }
-
-        Config::set('logging.default', 'daily');
-        Config::set('logging.channels.daily.path', $this->emptyLogDir.'/laravel.log');
-    }
-
-    protected function tearDown(): void
-    {
-        if (is_dir($this->emptyLogDir)) {
-            array_map('unlink', glob($this->emptyLogDir.'/*') ?: []);
-            rmdir($this->emptyLogDir);
-        }
-
-        parent::tearDown();
-    }
-
-    public function testIndexWithoutLogFilesDoesNotRequireACurrentFile(): void
-    {
-        $view = (new \App\Controllers\LogController)->index();
-
+        $view = (new LogController)->index();
         $data = $view->getData();
 
+        $this->assertSame('settings.log', $view->getName());
         $this->assertNull($data['current_file']);
         $this->assertInstanceOf(LengthAwarePaginator::class, $data['entries']);
         $this->assertSame(0, $data['entries']->total());
+    }
+
+    public function test_index_includes_the_full_exception_context(): void
+    {
+        $logPath = storage_path('logs/laravel-test-'.Str::uuid().'.log');
+        $previousFiles = Config::get('log-viewer.include_files');
+        $stackTrace = "[object] (RuntimeException(code: 0): Request failed)\n[stacktrace]\n#0 /app/example.php(10): run()\n#1 {main}";
+        $logLine = '[2025-01-01 10:00:00] testing.ERROR: Request failed '.json_encode(['exception' => $stackTrace]);
+
+        file_put_contents($logPath, $logLine);
+        Config::set('log-viewer.include_files', [$logPath]);
+        LogViewer::clearFileCache();
+
+        try {
+            $view = (new LogController)->index();
+            $entry = $view->getData()['entries']->first();
+
+            $this->assertStringContainsString('#0 /app/example.php(10): run()', $entry->context);
+            $this->assertStringContainsString('#1 {main}', $entry->context);
+        } finally {
+            unlink($logPath);
+            Config::set('log-viewer.include_files', $previousFiles);
+            LogViewer::clearFileCache();
+        }
     }
 }
