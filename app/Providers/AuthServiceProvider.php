@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Providers\Gates\PermissionsGate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Gate;
@@ -25,7 +26,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        \App\Providers\Gates\PermissionsGate::register();
+        PermissionsGate::register();
 
         $prefix = Config::get('horizontcms.backend_prefix');
 

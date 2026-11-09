@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\HorizontCMS;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class LogLastUserActivity
     public function handle(Request $request, Closure $next)
     {
 
-        if (\App\HorizontCMS::isInstalled() && Auth::check()) {
+        if (HorizontCMS::isInstalled() && Auth::check()) {
             $expiresAt = Carbon::now()->addMinutes(3);
             Cache::put('user-is-online-'.Auth::user()->id, true, $expiresAt);
         }

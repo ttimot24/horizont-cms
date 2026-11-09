@@ -2,7 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Model\User;
+use App\Services\DotEnvGenerator;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
@@ -13,7 +18,7 @@ class InstallController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -31,24 +36,23 @@ class InstallController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function step1()
     {
-        // TODO Read language file list
-        $languages = ['English', 'Magyar', 'Deutsch'];
-
-        return view('install.step1', ['languages' => $languages]);
+        return view('install.step1', ['languages' => config('horizontcms.languages')]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @return Response
      */
     public function step2()
     {
+        Session::put('step1', request()->all());
+        App::setLocale(Session::get('step1.lang', 'en'));
 
         foreach (Config::get('database.connections') as $database) {
             $db_drivers[$database['alias']] = $database['driver'];
@@ -61,7 +65,7 @@ class InstallController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function checkConnection()
     {
@@ -118,10 +122,12 @@ class InstallController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function step3()
     {
+
+        App::setLocale(Session::get('step1.lang', 'en'));
 
         request()->flash();
 
@@ -131,9 +137,9 @@ class InstallController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function migrate()
     {
@@ -151,7 +157,7 @@ class InstallController extends Controller
             Artisan::call('migrate', ['--force' => true]);
             Artisan::call('db:seed', ['--force' => true]);
 
-            $administrator = new \App\Model\User;
+            $administrator = new User;
             $administrator->name = 'Administrator';
             $administrator->username = request()->input('ad_username');
             $administrator->slug = str_slug(request()->input('ad_username'));
@@ -175,13 +181,15 @@ class InstallController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function step4()
     {
 
+        App::setLocale(Session::get('step1.lang', 'en'));
+
         if (! Session::has('error')) {
-            $dotenv = new \App\Services\DotEnvGenerator; // TODO Inject
+            $dotenv = new DotEnvGenerator; // TODO Inject
             $dotenv->addEnvVar('DB_HOST', Session::get('step2.server'));
             $dotenv->addEnvVar('DB_CONNECTION', Session::get('step2.db_driver'));
             $dotenv->addEnvVar('DB_USERNAME', Session::get('step2.username'));

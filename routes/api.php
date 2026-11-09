@@ -1,5 +1,16 @@
 <?php
 
+use App\Controllers\BlogpostCategoryController;
+use App\Controllers\BlogpostController;
+use App\Controllers\FileManagerController;
+use App\Controllers\HeaderImageController;
+use App\Controllers\PageController;
+use App\Controllers\SearchController;
+use App\Model\Blogpost;
+use App\Model\Page;
+use App\Model\Plugin;
+use App\Model\Settings;
+use App\Model\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -49,7 +60,7 @@ Route::post('/auth', function (Request $request) {
 });
 
 Route::get('/blogposts/slug/{slug}', function ($slug) {
-    $blogpost = \App\Model\Blogpost::findBySlug($slug);
+    $blogpost = Blogpost::findBySlug($slug);
 
     foreach (request()->get('with', []) as $relation) {
         $blogpost->load($relation);
@@ -59,7 +70,7 @@ Route::get('/blogposts/slug/{slug}', function ($slug) {
 });
 
 Route::get('/pages/slug/{slug}', function ($slug) {
-    $page = \App\Model\Page::findBySlug($slug);
+    $page = Page::findBySlug($slug);
 
     foreach (request()->get('with', []) as $relation) {
         $page->load($relation);
@@ -104,28 +115,28 @@ Route::get('/files', function () {
     ]);
 });
 
-Route::apiResource('blogposts', \App\Controllers\BlogpostController::class)
+Route::apiResource('blogposts', BlogpostController::class)
     ->only(['index', 'show']);
 
-Route::apiResource('categories', \App\Controllers\BlogpostCategoryController::class)
+Route::apiResource('categories', BlogpostCategoryController::class)
     ->only(['index', 'show']);
 
-Route::apiResource('pages', \App\Controllers\PageController::class)
+Route::apiResource('pages', PageController::class)
     ->only(['index', 'show']);
 
-Route::apiResource('header-images', \App\Controllers\HeaderImageController::class)
+Route::apiResource('header-images', HeaderImageController::class)
     ->only(['index', 'show']);
 
-Route::apiResource('file-manager', \App\Controllers\FileManagerController::class)
+Route::apiResource('file-manager', FileManagerController::class)
     ->middleware('auth:api');
 
-Route::apiResource('search', \App\Controllers\SearchController::class)
+Route::apiResource('search', SearchController::class)
     ->only(['index', 'show']);
 
 Route::get('/settings', function (Request $request) {
 
     $settings = Cache::get('settings', function () {
-        return \App\Model\Settings::group('website')->get();
+        return Settings::group('website')->get();
     });
 
     return response()->json($settings);
@@ -135,7 +146,7 @@ Route::get('/settings', function (Request $request) {
 Route::get('/settings/{key}', function (string $key) {
 
     $settings = Cache::get('settings_'.$key, function () use ($key) {
-        return \App\Model\Settings::group('website')->key($key)->first();
+        return Settings::group('website')->key($key)->first();
     });
 
     return response()->json($settings);
@@ -148,7 +159,7 @@ Route::get('/users', function (Request $request) {
         return response()->json(['message' => 'Permission denied!'], 403);
     }
 
-    $users = \App\Model\User::all()->forPage($request->input('page'), $request->input('num'));
+    $users = User::all()->forPage($request->input('page'), $request->input('num'));
 
     return $users;
 
@@ -160,7 +171,7 @@ Route::get('/plugins', function (Request $request) {
         return response()->json(['message' => 'Permission denied!'], 403);
     }
 
-    $plugins = \App\Model\Plugin::all()->forPage($request->input('page'), $request->input('num'));
+    $plugins = Plugin::all()->forPage($request->input('page'), $request->input('num'));
 
     return $plugins;
 
@@ -168,14 +179,14 @@ Route::get('/plugins', function (Request $request) {
 
 // ###############################################
 
-Route::put('pages/reorder', [\App\Controllers\PageController::class, 'reorder'])
+Route::put('pages/reorder', [PageController::class, 'reorder'])
     ->middleware('auth:api');
 
 Route::post('lock-up', function (Request $request) {
 
-    $user = \App\Model\User::find($request->input('id'));
+    $user = User::find($request->input('id'));
 
-    if (isset($user) && $user->isActive() && \Hash::check($request->input('password'), $user->password)) {
+    if (isset($user) && $user->isActive() && Hash::check($request->input('password'), $user->password)) {
         return response()->json(true);
     }
 

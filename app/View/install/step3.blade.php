@@ -1,4 +1,4 @@
-@extends('layout', ['title' => trans("Install")])
+@extends('layout', ['title' => trans('Install')])
 
 @section('content')
     <div class="bg-dark text-white py-5">
@@ -22,7 +22,7 @@
 
             </br>
 
-            <form action="{{route('install.show', 'migrate')}}" method='POST'>
+            <form action="{{ route('install.show', 'migrate') }}" method='POST'>
 
                 @csrf
 
@@ -54,9 +54,10 @@
                 </div>
 
                 <div class="pt-5">
-                    <a href="{{route('install.show', 'step2')}}"><button type='button' class='btn btn-secondary btn-sm'><i
-                                class="fa fa-arrow-circle-left" aria-hidden="true"></i> Previous</button></a>
-                    <button type='submit' class='btn btn-primary btn-md px-3'>Next <i
+                    <a href="{{ route('install.show', 'step2') }}"><button type='button'
+                            class='btn btn-secondary btn-sm'><i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                            {{ trans('actions.previous') }}</button></a>
+                    <button type='submit' class='btn btn-primary btn-md px-3'>{{ trans('actions.next') }} <i
                             class="fa fa-arrow-circle-right ml-2" aria-hidden="true"></i></button>
                 </div>
         </div>

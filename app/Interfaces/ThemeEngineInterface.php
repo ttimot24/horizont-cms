@@ -2,11 +2,13 @@
 
 namespace App\Interfaces;
 
+use App\Services\Theme;
+
 interface ThemeEngineInterface
 {
-    public function getTheme(): \App\Services\Theme;
+    public function getTheme(): Theme;
 
-    public function setTheme(\App\Services\Theme|string $theme): void;
+    public function setTheme(Theme|string $theme): void;
 
     public function render(array $data);
 

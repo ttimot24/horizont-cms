@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\HorizontCMS;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,7 @@ class HttpsMiddleware
     public function handle(Request $request, Closure $next)
     {
 
-        if (\App\HorizontCMS::isInstalled()) {
+        if (HorizontCMS::isInstalled()) {
 
             if ($request->settings['use_https'] == 1 && ! $request->secure()) {
                 return redirect()->secure($request->getRequestUri());

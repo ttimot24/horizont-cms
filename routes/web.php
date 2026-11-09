@@ -1,6 +1,11 @@
 <?php
 
+use App\Controllers\WebsiteController;
+use App\Exceptions\FileNotFoundException;
+use App\Exceptions\WebsiteExceptionHandler;
+use App\Http\RouteResolver;
 use App\Model\Settings;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['prefix' => '/'], function () {
-    Route::resource('/', \App\Controllers\WebsiteController::class);
+    Route::resource('/', WebsiteController::class);
 });
 
 if (app()->isInstalled()) {
@@ -44,7 +49,7 @@ if (app()->isInstalled()) {
 
         try {
 
-            $resolver = new \App\Http\RouteResolver;
+            $resolver = new RouteResolver;
 
             try {
 
@@ -55,10 +60,10 @@ if (app()->isInstalled()) {
                 return $resolver->resolve($slug, $action, ltrim($args, $action.'/'));
             } catch (Exception $e) {
 
-                if ($e instanceof \App\Exceptions\FileNotFoundException || $e instanceof BadMethodCallException) {
+                if ($e instanceof FileNotFoundException || $e instanceof BadMethodCallException) {
 
-                    /** @var \Illuminate\Routing\Controller $controller */
-                    $controller = \App::make('\App\Controllers\WebsiteController');
+                    /** @var Controller $controller */
+                    $controller = App::make('\App\Controllers\WebsiteController');
 
                     if (method_exists($controller, 'before')) {
                         $controller->before();
@@ -75,7 +80,7 @@ if (app()->isInstalled()) {
                 throw $e;
             }
         } catch (Exception $e) {
-            $handler = new \App\Exceptions\WebsiteExceptionHandler(app());
+            $handler = new WebsiteExceptionHandler(app());
 
             return $handler->render(request(), $e);
         }

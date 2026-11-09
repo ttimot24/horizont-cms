@@ -1,5 +1,10 @@
 <?php
 
+use App\Exceptions\Handler;
+use App\HorizontCMS;
+use App\Http\Kernel;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -11,7 +16,7 @@
 |
 */
 
-$app = new App\HorizontCMS(
+$app = new HorizontCMS(
     realpath(__DIR__.'/../')
 );
 
@@ -28,7 +33,7 @@ $app = new App\HorizontCMS(
 
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
-    App\Http\Kernel::class
+    Kernel::class
 );
 
 $app->singleton(
@@ -37,8 +42,8 @@ $app->singleton(
 );
 
 $app->singleton(
-    Illuminate\Contracts\Debug\ExceptionHandler::class,
-    App\Exceptions\Handler::class
+    ExceptionHandler::class,
+    Handler::class
 );
 
 /*

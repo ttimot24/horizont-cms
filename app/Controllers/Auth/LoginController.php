@@ -7,6 +7,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Config;
@@ -58,13 +59,12 @@ class LoginController extends Controller
     /**
      * Show the application login form.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function showLoginForm(): View|Factory
     {
 
         return view(Config::get('horizontcms.auth_view', 'auth').'.login', [
-            'app_name' => Config::get('app.name'),
             'admin_logo' => url(Config::get('horizontcms.admin_logo')),
         ]);
     }

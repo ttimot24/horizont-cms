@@ -13,6 +13,8 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
@@ -72,28 +74,28 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return null;
     }
 
-    public function blogposts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function blogposts(): HasMany
     {
-        return $this->hasMany(\App\Model\Blogpost::class, 'author_id', 'id');
+        return $this->hasMany(Blogpost::class, 'author_id', 'id');
     }
 
     /**
      * If the binded UserRole is missing then ithe method
      * return the default role.
      */
-    public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function role(): BelongsTo
     {
 
-        if (\App\Model\UserRole::find($this->role_id) == null) {
+        if (UserRole::find($this->role_id) == null) {
             $this->role_id = 1;
         }
 
-        return $this->belongsTo(\App\Model\UserRole::class, 'role_id', 'id');
+        return $this->belongsTo(UserRole::class, 'role_id', 'id');
     }
 
-    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function comments(): HasMany
     {
-        return $this->hasMany(\App\Model\BlogpostComment::class, 'author_id', 'id');
+        return $this->hasMany(BlogpostComment::class, 'author_id', 'id');
     }
 
     public function hasPermission(string $permission): bool

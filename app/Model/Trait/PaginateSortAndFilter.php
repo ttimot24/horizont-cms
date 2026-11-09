@@ -2,6 +2,7 @@
 
 namespace App\Model\Trait;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -51,7 +52,7 @@ trait PaginateSortAndFilter
      *
      * @param  Request|null  $request
      */
-    public function scopePaginateSortAndFilter(Builder $query, $paginateSortAndFilter = null): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function scopePaginateSortAndFilter(Builder $query, $paginateSortAndFilter = null): LengthAwarePaginator
     {
         $paginateSortAndFilter = $paginateSortAndFilter ?? request()->all();
 

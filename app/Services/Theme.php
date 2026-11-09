@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Model\Settings;
+use Composer\Semver\Comparator;
 use Illuminate\Support\Collection;
+use Symfony\Component\Yaml\Yaml;
 
 class Theme
 {
@@ -47,9 +49,9 @@ class Theme
         $file_without_extension = $this->getPath().'theme_info';
 
         if (file_exists($file_without_extension.'.yml') && class_exists('\Symfony\Component\Yaml\Yaml')) {
-            $this->info = \Symfony\Component\Yaml\Yaml::parse(
+            $this->info = Yaml::parse(
                 file_get_contents($file_without_extension.'.yml'),
-                \Symfony\Component\Yaml\Yaml::PARSE_OBJECT
+                Yaml::PARSE_OBJECT
             );
         } elseif (file_exists($file_without_extension.'.json')) {
             $this->info = json_decode(file_get_contents($file_without_extension.'.json'));
@@ -122,6 +124,6 @@ class Theme
 
     public function isCompatibleWithCore(): bool
     {
-        return \Composer\Semver\Comparator::greaterThanOrEqualTo(ltrim(config('horizontcms.version'), 'v'), $this->getRequiredCoreVersion());
+        return Comparator::greaterThanOrEqualTo(ltrim(config('horizontcms.version'), 'v'), $this->getRequiredCoreVersion());
     }
 }

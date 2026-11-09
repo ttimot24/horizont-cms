@@ -2,9 +2,18 @@
 
 namespace App\Controllers;
 
+use App\Interfaces\ThemeEngineInterface;
+use App\Model\Blogpost;
 use App\Model\Page;
+use App\Model\User;
+use App\Model\Visits;
+use App\Services\SearchEngine;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class WebsiteController extends Controller
 {
@@ -16,14 +25,14 @@ class WebsiteController extends Controller
     {
         $this->request = $request;
         if (app()->isInstalled()) {
-            $this->engine = app()->make(\App\Interfaces\ThemeEngineInterface::class);
+            $this->engine = app()->make(ThemeEngineInterface::class);
         }
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index($page = null)
     {
@@ -32,11 +41,11 @@ class WebsiteController extends Controller
 
     public function show($page)
     {
-        if (\Session::has('lang')) {
-            \App::setLocale(\Session::get('lang'));
+        if (Session::has('lang')) {
+            App::setLocale(Session::get('lang'));
         }
         if ($this->request->has('lang')) {
-            \App::setLocale($this->request->input('lang'));
+            App::setLocale($this->request->input('lang'));
         }
 
         $engines = config('horizontcms.theme_engines');
@@ -45,13 +54,13 @@ class WebsiteController extends Controller
 
         $this->engine->runScript('before');
 
-        if ($this->request->settings['website_down'] == 1 && (\Auth::user() == null || ! \Auth::user()->isAdmin())) {
+        if ($this->request->settings['website_down'] == 1 && (Auth::user() == null || ! Auth::user()->isAdmin())) {
             return $this->engine->renderWebsiteDown();
         }
 
         $requested_page = empty($page) ? Page::find($this->request->settings['home_page']) : Page::findBySlug($page);
 
-        \App\Model\Visits::newVisitor($this->request);
+        Visits::newVisitor($this->request);
 
         if (! empty($requested_page)) {
             if (! empty($requested_page->url) && $this->engine->templateExists($requested_page->url)) {
@@ -77,7 +86,7 @@ class WebsiteController extends Controller
 
         if ($this->request->isMethod('POST')) {
 
-            $user = new \App\Model\User($this->request->all());
+            $user = new User($this->request->all());
             $user->active = 0;
 
             if ($user->save()) {
@@ -95,13 +104,13 @@ class WebsiteController extends Controller
 
             $mode = $this->request->has('email') ? 'email' : 'username';
 
-            if (\Auth::attempt([$mode => $this->request->input($mode), 'password' => $this->request->input('password')]) && \Auth::user()->isActive()) {
+            if (Auth::attempt([$mode => $this->request->input($mode), 'password' => $this->request->input('password')]) && Auth::user()->isActive()) {
 
                 $redirect = $this->request->has('redirect_success') ? redirect($this->request->input('redirect_success')) : redirect()->back();
 
                 return $redirect->withMessage(['success' => trans('message.successfully_logged_in')]);
             } else {
-                \Auth::logout();
+                Auth::logout();
             }
         }
 
@@ -112,7 +121,7 @@ class WebsiteController extends Controller
     {
 
         if ($this->request->has('lang')) {
-            \Session::put('lang', $this->request->input('lang'));
+            Session::put('lang', $this->request->input('lang'));
         }
 
         return redirect()->back();
@@ -127,11 +136,11 @@ class WebsiteController extends Controller
                 return redirect()->back();
             }
 
-            $search_engine = new \App\Services\SearchEngine;
+            $search_engine = new SearchEngine;
 
-            $search_engine->registerModel(\App\Model\Blogpost::class);
-            $search_engine->registerModel(\App\Model\Page::class);
-            $search_engine->registerModel(\App\Model\User::class);
+            $search_engine->registerModel(Blogpost::class);
+            $search_engine->registerModel(Page::class);
+            $search_engine->registerModel(User::class);
 
             foreach (config('theme:search.models', []) as $model) {
                 $search_engine->registerModel($model);
@@ -139,7 +148,7 @@ class WebsiteController extends Controller
 
             $search_engine->executeSearch($this->request->input('search'));
 
-            return redirect(\App\Model\Page::withTemplate('search.php')->first()->getSlug())->withSearchResult(
+            return redirect(Page::withTemplate('search.php')->first()->getSlug())->withSearchResult(
                 $search_engine
             );
         }
@@ -150,7 +159,7 @@ class WebsiteController extends Controller
     public function logout()
     {
 
-        \Auth::logout();
+        Auth::logout();
 
         $redirect = $this->request->has('redirect') ? redirect($this->request->input('redirect')) : redirect()->back();
 

@@ -1,8 +1,12 @@
 <?php
 
+use App\Services\BladeThemeEngine;
+use App\Services\SpaThemeEngine;
+use App\Services\ThemeEngine;
+
 return [
 
-    'version' => 'v1.4.5',
+    'version' => 'v1.4.6',
 
     'installed' => env('INSTALLED', false),
 
@@ -53,9 +57,9 @@ return [
     ],
 
     'theme_engines' => [ // available theme engines
-        'hcms' => \App\Services\ThemeEngine::class,
-        'blade' => \App\Services\BladeThemeEngine::class,
-        'spa' => \App\Services\SpaThemeEngine::class,
+        'hcms' => ThemeEngine::class,
+        'blade' => BladeThemeEngine::class,
+        'spa' => SpaThemeEngine::class,
     ],
 
     'default_theme_engine' => env('HCMS_DEFAULT_THEME_ENGINE', 'hcms'),

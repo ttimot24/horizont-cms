@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Model\Settings;
 use Illuminate\Console\Command;
 
 class ThemeCommand extends Command
@@ -50,7 +51,7 @@ class ThemeCommand extends Command
     {
         if (file_exists(base_path('themes'.DIRECTORY_SEPARATOR.$theme))) {
 
-            if (\App\Model\Settings::where('setting', 'theme')->update(['value' => $theme])) {
+            if (Settings::where('setting', 'theme')->update(['value' => $theme])) {
                 $this->line($theme.' successfully set as current theme!');
 
                 return self::SUCCESS;

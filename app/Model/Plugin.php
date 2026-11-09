@@ -2,10 +2,13 @@
 
 namespace App\Model;
 
+use App\Interfaces\PluginInterface;
 use App\Model\Trait\HasImage;
 use App\Model\Trait\IsActive;
+use Composer\Semver\Comparator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\Yaml\Yaml;
 
 class Plugin extends Model
 {
@@ -120,9 +123,9 @@ class Plugin extends Model
         $file_without_extension = $this->getPath().'/plugin_info';
 
         if (file_exists($file_without_extension.'.yml') && class_exists('\Symfony\Component\Yaml\Yaml')) {
-            $this->setAllInfo((object) \Symfony\Component\Yaml\Yaml::parse(
+            $this->setAllInfo((object) Yaml::parse(
                 file_get_contents($file_without_extension.'.yml'),
-                \Symfony\Component\Yaml\Yaml::PARSE_OBJECT
+                Yaml::PARSE_OBJECT
             ));
         } elseif (file_exists($file_without_extension.'.json')) {
             $this->setAllInfo(json_decode(file_get_contents($file_without_extension.'.json')));
@@ -180,7 +183,7 @@ class Plugin extends Model
 
             $instance = new $plugin_namespace;
 
-            if ($instance instanceof \App\Interfaces\PluginInterface) {
+            if ($instance instanceof PluginInterface) {
                 return $instance->$register();
             }
         }
@@ -193,7 +196,7 @@ class Plugin extends Model
 
         if ($this->isInstalled()
            && $this->isCompatibleWithCore()
-           && \Composer\Semver\Comparator::lessThan(ltrim(empty($this->version) ? '0.0' : $this->version, 'v'), ltrim($this->getInfo('version'), 'v'))
+           && Comparator::lessThan(ltrim(empty($this->version) ? '0.0' : $this->version, 'v'), ltrim($this->getInfo('version'), 'v'))
         ) {
             return true;
         }
@@ -213,6 +216,6 @@ class Plugin extends Model
 
     public function isCompatibleWithCore(): bool
     {
-        return \Composer\Semver\Comparator::greaterThanOrEqualTo(ltrim(config('horizontcms.version'), 'v'), $this->getRequiredCoreVersion());
+        return Comparator::greaterThanOrEqualTo(ltrim(config('horizontcms.version'), 'v'), $this->getRequiredCoreVersion());
     }
 }

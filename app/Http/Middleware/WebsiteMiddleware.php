@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\ShortCode;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,7 @@ class WebsiteMiddleware
 {
     private $widgets;
 
-    public function __construct(\App\Services\ShortCode $shortcode_engine)
+    public function __construct(ShortCode $shortcode_engine)
     {
         $this->widgets = $shortcode_engine;
     }

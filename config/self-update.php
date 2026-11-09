@@ -1,6 +1,11 @@
 <?php
 
 declare(strict_types=1);
+use Codedge\Updater\Notifications\Notifiable;
+use Codedge\Updater\Notifications\Notifications\UpdateAvailable;
+use Codedge\Updater\Notifications\Notifications\UpdateFailed;
+use Codedge\Updater\Notifications\Notifications\UpdateSucceeded;
+use Illuminate\Database\Console\Migrations\MigrateCommand;
 
 return [
 
@@ -110,16 +115,16 @@ return [
 
     'notifications' => [
         'notifications' => [
-            \Codedge\Updater\Notifications\Notifications\UpdateSucceeded::class => ['mail'],
-            \Codedge\Updater\Notifications\Notifications\UpdateFailed::class => ['mail'],
-            \Codedge\Updater\Notifications\Notifications\UpdateAvailable::class => ['mail'],
+            UpdateSucceeded::class => ['mail'],
+            UpdateFailed::class => ['mail'],
+            UpdateAvailable::class => ['mail'],
         ],
 
         /*
          * Here you can specify the notifiable to which the notifications should be sent. The default
          * notifiable will use the variables specified in this config file.
          */
-        'notifiable' => \Codedge\Updater\Notifications\Notifiable::class,
+        'notifiable' => Notifiable::class,
 
         'mail' => [
             'to' => [
@@ -150,7 +155,7 @@ return [
         'post_update' => [
             // \Artisan::call("migrate", ['--no-interaction' => '', '--force' => true]);
             'command:migrate' => [
-                'class' => \Illuminate\Database\Console\Migrations\MigrateCommand::class,
+                'class' => MigrateCommand::class,
                 'params' => [
                     'no-interaction' => '',
                     'force' => true,

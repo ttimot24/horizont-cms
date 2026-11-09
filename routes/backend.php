@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\RouteResolver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -12,7 +13,7 @@ Route::group(['prefix' => '/install'], function () {
     Route::any('/{action?}/{args?}/',
         function ($action = 'index', $args = null) {
             /* TODO Use resource controller */
-            $resolver = new \App\Http\RouteResolver;
+            $resolver = new RouteResolver;
 
             return $resolver->resolve('install', $action, $args);
 
@@ -63,7 +64,7 @@ Route::group(['middleware' => ['admin', 'plugin', 'can:global-authorization']], 
     Route::any('/plugin/run/{plugin}/{controller?}/{action?}/{args?}/',
         function ($plugin, $controller = 'start', $action = 'index', $args = null) {
 
-            $resolver = new \App\Http\RouteResolver;
+            $resolver = new RouteResolver;
 
             $resolver->changeNamespace("\Plugin\\".studly_case($plugin).'\\App\\Controllers\\');
 
@@ -74,7 +75,7 @@ Route::group(['middleware' => ['admin', 'plugin', 'can:global-authorization']], 
     Route::any('/{controller?}/{action?}/{args?}/',
         function ($controller = 'dashboard', $action = 'index', $args = null) {
 
-            $resolver = new \App\Http\RouteResolver;
+            $resolver = new RouteResolver;
 
             return $resolver->resolve($controller, $action, $args);
 

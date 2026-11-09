@@ -4,7 +4,10 @@ namespace App\Controllers;
 
 use App\Controllers\Trait\UploadsImage;
 use App\Model\Blogpost;
+use App\Model\BlogpostCategory;
+use App\Model\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
@@ -18,7 +21,7 @@ class BlogpostController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -44,23 +47,23 @@ class BlogpostController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
 
         return view('blogposts.form', [
-            'users' => \App\Model\User::whereHas('role', function ($query): void {
+            'users' => User::whereHas('role', function ($query): void {
                 $query->whereJsonContains('rights', 'user.update');
             })->get(),
-            'categories' => \App\Model\BlogpostCategory::all(),
+            'categories' => BlogpostCategory::all(),
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -73,7 +76,7 @@ class BlogpostController extends Controller
 
         $blogpost->author()->associate(
             Gate::allows('update', 'user') && $request->has('author_id') ?
-            \App\Model\User::findOrFail($request->input('author_id')) : $request->user()
+            User::findOrFail($request->input('author_id')) : $request->user()
         );
 
         $this->uploadImage($blogpost);
@@ -89,7 +92,7 @@ class BlogpostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(Request $request, Blogpost $blogpost)
     {
@@ -112,15 +115,15 @@ class BlogpostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Blogpost $blogpost)
     {
 
         return view('blogposts.form', [
             'blogpost' => $blogpost,
-            'categories' => \App\Model\BlogpostCategory::all(),
-            'users' => \App\Model\User::whereHas('role', function ($query): void {
+            'categories' => BlogpostCategory::all(),
+            'users' => User::whereHas('role', function ($query): void {
                 $query->whereJsonContains('rights', 'user.update');
             })->get(),
         ]);
@@ -129,7 +132,7 @@ class BlogpostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, Blogpost $blogpost)
     {
@@ -147,7 +150,7 @@ class BlogpostController extends Controller
 
             $blogpost->author()->associate(
                 Gate::allows('update', 'user') && $request->has('author_id') ?
-                \App\Model\User::findOrFail($request->input('author_id')) : $request->user()
+                User::findOrFail($request->input('author_id')) : $request->user()
             );
 
             $this->uploadImage($blogpost);
@@ -164,7 +167,7 @@ class BlogpostController extends Controller
     /**
      * Remove the specified resource from database.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Blogpost $blogpost)
     {

@@ -2,14 +2,16 @@
 
 namespace App\Controllers;
 
+use Codedge\Updater\UpdaterManager;
 use Composer\Semver\Comparator;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 
 class UpgradeController extends Controller
 {
     private $updateManager = null;
 
-    public function __construct(\Codedge\Updater\UpdaterManager $updater)
+    public function __construct(UpdaterManager $updater)
     {
 
         $this->updateManager = $updater;
@@ -18,7 +20,7 @@ class UpgradeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {

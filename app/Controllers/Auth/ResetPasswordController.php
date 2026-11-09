@@ -2,6 +2,8 @@
 
 namespace App\Controllers\Auth;
 
+use App\Model\User;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\ResetsPasswords;
@@ -49,10 +51,10 @@ class ResetPasswordController extends Controller
     /**
      * Reset the given user's password.
      *
-     * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
+     * @param  CanResetPassword  $user
      * @param  string  $password
      */
-    protected function resetPassword(\App\Model\User $user, $password): void
+    protected function resetPassword(User $user, $password): void
     {
 
         $user->password = $password;
