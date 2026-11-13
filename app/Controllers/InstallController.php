@@ -112,9 +112,14 @@ class InstallController extends Controller
 
             Session::put('step2', request()->all());
 
-            return redirect(route('install.show', 'step3'))->withMessage(['success' => trans('Connection to database established!')]);
+            return request()->expectsJson() ?
+                response()->json(['success' => true]) :
+                redirect(route('install.show', 'step3'))->withMessage(['success' => trans('Connection to database established!')]);
         } catch (\PDOException $except) {
-            return redirect()->back()->withMessage(['danger' => trans('Can not establish the connection: '.$except->getMessage())]);
+
+            return request()->expectsJson() ?
+                response()->json(['message' => trans('Can not establish the connection: '.$except->getMessage())], 422) :
+                redirect()->back()->withMessage(['danger' => trans('Can not establish the connection: '.$except->getMessage())]);
         }
     }
 
@@ -167,14 +172,21 @@ class InstallController extends Controller
             $administrator->active = 1;
 
             if (! $administrator->save()) {
-                return redirect(route('install.show', 'step4'))->withMessage(['danger' => 'Something went wrong!'])->withError(true);
+
+                return request()->expectsJson() ?
+                    response()->json(['message' => 'Something went wrong!'], 500) :
+                    redirect(route('install.show', 'step4'))->withMessage(['danger' => 'Something went wrong!'])->withError(true);
             }
         } catch (\Exception $e) {
 
-            return redirect(route('install.show', 'step4'))->withMessage(['danger' => $e->getMessage()])->withError(true);
+            return request()->expectsJson() ?
+                    response()->json(['message' => $e->getMessage()], 500) :
+                    redirect(route('install.show', 'step4'))->withMessage(['danger' => $e->getMessage()])->withError(true);
         }
 
-        return redirect(route('install.show', 'step4'))->withMessage(['success' => 'Succesfully installed!']);
+        return request()->expectsJson() ?
+                    response()->json(['success' => true]) :
+                    redirect(route('install.show', 'step4'))->withMessage(['success' => 'Succesfully installed!']);
     }
 
     /**
