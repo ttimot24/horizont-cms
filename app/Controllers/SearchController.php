@@ -22,15 +22,14 @@ class SearchController extends Controller
      *
      * @return Response
      */
-    public function show(Request $request)
+    public function update(string $search, Request $request)
     {
         $request->validate([
             'search' => 'required|string|min:3|max:100',
         ]);
 
-        // if(auth()->check() && Gate::allows('view', 'blogpost')){
         $this->search_engine->registerModel(Blogpost::class);
-        // }
+
         if (auth()->check() && Gate::allows('view', 'user')) {
             $this->search_engine->registerModel(User::class);
         }
