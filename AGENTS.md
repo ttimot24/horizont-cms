@@ -6,8 +6,8 @@ This file provides guidance for AI assistants working on the HorizontCMS codebas
 
 HorizontCMS is an open-source CMS built on:
 
-- **PHP 8.2+ / Laravel 11** (with a custom `App\HorizontCMS` Application class, not the stock Laravel)
-- **Vue 2.6** (Options API, TS components under `resources/vue/ts`)
+- **PHP 8.2+ / Laravel 12** (with a custom `App\HorizontCMS` Application class, not the stock Laravel)
+- **Vue 2.7** (Options API, TS components under `resources/vue/ts`)
 - **Bootstrap 5.3**, jQuery, CKEditor 4, Select2, SortableJS
 - Modular structure: **themes** (`themes/`) and **plugins** (`plugins/`)
 
